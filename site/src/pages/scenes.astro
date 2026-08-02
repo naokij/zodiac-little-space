@@ -1,0 +1,185 @@
+---
+import Base from '~/layouts/Base.astro';
+import ResponsiveImage from '~/components/ResponsiveImage.astro';
+import { scenes } from '~/data/scenes';
+import { assetUrl, assetSrcset } from '~/data/asset-url';
+
+const spaceCount = scenes.length;
+---
+<Base title="场景介绍 · 十二星座小太空" active="scenes">
+  <section data-od-id="page-hero">
+    <span class="eyebrow">小太空 · 地方</span>
+    <h1 style="margin-top: 8px; margin-bottom: 12px;">{scenes.length} 个故事发生的地方</h1>
+    <p class="text-muted" style="max-width: 60ch;">
+      星空泳池、星月楼梯、星座小人超市 —— 小太空不大,但每个角落都亮晶晶的。
+    </p>
+    <div class="row" style="margin-top: 16px;">
+      <span class="chip">小太空 · {spaceCount}</span>
+    </div>
+  </section>
+
+  <!-- 星月楼梯大图 · cinematic full-width 16:9 -->
+  <section data-od-id="castle-feature" style="margin-top: 36px; margin-bottom: 36px;">
+    <div class="hero-cinema fade-in">
+      <div class="hero-bg">
+        <ResponsiveImage
+          src="/assets/locations/星月楼梯.jpg"
+          alt="星月楼梯 · 弯月环绕的楼梯"
+          sizes="(max-width: 1280px) 100vw, 1280px"
+          widths={[400, 800, 1200]}
+          loading="eager"
+          fetchpriority="high"
+          className="scene-stairs-hero-img"
+        />
+        <style>
+          .scene-stairs-hero-img { object-position: center 38%; filter: brightness(0.9); }
+        </style>
+      </div>
+      <div class="hero-content">
+        <span class="eyebrow" style="color: oklch(98% 0.005 85);">FEATURED · 标志场景</span>
+        <h2 style="margin-top: 8px; margin-bottom: 8px; color: oklch(98% 0.005 85);">星月楼梯</h2>
+        <p style="font-size: 15px; line-height: 1.7; max-width: 52ch; margin-bottom: 0; color: oklch(95% 0.01 85);">
+          弯月环绕的楼梯,台阶上落着小星星。
+          一步一步往上走,就能走到星空最深最深的地方。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 全部场景 -->
+  <div class="flourish" aria-hidden="true">
+    <img src={assetUrl('/assets/decor/星月分隔串.jpg')} srcset={assetSrcset('/assets/decor/星月分隔串-800.jpg 800w, /assets/decor/星月分隔串-1600.jpg 1600w')} sizes="(max-width: 720px) 70vw, 460px" alt="" loading="lazy" />
+  </div>
+
+  <section data-od-id="all-scenes" id="all-scenes" style="margin-top: 24px;">
+    <h2 style="margin-bottom: 24px;">所有场景</h2>
+    <div class="grid grid-3">
+      {scenes.map((s, i) => {
+        const delayClass = i > 0 ? ` fade-in-d${Math.min(i, 3)}` : '';
+        return (
+          <div
+            class={`scene-card fade-in${delayClass}`}
+            data-od-id={s.odId}
+            data-zone={s.zone}
+            data-name={s.name}
+            data-desc={s.desc}
+            data-image={assetUrl(s.image)}
+            id={s.odId}
+          >
+            <ResponsiveImage
+              src={s.image}
+              alt={s.name}
+              sizes="(max-width: 720px) 90vw, 360px"
+              widths={[400, 800, 1200]}
+            />
+            <div class="scene-body">
+              <h3>{s.name}</h3>
+              <p>{s.highlights.join(' · ')}</p>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  </section>
+
+  <!-- 串联回故事 -->
+  <div class="flourish" aria-hidden="true">
+    <img src={assetUrl('/assets/decor/星月分隔串.jpg')} srcset={assetSrcset('/assets/decor/星月分隔串-800.jpg 800w, /assets/decor/星月分隔串-1600.jpg 1600w')} sizes="(max-width: 720px) 70vw, 460px" alt="" loading="lazy" />
+  </div>
+
+  <section style="margin-top: 56px;" data-od-id="cta-link">
+    <div class="card" style="padding: 28px; text-align: center;">
+      <span class="eyebrow">回到故事</span>
+      <h3 style="margin-top: 8px; margin-bottom: 16px;">听双鱼座和水瓶座在这些地方发生的故事</h3>
+      <a class="btn btn-primary" href="/story/1-想家的大海">打开第一集</a>
+    </div>
+  </section>
+
+  <!-- 页尾装饰分隔符 -->
+  <div class="flourish" style="max-width: none; width: 100%; padding: 0 24px; box-sizing: border-box;" aria-hidden="true">
+    <img src={assetUrl('/assets/decor/星月分隔串.jpg')} srcset={assetSrcset('/assets/decor/星月分隔串-800.jpg 800w, /assets/decor/星月分隔串-1600.jpg 1600w')} sizes="(max-width: 720px) 70vw, 460px" alt="" loading="lazy" />
+  </div>
+
+  <!-- 场景详情弹窗 -->
+  <div class="modal-backdrop" id="scene-modal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true">
+      <button class="modal-close" id="scene-modal-close" aria-label="关闭">×</button>
+      <div class="modal-img">
+        <img id="scene-modal-img" alt="" />
+      </div>
+      <div class="modal-body">
+        <h2 class="modal-name" id="scene-modal-name"></h2>
+        <p class="modal-bio" id="scene-modal-desc"></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 场景筛选
+    const filterRoot = document.getElementById('filter-root');
+    const allScenes = document.getElementById('all-scenes');
+    if (filterRoot && allScenes) {
+      const pills = filterRoot.querySelectorAll('.pill');
+      const cards = allScenes.querySelectorAll('.scene-card');
+      pills.forEach((pill) => {
+        pill.addEventListener('click', () => {
+          pills.forEach((p) => p.classList.remove('is-active'));
+          pill.classList.add('is-active');
+          const filter = pill.getAttribute('data-filter') || 'all';
+          cards.forEach((card) => {
+            const zone = card.getAttribute('data-zone') || '';
+            if (filter === 'all' || zone === filter) {
+              card.style.display = '';
+            } else {
+              card.style.display = 'none';
+            }
+          });
+        });
+      });
+    }
+
+    // 场景弹窗
+    const modal = document.getElementById('scene-modal');
+    const modalClose = document.getElementById('scene-modal-close');
+    const modalName = document.getElementById('scene-modal-name');
+    const modalDesc = document.getElementById('scene-modal-desc');
+    const modalImg = document.getElementById('scene-modal-img');
+
+    function openSceneModal(card) {
+      const name = card.getAttribute('data-name') || '';
+      const desc = card.getAttribute('data-desc') || '';
+      const image = card.getAttribute('data-image') || '';
+      if (modalName) modalName.textContent = name;
+      if (modalDesc) modalDesc.textContent = desc;
+      if (modalImg) { modalImg.src = image; modalImg.alt = name; }
+      if (modal) {
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+    function closeSceneModal() {
+      if (!modal) return;
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+    if (allScenes) {
+      allScenes.querySelectorAll('.scene-card').forEach((card) => {
+        card.addEventListener('click', (e) => {
+          e.preventDefault();
+          openSceneModal(card);
+        });
+      });
+    }
+    if (modalClose) modalClose.addEventListener('click', closeSceneModal);
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeSceneModal();
+      });
+    }
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeSceneModal();
+    });
+  </script>
+</Base>

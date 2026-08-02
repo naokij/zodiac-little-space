@@ -1,0 +1,14 @@
+{
+  "name": "十二星座小太空 · 睡前有声故事",
+  "short_name": "十二星座小太空",
+  "description": "7 岁的小爱口述的睡前有声故事系列",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f6f3f8",
+  "theme_color": "#f6f3f8",
+  "icons": [
+    { "src": "/logo/app-icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/logo/app-icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}

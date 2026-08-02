@@ -1,0 +1,96 @@
+---
+import Base from '~/layouts/Base.astro';
+import ResponsiveImage from '~/components/ResponsiveImage.astro';
+import { episodes, onlineEpisodes } from '~/data/episodes';
+import { assetUrl, assetSrcset } from '~/data/asset-url';
+
+const online = onlineEpisodes.length;
+const total = episodes.length;
+const upcoming = total - online;
+---
+<Base title="故事列表 · 十二星座小太空" active="list">
+  <section data-od-id="page-hero">
+    <span class="eyebrow">所有剧集</span>
+    <h1 style="margin-top: 8px; margin-bottom: 12px;">小太空里的故事</h1>
+    <p class="text-muted" style="max-width: 60ch;">
+      按顺序听 —— 每集刚好是睡前一个故事的长度。已上线 {online} 集，新的故事正在创作中。
+    </p>
+    <div class="row" style="margin-top: 16px;">
+      <span class="chip">已上线 · {online} 集</span>
+      {upcoming > 0 && <span class="chip">创作中 · {upcoming} 集</span>}
+      <span class="chip">十二星座故事线</span>
+    </div>
+  </section>
+
+  <section data-od-id="episode-list" style="margin-top: 40px;">
+    <div class="stack" style="--stack-gap: 18px;">
+      {episodes.map((ep, i) => {
+        const isOnline = ep.status === 'online';
+        const delayClass = i > 0 ? ` fade-in-d${i}` : '';
+        return (
+          <article class={`episode-card${isOnline ? '' : ' is-coming'} fade-in${delayClass}`} data-od-id={`episode-${ep.number}`} data-status={ep.status}>
+            {isOnline ? (
+              <>
+                <div class="ep-cover">
+                  <ResponsiveImage
+                    src={ep.cover}
+                    alt={ep.title + '封面'}
+                    sizes="(max-width: 720px) 90vw, 360px"
+                    widths={[400, 800, 1200]}
+                  />
+                </div>
+                <div class="ep-body">
+                  <div class="ep-num">EPISODE {String(ep.number).padStart(2, '0')}</div>
+                  <h3>{ep.title}</h3>
+                  <p class="ep-desc">
+                    {ep.excerpt}
+                  </p>
+                  <div class="row" style="margin-bottom: 12px;">
+                    <span class="chip">{ep.duration}</span>
+                    <span class="chip">已上线</span>
+                  </div>
+                  <a class="btn btn-primary" href={`/story/${ep.slug}`} data-od-id={`open-episode-${ep.number}`}>
+                    打开第 {ep.number} 集
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                  </a>
+                </div>
+              </>
+            ) : (
+              <>
+                <div class="ep-cover">
+                  <span class="coming-note">敬请期待</span>
+                </div>
+                <div class="ep-body">
+                  <div class="ep-num">EPISODE {String(ep.number).padStart(2, '0')}</div>
+                  <h3>{ep.title}</h3>
+                  <button class="btn" disabled style="opacity: 0.55; margin-top: auto;">剧本待定 · 不开放收听</button>
+                </div>
+              </>
+            )}
+          </article>
+        );
+      })}
+    </div>
+  </section>
+
+  <!-- 分节符:剧集列表 → CTA -->
+  <div class="flourish" aria-hidden="true">
+    <img src={assetUrl('/assets/decor/星月分隔串.jpg')} srcset={assetSrcset('/assets/decor/星月分隔串-800.jpg 800w, /assets/decor/星月分隔串-1600.jpg 1600w')} sizes="(max-width: 720px) 70vw, 460px" alt="" loading="lazy" />
+  </div>
+
+  <section style="margin-top: 56px;" data-od-id="cta-back">
+    <div class="card" style="padding: 28px; text-align: center;">
+      <span class="eyebrow">还没听够?</span>
+      <h2 style="margin-top: 8px; margin-bottom: 12px;">从第一集开始</h2>
+      <p class="text-muted" style="max-width: 50ch; margin: 0 auto 20px;">
+        每集都设计成睡前一个故事的长度 —— 听完刚好做个好梦。
+      </p>
+      <a class="btn btn-primary" href="/story/1-想家的大海">开始睡前听</a>
+    </div>
+  </section>
+
+  <!-- 页尾装饰分隔符 · 撑满视口宽度 -->
+  <div class="flourish" style="max-width: none; width: 100%; padding: 0 24px; box-sizing: border-box;" aria-hidden="true">
+    <img src={assetUrl('/assets/decor/星月分隔串.jpg')} srcset={assetSrcset('/assets/decor/星月分隔串-800.jpg 800w, /assets/decor/星月分隔串-1600.jpg 1600w')} sizes="(max-width: 720px) 70vw, 460px" alt="" loading="lazy" />
+  </div>
+</Base>

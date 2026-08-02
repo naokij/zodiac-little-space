@@ -1,0 +1,558 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+import { pinyin } from 'pinyin-pro';
+import Base from '~/layouts/Base.astro';
+import ResponsiveImage from '~/components/ResponsiveImage.astro';
+import { episodes } from '~/data/episodes';
+import { assetUrl, assetSrcset } from '~/data/asset-url';
+
+export function getStaticPaths() {
+  return episodes
+    .filter((ep) => ep.status === 'online')
+    .map((ep) => ({
+      params: { slug: ep.slug },
+      props: { ep },
+    }));
+}
+
+const { ep } = Astro.props;
+
+// 读 markdown 仓库根 stories/{slug}.md
+const storiesDir = path.resolve(process.cwd(), '../stories');
+const mdPath = path.join(storiesDir, `${ep.slug}.md`);
+
+let storyParagraphs: string[] = [];
+try {
+  const md = fs.readFileSync(mdPath, 'utf-8');
+  storyParagraphs = md
+    .replace(/^# .+\n/, '')
+    // markdown 横线分隔符 --- 不作为正文段落（与 align-asr.py 对齐规则一致）
+    .replace(/\n---\n/g, '\n\n')
+    // 去掉 markdown 加粗 **...**（保留中间文字，去掉标记符，与 align-asr.py 保持一致）
+    .replace(/\*\*/g, '')
+    .trim()
+    .split(/\n\n+/)
+    .map((p) => p.trim())
+    .filter((p) => p.length > 0 && p !== '---');
+} catch (e) {
+  storyParagraphs = ['故事正文加载中…'];
+}
+
+// 给每段加 ruby 注音
+function annotate(para: string): string {
+  const pyArr = pinyin(para, { toneType: 'symbol', type: 'array' });
+  let html = '';
+  for (let i = 0; i < para.length; i++) {
+    const ch = para[i];
+    const py = pyArr[i] || '';
+    if (ch >= '\u4e00' && ch <= '\u9fff') {
+      html += `<ruby>${ch}<rt>${py}</rt></ruby>`;
+    } else if (ch === '\n') {
+      html += '<br/>';
+    } else {
+      html += ch;
+    }
+  }
+  return html;
+}
+
+const storyHtml = storyParagraphs
+  .map((para) => `<p class="story-paragraph">${annotate(para)}</p>`)
+  .join('');
+
+// 读取对齐后的 ASR (whisper 词级时间戳 -> 拼音对齐到原文逐字)
+// 产出文件: site/data/asr/{slug}.aligned.json (由 scripts/asr.sh + scripts/align-asr.py 生成)
+// 格式: [{char, start, end}, ...] 字级时间戳, 秒, 已过滤标题/空白
+type Annotated = { text: string; start: number; end: number; py: string };
+let annotated: Annotated[] = [];
+try {
+  const asrDir = path.resolve(process.cwd(), 'data/asr');
+  const alignedPath = path.join(asrDir, `${ep.slug}.aligned.json`);
+  const raw = JSON.parse(fs.readFileSync(alignedPath, 'utf-8'));
+  if (Array.isArray(raw)) {
+    annotated = raw
+      .map((w: { char?: string; text?: string; start: number; end: number }) => {
+        const text = w.char ?? w.text ?? '';
+        const py = (() => {
+          try {
+            const arr = pinyin(text, { toneType: 'symbol', type: 'array' });
+            return arr[0] || '';
+          } catch {
+            return '';
+          }
+        })();
+        return { text, start: w.start, end: w.end, py };
+      })
+      .filter((w: Annotated) => w.text);
+  }
+} catch {
+  annotated = [];
+}
+
+// 将 annotated 按段落分组, 恢复 markdown 的分段结构。
+// aligned.json 是原文非空白字符的子序列 (align-asr.py 输出的 char 即 ref_chars[ref_pos]),
+// 因此用贪心子序列匹配为每个 annotated 字分配段落索引。
+// 同时记录段落原文里的 \n 位置, 渲染时插 <br/> (本项目部分段落含换行)。
+type RenderToken = { kind: 'word'; w: Annotated; gi: number } | { kind: 'br' };
+type ParaGroup = { paraIdx: number; tokens: RenderToken[] };
+let paraGroups: ParaGroup[] = [];
+if (annotated.length > 0) {
+  const flatRef: { paraIdx: number; char: string }[] = [];
+  storyParagraphs.forEach((p, pi) => {
+    for (const ch of p) {
+      if (!/\s/.test(ch)) flatRef.push({ paraIdx: pi, char: ch });
+    }
+  });
+  let k = 0;
+  const lastPara = () => (flatRef.length ? flatRef[flatRef.length - 1].paraIdx : 0);
+  // 先给每个 annotated 字分配 paraIdx
+  const wordsWithPara = annotated.map((w, gi) => {
+    const ch = w.text;
+    while (k < flatRef.length && flatRef[k].char !== ch) k++;
+    const paraIdx = k < flatRef.length ? flatRef[k].paraIdx : lastPara();
+    if (k < flatRef.length) k++;
+    return { w, gi, paraIdx };
+  });
+  // 按段落原文字符序列重建 tokens (汉字 -> word, \n -> br, 其他 -> 原样输出由模板处理)
+  // 这里只产 word 和 br token; 标点/字母由模板按 annotated 顺序消费 (它们也在 annotated 里, 但非汉字不会包 span)
+  paraGroups = storyParagraphs.map((para, pi) => {
+    const tokens: RenderToken[] = [];
+    // 该段落的 annotated 字 (按 gi 升序)
+    const paraWords = wordsWithPara.filter((x) => x.paraIdx === pi);
+    let wordCursor = 0;
+    for (const ch of para) {
+      if (ch === '\n') {
+        tokens.push({ kind: 'br' });
+      } else if (/\s/.test(ch)) {
+        // 空白跳过 (markdown 已 trim)
+      } else if (wordCursor < paraWords.length) {
+        tokens.push({ kind: 'word', w: paraWords[wordCursor].w, gi: paraWords[wordCursor].gi });
+        wordCursor++;
+      }
+    }
+    return { paraIdx: pi, tokens };
+  });
+}
+
+// 检查音频是否存在
+const audioPath = path.resolve(process.cwd(), `../audio/${ep.slug}.mp3`);
+const hasAudio = fs.existsSync(audioPath);
+---
+<Base title={`${ep.title} · 十二星座小太空`} active="list" description={ep.excerpt} bodyClass="story-page">
+  <div class="story-layout fade-in" data-od-id="story-body">
+    <!-- 左侧：固定封面 + 音频播放器 -->
+    <aside class="story-cover-sticky" data-od-id="story-aside">
+      <a class="story-back-bar" href="/story-list" aria-label="返回故事列表">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+        <span>故事列表</span>
+      </a>
+      <div class="story-cover">
+        <ResponsiveImage
+          src={ep.cover}
+          alt={ep.title + '封面'}
+          sizes="(max-width: 900px) 90vw, 360px"
+          widths={[400, 800, 1200]}
+          loading="eager"
+          fetchpriority="high"
+        />
+        <span class="sparkle" style="top: 14%; left: 12%; width: 14px; height: 14px; z-index: 3;">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1 L13.5 9 L22 10.5 L13.5 12 L12 22 L10.5 12 L1 10.5 L10.5 9 Z"/></svg>
+        </span>
+        <span class="sparkle s2" style="top: 28%; right: 14%; width: 10px; height: 10px; z-index: 3;">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1 L13.5 9 L22 10.5 L13.5 12 L12 22 L10.5 12 L1 10.5 L10.5 9 Z"/></svg>
+        </span>
+        <span class="sparkle s3" style="bottom: 22%; left: 22%; width: 8px; height: 8px; z-index: 3;">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1 L13.5 9 L22 10.5 L13.5 12 L12 22 L10.5 12 L1 10.5 L10.5 9 Z"/></svg>
+        </span>
+      </div>
+
+      <div class="audio-player" id="player-root" data-od-id="audio-player" data-state={hasAudio ? 'ready' : 'placeholder'}>
+        {hasAudio ? (
+          <>
+            <div class="row">
+              <button class="play-btn" id="audio-play" aria-label="播放 / 暂停">
+                <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4 L20 12 L7 20 Z"/></svg>
+                <svg class="pause-icon" viewBox="0 0 24 24" fill="currentColor" style="display: none;"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+              </button>
+
+              <div class="progress">
+                <div class="progress-bar" id="audio-bar" role="slider" aria-label="播放进度">
+                  <div class="progress-fill" id="audio-fill"></div>
+                  <div class="progress-thumb" id="audio-thumb"></div>
+                </div>
+                <div class="time">
+                  <span class="time-cur" id="audio-cur">00:00</span>
+                  <span class="time-dur" id="audio-dur">--:--</span>
+                </div>
+              </div>
+
+              <div class="controls">
+                <button class="ctrl-btn skip-back" id="audio-back" aria-label="后退 10 秒">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 19l-7-7 7-7"/><path d="M20 19l-7-7 7-7"/></svg>
+                </button>
+                <button class="speed-pill" id="audio-speed" aria-label="切换倍速">1x</button>
+                <button class="ctrl-btn skip-fwd" id="audio-fwd" aria-label="前进 10 秒">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 5l7 7-7 7"/><path d="M4 5l7 7-7 7"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <audio preload="none" src={assetUrl(ep.audio!)}></audio>
+          </>
+        ) : (
+          <div class="placeholder-note">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+            <span>音频文件还没准备好 —— 等爸爸录好第一集,就会自动激活播放按钮。</span>
+          </div>
+        )}
+      </div>
+    </aside>
+
+    <!-- 右侧：故事正文 + 拼音 -->
+    <article class="story-body" data-od-id="story-body-content">
+      <span class="eyebrow">EPISODE {String(ep.number).padStart(2, '0')}</span>
+      <h1 style="margin-top: 8px;">{ep.title}</h1>
+      <div class="meta">
+        <span class="chip">{ep.duration}</span>
+      </div>
+
+      {annotated.length > 0 ? (
+        <div class="story-text" id="story-text">
+          {paraGroups.map((group) => (
+            <p class="story-paragraph">
+              {group.tokens.map((tok) => (
+                tok.kind === 'br' ? (
+                  <br/>
+                ) : (
+                  tok.w.text >= '\u4e00' && tok.w.text <= '\u9fff' ? (
+                    <span class="w" data-i={tok.gi} data-start={tok.w.start} data-end={tok.w.end}>
+                      <ruby>{tok.w.text}<rt>{tok.w.py}</rt></ruby>
+                    </span>
+                  ) : (
+                    <span class="w punct">
+                      <ruby>{tok.w.text}<rt aria-hidden="true"></rt></ruby>
+                    </span>
+                  )
+                )
+              ))}
+            </p>
+          ))}
+        </div>
+      ) : (
+        <div class="story-text" id="story-text" set:html={storyHtml} />
+      )}
+
+      <div class="end-pill" data-od-id="end-pill">
+        <span class="end-title">故事的第{['一','二','三','四','五','六','七','八','九','十'][ep.number - 1] || ep.number}集完</span>
+        {ep.next ? (
+          <a href={`/story/${ep.next.slug}`} class="next-link">
+            请听第{['一','二','三','四','五','六','七','八','九','十'][ep.number] || ep.number + 1}集
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </a>
+        ) : ''}
+        <span class="end-credit">— 7 岁的小爱 · 口述 —</span>
+      </div>
+
+      <div class="flourish" aria-hidden="true">
+        <img src={assetUrl('/assets/decor/星月分隔串.jpg')} srcset={assetSrcset('/assets/decor/星月分隔串-800.jpg 800w, /assets/decor/星月分隔串-1600.jpg 1600w')} sizes="(max-width: 720px) 70vw, 460px" alt="" loading="lazy" />
+      </div>
+    </article>
+  </div>
+
+  {hasAudio && (
+    <script>
+      const audio = document.querySelector('.audio-player audio') as HTMLAudioElement;
+      const playBtn = document.getElementById('audio-play')!;
+      const playIcon = playBtn.querySelector('.play-icon') as SVGElement;
+      const pauseIcon = playBtn.querySelector('.pause-icon') as SVGElement;
+      const fill = document.getElementById('audio-fill') as HTMLElement;
+      const thumb = document.getElementById('audio-thumb') as HTMLElement;
+      const bar = document.getElementById('audio-bar') as HTMLElement;
+      const cur = document.getElementById('audio-cur')!;
+      const dur = document.getElementById('audio-dur')!;
+      const speed = document.getElementById('audio-speed')!;
+      const back = document.getElementById('audio-back')!;
+      const fwd = document.getElementById('audio-fwd')!;
+      const storyText = document.getElementById('story-text')!;
+      const paragraphs = Array.from(storyText.querySelectorAll<HTMLElement>('p.story-paragraph'));
+      const playerRoot = document.querySelector('.audio-player') as HTMLElement;
+
+      const speeds = [0.8, 1, 1.25, 1.5];
+      let speedIdx = 1;
+
+      function fmt(s: number) {
+        const m = Math.floor(s / 60).toString().padStart(2, '0');
+        const ss = Math.floor(s % 60).toString().padStart(2, '0');
+        return `${m}:${ss}`;
+      }
+
+      function setIcon(playing: boolean) {
+        playIcon.style.display = playing ? 'none' : '';
+        pauseIcon.style.display = playing ? '' : 'none';
+        playerRoot.dataset.state = playing ? 'playing' : 'ready';
+      }
+
+      // === 逐字高亮 (有 ASR 数据时启用) ===
+      // 只选汉字 .w (有 data-start), 排除标点 .w.punct (无时间戳)
+      const spanEls = storyText.querySelectorAll('.w:not(.punct)');
+      const wordEls = spanEls.length
+        ? Array.from(spanEls).map((s) => ({
+            el: s as HTMLElement,
+            start: parseFloat((s as HTMLElement).dataset.start || '0'),
+            end: parseFloat((s as HTMLElement).dataset.end || '0'),
+          }))
+        : [];
+      const hasWordHighlight = wordEls.length > 0;
+
+      // 滚动相关缓存 (避免每次 highlight 都查 DOM 几何触发 reflow)
+      const asideEl = document.querySelector('.story-cover-sticky');
+      let isMobile = window.innerWidth < 720;
+      let vh = window.innerHeight;
+      let asideBottom = asideEl ? asideEl.getBoundingClientRect().bottom : 56;
+      window.addEventListener('resize', () => {
+        isMobile = window.innerWidth < 720;
+        vh = window.innerHeight;
+        asideBottom = asideEl ? asideEl.getBoundingClientRect().bottom : 56;
+      });
+
+      let activeIdx = -1;
+      let lastScrollTime = 0;
+
+      // 二分查找当前时间对应的字索引 (start <= t < end)
+      function findWordIdx(t: number) {
+        let lo = 0, hi = wordEls.length - 1;
+        while (lo <= hi) {
+          const mid = (lo + hi) >>> 1;
+          const w = wordEls[mid];
+          if (t < w.start) hi = mid - 1;
+          else if (t >= w.end) lo = mid + 1;
+          else return mid;
+        }
+        return -1;
+      }
+
+      // 滚动容器: 本项目 html,body{height:100%} 导致 body 成为滚动容器,
+      // document.scrollingElement(window.scrollY) 恒为 0, 必须直接操作 body
+      const scrollRoot = (document.body.scrollHeight > document.body.clientHeight ? document.body : (document.scrollingElement as HTMLElement)) || document.documentElement;
+      function getScrollTop() { return scrollRoot.scrollTop || 0; }
+      function scrollToY(top: number) { scrollRoot.scrollTop = top; }
+
+      function highlight(t: number) {
+        const idx = findWordIdx(t);
+        if (idx === activeIdx) return;
+        if (activeIdx >= 0 && wordEls[activeIdx]) wordEls[activeIdx].el.classList.remove('is-active');
+        if (idx >= 0) {
+          wordEls[idx].el.classList.add('is-active');
+          // 滚动跟随: 最多每秒 1 次
+          const now = Date.now();
+          if (now - lastScrollTime > 1000) {
+            const el = wordEls[idx].el;
+            // 用 getBoundingClientRect 算视口绝对位置 (offsetTop 在嵌套布局里相对 offsetParent, 不可靠)
+            const rect = el.getBoundingClientRect();
+            const viewTop = getScrollTop();
+            const elViewportTop = rect.top;  // 字相对视口顶的位置
+            const elDocTop = rect.top + viewTop;  // 字相对文档顶的位置
+            if (isMobile) {
+              // 移动端: 字滚到 aside 底部下方 24px (避开 sticky 封面+播放器)
+              const target = Math.min(asideBottom + 24, vh - 120);
+              if (Math.abs(elViewportTop - target) > 30) {
+                lastScrollTime = now;
+                scrollToY(elDocTop - target);
+              }
+            } else {
+              // 桌面端: 字在视口可见区域内不滚, 接近边缘才滚到中间
+              const margin = 120;
+              const elViewportBottom = elViewportTop + (el.offsetHeight || 24);
+              if (elViewportTop < margin || elViewportBottom > vh - margin) {
+                lastScrollTime = now;
+                scrollToY(elDocTop - vh * 0.5);
+              }
+            }
+          }
+        }
+        activeIdx = idx;
+      }
+
+      // rAF 驱动高亮 (~16ms 精度, 比 timeupdate ~250ms 精确得多)
+      let rafId: number | null = null;
+      let lastDisplayedSec = -1;
+      function highlightLoop() {
+        if (!audio.paused && !audio.ended && audio.duration) {
+          const t = audio.currentTime;
+          const pct = t / audio.duration;
+          // 进度条用 transform 走合成层, 不触发 reflow
+          fill.style.transform = `scaleX(${pct})`;
+          thumb.style.left = `${pct * 100}%`;
+          const sec = Math.floor(t);
+          if (sec !== lastDisplayedSec) {
+            lastDisplayedSec = sec;
+            cur.textContent = fmt(t);
+          }
+          if (hasWordHighlight) highlight(t);
+        }
+        rafId = requestAnimationFrame(highlightLoop);
+      }
+      function startHighlight() { if (!rafId) highlightLoop(); }
+      function stopHighlight() { if (rafId) { cancelAnimationFrame(rafId); rafId = null; } }
+
+      // 页面不可见时暂停 rAF 省电
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) stopHighlight();
+        else if (!audio.paused) startHighlight();
+      });
+
+      // === 点字跳转 (事件委托到 storyText, 避免上千 span 各绑监听) ===
+      if (hasWordHighlight) {
+        storyText.addEventListener('click', (e) => {
+          const span = (e.target as HTMLElement).closest('.w') as HTMLElement | null;
+          // 排除标点 (.punct 无时间戳) 和无 data-start 的元素
+          if (!span || span.classList.contains('punct')) return;
+          const start = parseFloat(span.dataset.start || '0');
+          if (!isFinite(start)) return;
+          // preload="none" 时 duration 可能是 NaN, 直接 seek + play 即可触发加载
+          audio.currentTime = start;
+          audio.play();
+        });
+      }
+
+      // === 控件交互 ===
+      playBtn.addEventListener('click', () => {
+        if (audio.paused) audio.play(); else audio.pause();
+      });
+      audio.addEventListener('play', () => { setIcon(true); startHighlight(); });
+      audio.addEventListener('pause', () => { setIcon(false); stopHighlight(); });
+      audio.addEventListener('ended', () => { setIcon(false); stopHighlight(); });
+
+      audio.addEventListener('loadedmetadata', () => {
+        if (audio.duration && !isNaN(audio.duration)) dur.textContent = fmt(audio.duration);
+      });
+
+      // timeupdate 作为 rAF 的备用 (页面隐藏时 rAF 停, 进度条仍更新)
+      audio.addEventListener('timeupdate', () => {
+        const t = audio.currentTime;
+        const d = audio.duration || 1;
+        const pct = Math.min(100, (t / d) * 100);
+        fill.style.width = pct + '%';
+        thumb.style.left = pct + '%';
+        cur.textContent = fmt(t);
+        // 无 ASR 数据时退回段落级均分高亮
+        if (!hasWordHighlight && paragraphs.length > 0 && d > 0) {
+          const segLen = d / paragraphs.length;
+          const idx = Math.min(paragraphs.length - 1, Math.floor(t / segLen));
+          paragraphs.forEach((p, i) => {
+            p.classList.toggle('is-active', i === idx);
+            p.classList.toggle('is-played', i < idx);
+          });
+        }
+      });
+
+      bar.addEventListener('click', (e) => {
+        const rect = bar.getBoundingClientRect();
+        const ratio = (e.clientX - rect.left) / rect.width;
+        if (audio.duration) audio.currentTime = audio.duration * Math.max(0, Math.min(1, ratio));
+      });
+
+      // 无 ASR 数据时: 点击段落跳转 (时长均分估时码)
+      if (!hasWordHighlight) {
+        paragraphs.forEach((p, i) => {
+          p.addEventListener('click', () => {
+            if (audio.duration && paragraphs.length > 0) {
+              const segLen = audio.duration / paragraphs.length;
+              audio.currentTime = segLen * i;
+              audio.play();
+            }
+          });
+          p.style.cursor = 'pointer';
+        });
+      }
+
+      back.addEventListener('click', () => { audio.currentTime = Math.max(0, audio.currentTime - 10); });
+      fwd.addEventListener('click', () => { audio.currentTime = Math.min(audio.duration || 0, audio.currentTime + 10); });
+      speed.addEventListener('click', () => {
+        speedIdx = (speedIdx + 1) % speeds.length;
+        audio.playbackRate = speeds[speedIdx];
+        speed.textContent = speeds[speedIdx] + 'x';
+      });
+    </script>
+  )}
+
+  <style>
+    .story-text p.story-paragraph {
+      margin-bottom: 18px;
+      line-height: 2.2;
+      transition: background 0.18s, color 0.18s;
+      border-radius: 8px;
+      padding: 4px 8px;
+    }
+    /* 逐字 span (有 ASR 时间戳时生效) */
+    .story-text .w {
+      display: inline-block;
+      border-radius: 3px;
+      padding: 1px 0;
+      cursor: pointer;
+      contain: layout style;
+      transition: background 0.12s ease;
+    }
+    .story-text .w:hover {
+      background: oklch(94% 0.03 320 / 0.6);
+    }
+    .story-text .w.is-active {
+      background: oklch(87% 0.06 320 / 0.75);
+      outline: 2px solid var(--accent);
+      outline-offset: -1px;
+      transition: none;
+    }
+    /* 段落级 fallback (无 ASR 数据时生效) */
+    .story-text p.story-paragraph.is-active {
+      background: oklch(90% 0.04 320 / 0.55);
+      outline: 2px solid var(--accent);
+    }
+    .story-text p.story-paragraph.is-played {
+      color: var(--muted);
+    }
+    .story-text p.story-paragraph:hover {
+      background: oklch(95% 0.02 320 / 0.7);
+    }
+
+    /* end-pill 内部布局 */
+    .end-title {
+      display: block;
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+    .next-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 20px;
+      background: var(--accent);
+      color: oklch(30% 0.06 310);
+      border-radius: var(--r-full, 999px);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 1;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 2px 8px oklch(70% 0.10 310 / 0.25);
+    }
+    .next-link:hover {
+      background: color-mix(in oklch, var(--accent) 80%, #000);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px oklch(60% 0.15 70 / 0.25);
+    }
+    .next-link svg {
+      transition: transform 0.2s;
+    }
+    .next-link:hover svg {
+      transform: translateX(3px);
+    }
+    .end-credit {
+      display: block;
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+  </style>
+</Base>

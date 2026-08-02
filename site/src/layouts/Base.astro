@@ -1,0 +1,98 @@
+---
+import '~/styles/shared.css';
+import { assetUrl, assetSrcset } from '~/data/asset-url';
+
+interface Props {
+  title?: string;
+  description?: string;
+  active?: 'home' | 'list' | 'characters' | 'scenes';
+  bodyClass?: string;
+}
+
+const {
+  title = '十二星座小太空 · 睡前有声故事',
+  description = '7 岁的小爱口述的睡前有声故事系列,温柔、梦幻、充满想象力。',
+  active = 'home',
+  bodyClass = '',
+} = Astro.props;
+
+const navItems = [
+  { id: 'home', label: '首页', href: '/home' },
+  { id: 'list', label: '故事列表', href: '/story-list' },
+  { id: 'characters', label: '人物图鉴', href: '/characters' },
+  { id: 'scenes', label: '场景介绍', href: '/scenes' },
+] as const;
+---
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#f6f3f8" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/logo/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/logo/app-icon-192.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="mobile-web-app-capable" content="yes" />
+  </head>
+  <body class={bodyClass}>
+    <header class="top-nav" data-od-id="top-nav">
+      <a class="brand" href="/home">
+        <span class="logo" aria-hidden="true">
+          <img src="/logo/zodiac-logo-64.png" alt="十二星座小太空" width="40" height="40" />
+        </span>
+        <span>十二星座小太空</span>
+      </a>
+      <nav>
+        {navItems.map((it) => (
+          <a href={it.href} class={it.id === active ? 'is-active' : ''} aria-current={it.id === active ? 'page' : undefined}>
+            {it.label}
+          </a>
+        ))}
+      </nav>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <!-- 云朵页脚带 · 全站装饰(白底素材, multiply 融入页面底) -->
+    <div class="cloud-footer-band" aria-hidden="true">
+      <img
+        src={assetUrl('/assets/decor/云朵页脚带.jpg')}
+        srcset={assetSrcset('/assets/decor/云朵页脚带-800.jpg 800w, /assets/decor/云朵页脚带-1600.jpg 1600w')}
+        sizes="100vw"
+        alt=""
+        loading="lazy"
+      />
+    </div>
+
+    <footer class="site-footer">
+      十二星座小太空 · 创意来自 7 岁的小爱 · <span class="star">★</span> 温柔睡前陪伴<br/>
+      <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener" style="font-size: 12px;">CC BY-NC-SA 4.0</a>
+    </footer>
+
+    <script>
+      // 客户端运行时校正 nav 高亮(处理 Cloudflare Pages 自动追加尾 / 的情况)
+      const pathname = location.pathname.replace(/\/+$/, '') || '/';
+      document.querySelectorAll<HTMLAnchorElement>('.top-nav nav a').forEach((a) => {
+        const href = (a.getAttribute('href') || '').replace(/\/+$/, '') || '/';
+          const navMap: Record<string, string> = {
+            '/home': 'home',
+            '/story-list': 'list',
+            '/characters': 'characters',
+            '/scenes': 'scenes',
+            '/': 'home',
+          };
+        const id = navMap[href];
+        if (id && (pathname === href || (href !== '/' && pathname.startsWith(href + '/')) || (href === '/' && pathname === '/'))) {
+          a.classList.add('is-active');
+          a.setAttribute('aria-current', 'page');
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,40 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build output
+site/dist/
+site/.astro/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Sync-generated 资源(scripts/sync-assets.sh 自动从仓库根拷到 site/public/)
+# 注意:site/public/logo/ 不在忽略列表 —— logo 是项目重要资产,必须入 git
+site/public/assets/
+site/public/audio/
+site/public/fonts/
+
+# Sync 生成的资源指纹(由 generate-asset-hashes.mjs 重写)
+site/src/data/asset-hashes.json
+
+# ZCode
+.zcode/
+.playwright-cli/
+
+# wrangler
+.wrangler/

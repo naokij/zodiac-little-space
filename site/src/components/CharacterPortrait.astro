@@ -1,0 +1,38 @@
+---
+import { assetUrl, assetSrcset } from '~/data/asset-url';
+
+interface Props {
+  portrait: string;
+  name: string;
+  loading?: 'eager' | 'lazy';
+  className?: string;
+}
+
+const { portrait, name, loading = 'lazy', className } = Astro.props;
+const stem = portrait.replace(/\.(jpg|png)$/i, '');
+const ext = portrait.match(/\.(jpg|png)$/i)?.[0] || '.png';
+const isPng = ext === '.png';
+const sizes = '(max-width: 720px) 50vw, (max-width: 1280px) 25vw, 220px';
+
+// 派生档规则(同 generate-image-variants.mjs):characters → 200/400/800
+const widths = [200, 400, 800];
+const srcset = widths
+  .map((w) => `${stem}-${w}.jpg ${w}w`)
+  .join(', ') + `, ${portrait} 2048w`;
+const webpSrcset = widths
+  .map((w) => `${stem}-${w}.webp ${w}w`)
+  .join(', ');
+---
+<picture>
+  <source type="image/webp" srcset={assetSrcset(webpSrcset)} sizes={sizes} />
+  <img
+    src={assetUrl(portrait)}
+    srcset={assetSrcset(srcset)}
+    sizes={sizes}
+    alt={name}
+    loading={loading}
+    decoding="async"
+    class={className}
+    style={isPng ? 'background: oklch(99% 0.005 85);' : undefined}
+  />
+</picture>

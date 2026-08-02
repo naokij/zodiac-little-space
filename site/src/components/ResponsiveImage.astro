@@ -1,0 +1,64 @@
+---
+// 统一响应式图片组件:<picture> + WebP source + JPG fallback
+// 用法:
+//   <ResponsiveImage
+//     src="/assets/locations/卧室.jpg"
+//     alt="星空泳池"
+//     sizes="(max-width: 720px) 90vw, 360px"
+//     widths={[400, 800, 1200]}
+//   />
+//
+// 自动推断派生档:src='/path/xxx.jpg' → 派生 'xxx-400.webp' 'xxx-800.webp' 'xxx-1200.webp'
+//                 + 同样 'xxx-400.jpg' 'xxx-800.jpg' 'xxx-1200.jpg' 作为 fallback
+import { assetUrl, assetSrcset } from '~/data/asset-url';
+
+interface Props {
+  src: string;
+  alt: string;
+  sizes: string;
+  widths?: number[];
+  className?: string;
+  loading?: 'eager' | 'lazy';
+  decoding?: 'auto' | 'async' | 'sync';
+  fetchpriority?: 'high' | 'low' | 'auto';
+}
+
+const {
+  src,
+  alt,
+  sizes,
+  widths = [400, 800, 1200],
+  className,
+  loading = 'lazy',
+  decoding = 'async',
+  fetchpriority,
+} = Astro.props;
+
+// 解析 src 拿到 stem 和扩展名
+const ext = src.match(/\.(jpg|jpeg|png)$/i)?.[1].toLowerCase() || 'jpg';
+const stem = src.replace(/\.(jpg|jpeg|png)$/i, '');
+
+// 生成 WebP 和 fallback 扩展名
+const fallbackExt = ext === 'jpeg' ? 'jpg' : ext;
+
+// 构建 srcset
+const webpSrcset = assetSrcset(
+  widths.map((w) => `${stem}-${w}.webp ${w}w`).join(', '),
+);
+const fallbackSrcset = assetSrcset(
+  widths.map((w) => `${stem}-${w}.${fallbackExt} ${w}w`).join(', '),
+);
+---
+<picture>
+  <source type="image/webp" srcset={webpSrcset} sizes={sizes} />
+  <img
+    src={assetUrl(src)}
+    srcset={fallbackSrcset}
+    sizes={sizes}
+    alt={alt}
+    loading={loading}
+    decoding={decoding}
+    fetchpriority={fetchpriority}
+    class={className}
+  />
+</picture>

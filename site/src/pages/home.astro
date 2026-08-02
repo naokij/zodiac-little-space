@@ -1,0 +1,228 @@
+---
+import Base from '~/layouts/Base.astro';
+import ResponsiveImage from '~/components/ResponsiveImage.astro';
+import CharacterPortrait from '~/components/CharacterPortrait.astro';
+import { episodes, onlineEpisodes, getEpisodeBySlug } from '~/data/episodes';
+import { characters } from '~/data/characters';
+import { scenes } from '~/data/scenes';
+import { assetUrl, assetSrcset } from '~/data/asset-url';
+
+const latest = onlineEpisodes[onlineEpisodes.length - 1] || getEpisodeBySlug('1-想家的大海')!;
+
+// 先认识的三位(第一集主角 + 月亮姐姐)
+const featuredChars = characters.filter((c) => ['shuangyu', 'shuiping', 'yueliangjiejie'].includes(c.id));
+---
+<Base title="首页 · 十二星座小太空" active="home">
+  <!-- Hero · 首页 banner(小爱指定)· 图上印的「立即进入」叠加透明链接,真的可点击 -->
+  <section data-od-id="hero" style="margin-bottom: 64px;">
+    <div class="hero-banner fade-in">
+      <h1 class="sr-only">十二星座小太空</h1>
+      <ResponsiveImage
+        src="/assets/banners/十二星座小太空首页banner.jpg"
+        alt="十二星座姐妹齐聚在星空下:十二星座小太空"
+        sizes="(max-width: 1280px) 100vw, 1280px"
+        widths={[800, 1600]}
+        loading="eager"
+        fetchpriority="high"
+        className="hero-banner-img"
+      />
+      <a
+        class="hero-banner-cta"
+        href={`/story/${latest.slug}`}
+        aria-label="立即进入:第一集 想家的大海"
+        data-od-id="hero-enter-story"
+      ></a>
+    </div>
+    <style>
+      .hero-banner {
+        position: relative;
+        border-radius: var(--r-xl);
+        overflow: hidden;
+        box-shadow: var(--shadow-float);
+        border: 1px solid var(--border);
+      }
+      .hero-banner-img { display: block; width: 100%; height: auto; }
+      /* 透明热区,盖住图上印的「立即进入」按钮(位置按原图 6368x2592 量得) */
+      .hero-banner-cta {
+        position: absolute;
+        left: 66.5%; top: 57.5%;
+        width: 24%; height: 17%;
+        border-radius: 999px;
+      }
+      .hero-banner-cta:hover { box-shadow: inset 0 0 0 4px oklch(99% 0.005 85 / 0.65); }
+      .hero-banner-cta:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+      .sr-only {
+        position: absolute; width: 1px; height: 1px;
+        padding: 0; margin: -1px; overflow: hidden;
+        clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+      }
+    </style>
+  </section>
+
+  <!-- 最新一集 · editorial 版式 -->
+  <section data-od-id="latest-episode" style="margin-bottom: 64px;">
+    <div class="row" style="justify-content: space-between; align-items: end; margin-bottom: 24px;">
+      <div>
+        <span class="eyebrow">最新一集</span>
+        <h2 style="margin-top: 8px;">{latest.title}</h2>
+      </div>
+      <a class="btn btn-ghost" href="/story-list">所有故事 →</a>
+    </div>
+
+    <div class="card latest-episode-card">
+      <div class="latest-episode-layout">
+        <!-- 左:方形封面 -->
+        <div style="position: relative; aspect-ratio: 1/1; overflow: hidden;">
+          <ResponsiveImage
+            src={latest.cover}
+            alt={latest.title + '封面'}
+            sizes="(max-width: 720px) 90vw, 360px"
+            widths={[400, 800, 1200]}
+            className="latest-episode-cover-img"
+          />
+          <style>
+            .latest-episode-cover-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+          </style>
+          <span class="sparkle" style="top: 12%; left: 18%; width: 12px; height: 12px;">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1 L13.5 9 L22 10.5 L13.5 12 L12 22 L10.5 12 L1 10.5 L10.5 9 Z"/></svg>
+          </span>
+          <span class="sparkle s3" style="top: 60%; left: 35%; width: 10px; height: 10px;">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1 L13.5 9 L22 10.5 L13.5 12 L12 22 L10.5 12 L1 10.5 L10.5 9 Z"/></svg>
+          </span>
+        </div>
+
+        <!-- 右:ep 信息 -->
+        <div class="latest-episode-body">
+          <div class="row" style="margin-bottom: 16px;">
+            <span class="chip chip-accent">EP.{String(latest.number).padStart(2, '0')}</span>
+            <span class="chip">{latest.duration}</span>
+            <span class="chip">已上线</span>
+          </div>
+
+          <p class="text-muted" style="font-size: 17px; line-height: 1.7; max-width: 50ch;">
+            {latest.excerpt}
+          </p>
+
+          <div class="row" style="margin-top: 22px;">
+            <a class="btn btn-primary" href={`/story/${latest.slug}`} data-od-id="open-episode-1">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4 L20 12 L7 20 Z"/></svg>
+              打开第{['一','二','三','四','五','六','七','八','九','十'][latest.number - 1] || latest.number}集
+            </a>
+            <a class="btn btn-ghost" href="/story-list">故事列表</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 分节符:最新一集 → 系列简介 -->
+  <div class="flourish" aria-hidden="true">
+    <img src={assetUrl('/assets/decor/星月分隔串.jpg')} srcset={assetSrcset('/assets/decor/星月分隔串-800.jpg 800w, /assets/decor/星月分隔串-1600.jpg 1600w')} sizes="(max-width: 720px) 70vw, 460px" alt="" loading="lazy" />
+  </div>
+
+  <!-- 系列简介 -->
+  <section data-od-id="about" style="margin-bottom: 64px;">
+    <div class="grid grid-2" style="align-items: center; gap: 40px;">
+      <div>
+        <span class="eyebrow">关于这个故事</span>
+        <h2 style="margin-top: 8px; margin-bottom: 16px;">7 岁小爱的睡前故事</h2>
+        <p style="font-size: 17px; line-height: 1.7; color: var(--fg);">
+          创意来自 7 岁的小爱的口述,爸爸整理成稿。
+          每一集都是十二星座姐妹和她们的好朋友,在星空里的小太空发生的故事。
+          温柔、梦幻、充满想象力 —— 适合睡前安静听。
+        </p>
+        <div class="row" style="margin-top: 20px;">
+          <span class="chip"><span style="color: var(--accent);">★</span> {characters.length} 位角色</span>
+          <span class="chip"><span style="color: var(--c-pink);">♥</span> {scenes.length} 个场景</span>
+          <span class="chip"><span style="color: var(--c-mint);">●</span> {episodes.length} 集</span>
+        </div>
+      </div>
+      <div>
+        <ResponsiveImage
+          src="/assets/locations/星月楼梯.jpg"
+          alt="星月楼梯 · 通往星空深处"
+          sizes="(max-width: 720px) 90vw, 50vw"
+          widths={[400, 800, 1200]}
+          className="about-stairs-img"
+        />
+        <style>
+          .about-stairs-img { width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: var(--r-md); box-shadow: var(--shadow-card); }
+        </style>
+      </div>
+    </div>
+  </section>
+
+  <!-- 分节符:系列简介 → 角色预览 -->
+  <div class="flourish" aria-hidden="true">
+    <img src={assetUrl('/assets/decor/星月分隔串.jpg')} srcset={assetSrcset('/assets/decor/星月分隔串-800.jpg 800w, /assets/decor/星月分隔串-1600.jpg 1600w')} sizes="(max-width: 720px) 70vw, 460px" alt="" loading="lazy" />
+  </div>
+
+  <!-- 先认识这三位(首页唯一图鉴入口) -->
+  <section data-od-id="featured-characters" style="margin-bottom: 64px;">
+    <div class="row" style="justify-content: space-between; align-items: end; margin-bottom: 24px;">
+      <div>
+        <span class="eyebrow">今晚的主角</span>
+        <h2 style="margin-top: 8px;">先认识这三位</h2>
+      </div>
+      <a class="btn btn-ghost" href="/characters">全部 {characters.length} 位 →</a>
+    </div>
+
+    <div class="grid grid-3">
+      {featuredChars.map((c, i) => (
+        <a class={`card fade-in${i > 0 ? ` fade-in-d${i}` : ''}`} href={`/characters#char-${c.id}`} data-od-id={`card-${c.id}`}>
+          <CharacterPortrait portrait={c.portrait} name={c.name} loading="eager" className="card-img" />
+          <div class="card-body">
+            <div class="row" style="margin-bottom: 6px;">
+              <span class="chip" style={`background: var(--c-${c.color}); color: oklch(30% 0.06 310); border-color: transparent;`}>{c.trait}</span>
+              <span class="chip">{c.role}</span>
+            </div>
+            <div class="card-title">{c.name}</div>
+            <div class="card-meta">{c.power}</div>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- 分节符:角色 → 小太空的地方 -->
+  <div class="flourish" aria-hidden="true">
+    <img src={assetUrl('/assets/decor/星月分隔串.jpg')} srcset={assetSrcset('/assets/decor/星月分隔串-800.jpg 800w, /assets/decor/星月分隔串-1600.jpg 1600w')} sizes="(max-width: 720px) 70vw, 460px" alt="" loading="lazy" />
+  </div>
+
+  <!-- 三个场景预览 -->
+  <section data-od-id="scene-preview" style="margin-bottom: 32px;">
+    <div class="row" style="justify-content: space-between; align-items: end; margin-bottom: 24px;">
+      <div>
+        <span class="eyebrow">小太空 · 地方</span>
+        <h2 style="margin-top: 8px;">故事在这里发生</h2>
+      </div>
+      <a class="btn btn-ghost" href="/scenes">全部 {scenes.length} 个地方 →</a>
+    </div>
+
+    <div class="grid grid-3">
+      {scenes.map((s, i) => (
+        <div class={`scene-card fade-in${i > 0 ? ` fade-in-d${i}` : ''}`}>
+          <ResponsiveImage
+            src={s.image}
+            alt={s.name}
+            sizes="(max-width: 720px) 90vw, 33vw"
+            widths={[400, 800, 1200]}
+            className="scene-card-bg"
+          />
+          <style>
+            .scene-card-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+          </style>
+          <div class="scene-body">
+            <h3>{s.name}</h3>
+            <p>{s.highlights.join(' · ')}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- 页尾装饰分隔符 · 撑满视口宽度 -->
+  <div class="flourish" style="max-width: none; width: 100%; padding: 0 24px; box-sizing: border-box;" aria-hidden="true">
+    <img src={assetUrl('/assets/decor/星月分隔串.jpg')} srcset={assetSrcset('/assets/decor/星月分隔串-800.jpg 800w, /assets/decor/星月分隔串-1600.jpg 1600w')} sizes="(max-width: 720px) 70vw, 460px" alt="" loading="lazy" />
+  </div>
+</Base>
