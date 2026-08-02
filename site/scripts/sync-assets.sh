@@ -68,7 +68,7 @@ node "$SCRIPTS_DIR/generate-image-variants.mjs" "$SITE_PUBLIC/assets/covers" --w
 node "$SCRIPTS_DIR/generate-image-variants.mjs" "$SITE_PUBLIC/assets/locations" --widths=400,800,1200 --quality=82 --ext=jpg
 node "$SCRIPTS_DIR/generate-image-variants.mjs" "$SITE_PUBLIC/assets/banners" --widths=800,1600 --quality=80 --ext=jpg
 node "$SCRIPTS_DIR/generate-image-variants.mjs" "$SITE_PUBLIC/assets/episodes" --widths=400,800,1200 --quality=82 --ext=jpg
-node "$SCRIPTS_DIR/generate-image-variants.mjs" "$SITE_PUBLIC/assets/decor" --widths=800,1600 --quality=82 --ext=jpg
+# decor 不派生 JPG:透明底 PNG 转 JPG 会丢 alpha 变黑底,decor 只用 WebP 变体
 
 # 5) 派生 WebP
 node "$SCRIPTS_DIR/generate-image-variants.mjs" "$SITE_PUBLIC/assets/characters" --widths=200,400,800 --quality=80 --ext=webp

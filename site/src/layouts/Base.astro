@@ -59,11 +59,11 @@ const navItems = [
       <slot />
     </main>
 
-    <!-- 云朵页脚带 · 全站装饰(白底素材, multiply 融入页面底) -->
+    <!-- 云朵页脚带 · 全站装饰(透明底 PNG,WebP 变体保留 alpha) -->
     <div class="cloud-footer-band" aria-hidden="true">
       <img
-        src={assetUrl('/assets/decor/云朵页脚带.jpg')}
-        srcset={assetSrcset('/assets/decor/云朵页脚带-800.jpg 800w, /assets/decor/云朵页脚带-1600.jpg 1600w')}
+        src={assetUrl('/assets/decor/云朵页脚带-1600.webp')}
+        srcset={assetSrcset('/assets/decor/云朵页脚带-800.webp 800w, /assets/decor/云朵页脚带-1600.webp 1600w')}
         sizes="100vw"
         alt=""
         loading="lazy"

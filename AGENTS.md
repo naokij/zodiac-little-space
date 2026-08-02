@@ -19,7 +19,10 @@ zodiac-little-space/
 │                  · banners/    全员图鉴(文字无错,可用);十二星座小太空首页banner(右侧星座名有 AI 错别字,勿当主角展示)
 │                  · covers/     第N集.jpg(中文大写集数名)
 │                  · episodes/   情节插图(如"双鱼座激动跳海水瓶座拉住她.jpg")
-│                  · decor/      装饰素材:云朵页脚带(全站页脚上方)/星月分隔串(.flourish 分节符)/十二星座贴纸全家福(站点图标源图),白底 multiply 融入页面
+│                  · decor/      装饰素材:云朵页脚带(全站页脚上方)/星月分隔串(.flourish 分节符)——透明底 PNG
+│                                (白底图用 site/scripts/knockout-white.py 抠白:边缘连通近白区域→腐蚀断缝防漏进白芯→alpha;换图后重跑)
+│                                页面引用 WebP 变体保 alpha,不派生 JPG 变体(丢 alpha 变黑底);不依赖 multiply 混合
+│                                /十二星座贴纸全家福(站点图标源图)
 ├── audio/         配音 mp3 真值源:{slug}.mp3
 ├── public/fonts/  猫啃网风雅宋真值源: display-song-bold.ttf (Bold, 400/700 共用)
 ├── stories/       故事正文 markdown 真值源:{slug}.md
@@ -32,7 +35,7 @@ zodiac-little-space/
 │   │   ├── layouts/    Base.astro (全站布局 + 顶部导航)
 │   │   └── styles/     shared.css (全站唯一,OKLch tokens,梦幻夜空主题)
 │   ├── scripts/   sync-assets.sh + generate-image-variants / generate-asset-hashes / build-durations
-│   │              / generate-zodiac-icons(站点图标) / asr+align-asr(字级时间戳)
+│   │              / generate-zodiac-icons(站点图标) / knockout-white(装饰图抠白,见 decor 注) / asr+align-asr(字级时间戳)
 │   ├── data/asr/  {slug}.aligned.json(字级时间戳,whisper+拼音对齐产出)
 │   └── public/    sync 生成(见下"不要手改/不要提交"清单);logo/ 例外须入 git
 └── LICENSE        CC BY-NC-SA 4.0
