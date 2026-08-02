@@ -47,12 +47,12 @@ const moonBuf = Buffer.from(moonSvg);
 
 // 3) PNG 各尺寸
 const pngs = [
-  // app icons / nav logo — 贴纸全家福
-  { out: path.join(LOGO_DIR, 'zodiac-logo-64.png'), size: 64, src: appSrc },
+  // app icons — 贴纸全家福
   { out: path.join(LOGO_DIR, 'app-icon-192.png'), size: 192, src: appSrc },
   { out: path.join(LOGO_DIR, 'app-icon-512.png'), size: 512, src: appSrc },
   { out: path.join(PUBLIC, 'apple-touch-icon.png'), size: 180, src: appSrc },
-  // favicon — 月牙
+  // nav logo / favicon — 月牙
+  { out: path.join(LOGO_DIR, 'zodiac-logo-64.png'), size: 64, src: moonBuf },
   { out: path.join(LOGO_DIR, 'favicon-32.png'), size: 32, src: moonBuf },
 ];
 for (const p of pngs) {

@@ -53,7 +53,10 @@ npm run sync         # 只跑资源同步,不启 dev server
 
 `predev`/`prebuild` 钩子会自动调 `scripts/sync-assets.sh`,它做:复制+缩放原图 → 派生 JPG/WebP 多档 → 拷字体/音频 → 生成 `asset-hashes.json` → 扫 mp3 真实时长 patch `episodes.ts` 的 `duration`。**所以改了图/音频/故事后,dev 或 build 会自动同步,不用手动跑 sync。**
 
-站点图标(导航 logo / favicon / app-icon)由 `node scripts/generate-zodiac-icons.mjs` 从 `assets/decor/十二星座贴纸全家福.jpg` 缩放生成,已提交产物。要换图标:替换该源图后重跑脚本。
+站点图标由 `node scripts/generate-zodiac-icons.mjs` 生成,已提交产物:
+- app icon / apple-touch-icon ← `assets/decor/十二星座贴纸全家福.jpg`(贴纸全家福)
+- 导航 logo / favicon-32 / favicon.ico ← 内嵌月牙 SVG(深靛蓝夜空 + 淡金弯月)
+换贴纸全家福:替换该源图后重跑脚本;换月牙:改脚本内 SVG。
 
 ## 数据契约(改集数必读)
 
