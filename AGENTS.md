@@ -19,7 +19,7 @@ zodiac-little-space/
 │                  · banners/    全员图鉴(文字无错,可用);十二星座小太空首页banner(右侧星座名有 AI 错别字,勿当主角展示)
 │                  · covers/     第N集.jpg(中文大写集数名)
 │                  · episodes/   情节插图(如"双鱼座激动跳海水瓶座拉住她.jpg")
-│                  · decor/      装饰素材:云朵页脚带(全站页脚上方)/星月分隔串(.flourish 分节符),白底 multiply 融入页面
+│                  · decor/      装饰素材:云朵页脚带(全站页脚上方)/星月分隔串(.flourish 分节符)/十二星座贴纸全家福(站点图标源图),白底 multiply 融入页面
 ├── audio/         配音 mp3 真值源:{slug}.mp3
 ├── public/fonts/  猫啃网风雅宋真值源: display-song-bold.ttf (Bold, 400/700 共用)
 ├── stories/       故事正文 markdown 真值源:{slug}.md
@@ -53,7 +53,7 @@ npm run sync         # 只跑资源同步,不启 dev server
 
 `predev`/`prebuild` 钩子会自动调 `scripts/sync-assets.sh`,它做:复制+缩放原图 → 派生 JPG/WebP 多档 → 拷字体/音频 → 生成 `asset-hashes.json` → 扫 mp3 真实时长 patch `episodes.ts` 的 `duration`。**所以改了图/音频/故事后,dev 或 build 会自动同步,不用手动跑 sync。**
 
-站点图标(导航 logo / favicon / app-icon)由 `node scripts/generate-zodiac-icons.mjs` 从内置 SVG 生成,已提交产物,改了脚本才需要重跑。
+站点图标(导航 logo / favicon / app-icon)由 `node scripts/generate-zodiac-icons.mjs` 从 `assets/decor/十二星座贴纸全家福.jpg` 缩放生成,已提交产物。要换图标:替换该源图后重跑脚本。
 
 ## 数据契约(改集数必读)
 
