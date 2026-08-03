@@ -138,6 +138,20 @@ if (annotated.length > 0) {
 // 检查音频是否存在
 const audioPath = path.resolve(process.cwd(), `../audio/${ep.slug}.mp3`);
 const hasAudio = fs.existsSync(audioPath);
+
+// 本集画面(情节插图):画廊数据。frames ≥2 时是翻页动画(快速来回切换)
+const illustrations = (ep.illustrations || []).map((ill) => {
+  const stripExt = (s: string) => s.replace(/\.(jpg|jpeg|png)$/i, '');
+  const frames = ill.frames && ill.frames.length > 1 ? ill.frames : [ill.src];
+  return {
+    caption: ill.caption,
+    thumb: assetUrl(`${stripExt(ill.src)}-400.webp`),
+    thumbSrcset: assetSrcset(`${stripExt(ill.src)}-400.webp 400w, ${stripExt(ill.src)}-800.webp 800w`),
+    framesFull: frames.map((f) => assetUrl(f)),
+    framesAnim: frames.map((f) => assetUrl(`${stripExt(f)}-800.webp`)),
+    animated: frames.length > 1,
+  };
+});
 ---
 <Base title={`${ep.title} · 十二星座小太空`} active="list" description={ep.excerpt} bodyClass="story-page">
   <div class="story-layout fade-in" data-od-id="story-body">
@@ -243,6 +257,32 @@ const hasAudio = fs.existsSync(audioPath);
         <div class="story-text" id="story-text" set:html={storyHtml} />
       )}
 
+      {/* 本集画面:情节插图画廊(在 story-text 容器外,不参与逐字高亮/滚动跟随) */}
+      {illustrations.length > 0 && (
+        <section class="story-gallery" data-od-id="story-gallery">
+          <span class="eyebrow">本集画面</span>
+          <div class="gallery-strip">
+            {illustrations.map((ill) => (
+              <figure
+                class="gallery-item"
+                data-frames={JSON.stringify(ill.framesFull)}
+                data-frames-anim={JSON.stringify(ill.framesAnim)}
+                data-caption={ill.caption}
+              >
+                <img
+                  src={ill.thumb}
+                  srcset={ill.thumbSrcset}
+                  sizes="(max-width: 720px) 44vw, 300px"
+                  alt={ill.caption}
+                  loading="lazy"
+                />
+                <figcaption>{ill.caption}</figcaption>
+              </figure>
+            ))}
+          </div>
+        </section>
+      )}
+
       <div class="end-pill" data-od-id="end-pill">
         <span class="end-title">故事的第{['一','二','三','四','五','六','七','八','九','十'][ep.number - 1] || ep.number}集完</span>
         {ep.next ? (
@@ -259,6 +299,76 @@ const hasAudio = fs.existsSync(audioPath);
       </div>
     </article>
   </div>
+
+  {/* 本集画面 lightbox(复用全站 modal 样式) */}
+  {illustrations.length > 0 && (
+    <div class="modal-backdrop" id="gallery-modal" aria-hidden="true">
+      <div class="modal" role="dialog" aria-modal="true">
+        <button class="modal-close" id="gallery-modal-close" aria-label="关闭">×</button>
+        <div class="modal-img">
+          <img id="gallery-modal-img" alt="" />
+        </div>
+        <div class="modal-body">
+          <p id="gallery-modal-caption" style="margin: 0; text-align: center;"></p>
+        </div>
+      </div>
+    </div>
+  )}
+
+  {illustrations.length > 0 && (
+    <script>
+      // 本集画面:画廊翻页动画 + lightbox
+      // 翻页动画 = 两张帧快速来回切换(小爱演示的"手翻书"玩法)
+      document.querySelectorAll('.gallery-item').forEach((item) => {
+        const frames = JSON.parse(item.getAttribute('data-frames-anim') || '[]');
+        if (frames.length < 2) return;
+        const img = item.querySelector('img');
+        if (!img) return;
+        img.removeAttribute('srcset'); // srcset 会盖过 src 的手动切换
+        frames.forEach((f) => { const pre = new Image(); pre.src = f; });
+        let i = 0;
+        setInterval(() => { i = (i + 1) % frames.length; img.src = frames[i]; }, 600);
+      });
+
+      const gModal = document.getElementById('gallery-modal');
+      const gImg = document.getElementById('gallery-modal-img') as HTMLImageElement | null;
+      const gCap = document.getElementById('gallery-modal-caption');
+      const gClose = document.getElementById('gallery-modal-close');
+      let gTimer: ReturnType<typeof setInterval> | null = null;
+      function stopGalleryAnim() {
+        if (gTimer) { clearInterval(gTimer); gTimer = null; }
+      }
+      function closeGalleryModal() {
+        stopGalleryAnim();
+        if (!gModal) return;
+        gModal.classList.remove('is-open');
+        gModal.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
+      document.querySelectorAll('.gallery-item').forEach((item) => {
+        item.addEventListener('click', () => {
+          const frames = JSON.parse(item.getAttribute('data-frames') || '[]');
+          if (!gModal || !gImg || frames.length === 0) return;
+          const caption = item.getAttribute('data-caption') || '';
+          gImg.src = frames[0];
+          gImg.alt = caption;
+          if (gCap) gCap.textContent = caption;
+          stopGalleryAnim();
+          if (frames.length > 1) {
+            frames.forEach((f: string) => { const pre = new Image(); pre.src = f; });
+            let i = 0;
+            gTimer = setInterval(() => { i = (i + 1) % frames.length; gImg.src = frames[i]; }, 600);
+          }
+          gModal.classList.add('is-open');
+          gModal.setAttribute('aria-hidden', 'false');
+          document.body.style.overflow = 'hidden';
+        });
+      });
+      if (gClose) gClose.addEventListener('click', closeGalleryModal);
+      if (gModal) gModal.addEventListener('click', (e) => { if (e.target === gModal) closeGalleryModal(); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeGalleryModal(); });
+    </script>
+  )}
 
   {hasAudio && (
     <script>

@@ -10,6 +10,7 @@ const counts: Record<CharacterRole | 'all', number> = {
   all: characters.length,
   十二星座: characters.filter(c => c.role === '十二星座').length,
   特别星座: characters.filter(c => c.role === '特别星座').length,
+  大海星座: characters.filter(c => c.role === '大海星座').length,
   小太空居民: characters.filter(c => c.role === '小太空居民').length,
 };
 
@@ -17,6 +18,7 @@ const roles: { key: CharacterRole | 'all'; label: string }[] = [
   { key: 'all', label: `全部 · ${counts.all}` },
   { key: '十二星座', label: `十二星座 · ${counts['十二星座']}` },
   { key: '特别星座', label: `特别星座 · ${counts['特别星座']}` },
+  { key: '大海星座', label: `大海星座 · ${counts['大海星座']}` },
   { key: '小太空居民', label: `小太空居民 · ${counts['小太空居民']}` },
 ];
 
@@ -60,7 +62,7 @@ const bannerStem = '/assets/banners/人物图鉴banner';
         <span class="eyebrow">人物图鉴 · 完整版</span>
         <h1 style="margin-top: 8px; font-size: 30px; letter-spacing: 0.02em;">{characters.length} 位住在小太空的居民</h1>
         <p class="text-muted" style="margin-top: 8px; font-size: 14px; max-width: 56ch; margin-left: auto; margin-right: auto;">
-          十二星座姐妹、特别星座、月亮和星星 — 点击卡片看详细介绍
+          十二星座姐妹、特别星座、大海星座、月亮和星星 — 点击卡片看详细介绍
         </p>
       </div>
     </div>

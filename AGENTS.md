@@ -14,11 +14,11 @@ License: **CC BY-NC-SA 4.0**(署名小爱口述 / Jiang Le 整理,非商业,相�
 ```
 zodiac-little-space/
 ├── assets/        原图真值源:characters/ locations/ banners/ covers/ episodes/(中文文件名)
-│                  · characters/ 19 张立绘(十二星座 + 爸比座/妈咪座/爱心座/闪亮座 + 月亮姐姐/月亮妹妹/星星姐妹)
+│                  · characters/ 20 张立绘(十二星座 + 爸比座/妈咪座/爱心座/闪亮座 + 大海星座汐涟座 + 月亮姐姐/月亮妹妹/星星姐妹)
 │                  · locations/  星空泳池 / 星月楼梯 / 星座小人超市
 │                  · banners/    全员图鉴(文字无错,可用);十二星座小太空首页banner(右侧星座名有 AI 错别字,勿当主角展示)
 │                  · covers/     第N集.jpg(中文大写集数名)
-│                  · episodes/   情节插图(如"双鱼座激动跳海水瓶座拉住她.jpg")
+│                  · episodes/   情节插图(如"双鱼座激动跳海水瓶座拉住她.jpg"),喂给 episodes.ts 的 illustrations 在故事页「本集画面」画廊展示
 │                  · decor/      装饰素材:云朵页脚带(全站页脚上方)/星月分隔串(.flourish 分节符)——透明底 PNG
 │                                (白底图用 site/scripts/knockout-white.py 抠白:边缘连通近白区域→腐蚀断缝防漏进白芯→alpha;换图后重跑)
 │                                页面引用 WebP 变体保 alpha,不派生 JPG 变体(丢 alpha 变黑底);不依赖 multiply 混合
@@ -69,7 +69,8 @@ npm run sync         # 只跑资源同步,不启 dev server
 - `cover` 路径用**中文原图名**(如 `/assets/covers/第一集.jpg`),**不是** slug;slug 与封面文件名不一致是正常的
 - `duration` 字段**不要手写**——`build-durations.mjs` 会读 mp3 真实时长覆盖它
 - `status: 'online'` 才会在 `/story/{slug}` 生成路由(`getStaticPaths` 过滤);`'soon'` 是占位
-- 角色 id 用拼音(如 `shuangyu` `shuiping` `yueliangjiejie`),对应 `characters.ts`
+- 角色 id 用拼音(如 `shuangyu` `shuiping` `yueliangjiejie` `xilianzuo`),对应 `characters.ts`
+- `illustrations`(可选)= 本集画面:`{ src, caption, frames? }[]`,渲染在故事页正文之后、「第N集完」之前的画廊(在 `#story-text` 容器**外**,不参与逐字高亮/滚动跟随);`frames` 填 ≥2 张图时是翻页动画(600ms 来回切换,画廊内和 lightbox 里都动;小爱演示的"手翻书"玩法);图放 `assets/episodes/`,画廊缩略图用 `-400/-800.webp` 变体,lightbox 用原图
 
 **新增一集的完整发布清单(按序执行,每步完成再打勾):**
 
@@ -105,7 +106,7 @@ npm run sync         # 只跑资源同步,不启 dev server
 ## 命名 / 用词约定
 
 - 故事文件:`stories/N-标题.md`(如 `1-想家的大海`)
-- 角色名用**简体规范字**;十二星座写全名(双鱼座、水瓶座……),特别星座:爸比座、妈咪座、爱心座、闪亮座;小太空居民:月亮姐姐、月亮妹妹、星星姐妹
+- 角色名用**简体规范字**;十二星座写全名(双鱼座、水瓶座……),特别星座:爸比座、妈咪座、爱心座、闪亮座;大海星座:汐涟座;小太空居民:月亮姐姐、月亮妹妹、星星姐妹
 - CSS token:`--c-{name}`(颜色,如 `--c-sky`)、`--r-{name}`(圆角)、`--s-{n}`(间距)
 
 ## 配音(TTS)

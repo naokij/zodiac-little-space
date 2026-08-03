@@ -463,6 +463,42 @@ a.chip:hover, button.chip:hover { transform: translateY(-1px); background: oklch
   display: block;
 }
 
+/* 故事页 · 本集画面(情节插图画廊,在 story-text 容器外,不参与高亮) */
+.story-gallery { margin-top: 40px; }
+.gallery-strip { display: flex; gap: 16px; margin-top: 14px; }
+.gallery-item {
+  flex: 1 1 0;
+  max-width: 340px;   /* 只有 1 张图时不被 flex 拉成整行宽 */
+  margin: 0;
+  cursor: zoom-in;
+}
+.gallery-item img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-card);
+  transition: transform 0.2s ease;
+}
+.gallery-item:hover img { transform: translateY(-2px); }
+.gallery-item figcaption {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.5;
+}
+@media (max-width: 720px) {
+  /* 移动端:横滑小方块条,一排看到 2 张半,示意可右滑 */
+  .gallery-strip {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 4px;
+  }
+  .gallery-item { flex: 0 0 44%; scroll-snap-align: start; }
+}
+
 .story-body {
   background: var(--surface);
   border-radius: var(--r-lg);

@@ -2,7 +2,7 @@
 // 数据真值源: 仓库根 docs/系列设定.md
 // 视觉锚定:   仓库根 assets/characters/ 下 19 张立绘
 
-export type CharacterRole = '十二星座' | '特别星座' | '小太空居民';
+export type CharacterRole = '十二星座' | '特别星座' | '大海星座' | '小太空居民';
 
 export interface Character {
   id: string;            // 拼音 (e.g. 'shuangyu')
@@ -250,6 +250,22 @@ export const characters: Character[] = [
     debut: '',
   },
 
+  // ========== 大海星座 ==========
+  {
+    id: 'xilianzuo',
+    name: '汐涟座',
+    role: '大海星座',
+    tags: ['大海星座'],
+    roleLabel: '大海星座',
+    trait: '蓝紫渐变鱼尾 · 浅水小美人鱼',
+    color: 'lavender',
+    colorVar: 'var(--c-lavender)',
+    power: '海潮波纹 + 聚拢珍珠贝壳',
+    bio: '全新的大海星座小美人鱼——汐是涨潮落潮的潮水,涟是水面圈圈荡漾的涟漪。短短的浅蓝头发,大眼睛亮晶晶,鱼尾从蓝慢慢过渡成淡淡的紫,周围环绕着一圈圈弯弯的小浪花。双手一挥,就能唤来软软的海潮波纹,把散落的珍珠贝壳轻轻聚拢。她不喜欢很深很黑的深海,最喜欢星空泳池的浅水。第二集登场。',
+    portrait: '/assets/characters/汐涟座.jpg',
+    debut: '2-会漏水的水瓶',
+  },
+
   // ========== 小太空居民 ==========
   {
     id: 'yueliangjiejie',
@@ -299,6 +315,7 @@ export const characters: Character[] = [
 export const roleLabelMap: Record<CharacterRole, string> = {
   '十二星座': '十二星座',
   '特别星座': '特别星座',
+  '大海星座': '大海星座',
   '小太空居民': '小太空居民',
 };
 

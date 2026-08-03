@@ -7,6 +7,13 @@ import { characters } from './characters';
 
 export type EpisodeStatus = 'online' | 'soon';
 
+// 本集画面(情节插图):展示在故事页正文之后、「第N集完」之前的画廊
+export interface EpisodeIllustration {
+  src: string;          // 主图(翻页动画时是第 1 帧)
+  caption: string;      // 图注
+  frames?: string[];    // 翻页动画帧(≥2 张时快速来回切换,小爱的"手翻书"玩法,如跳海双图)
+}
+
 export interface Episode {
   slug: string;
   number: number;
@@ -21,6 +28,7 @@ export interface Episode {
   excerpt: string;         // 列表卡片摘要（控制在一到两句话，避免卡片过高）
   intro: string;           // 故事开篇一句话
   charactersInScene: string[];   // 角色 id 数组
+  illustrations?: EpisodeIllustration[];  // 本集画面(情节插图)
   next?: { title: string; status: EpisodeStatus; slug: string };
 }
 
@@ -40,6 +48,41 @@ export const episodes: Episode[] = [
     excerpt: '双鱼座和水瓶座是两条小美人鱼，她们好想好想家乡的大海。直到月亮姐姐告诉她们：小太空里，有一个水面倒映着星星月亮的地方。',
     intro: '我叫双鱼座，是一条小美人鱼。今天晚上，我好想好想家乡的大海。',
     charactersInScene: ['shuangyu', 'shuiping'],
+    illustrations: [
+      {
+        src: '/assets/episodes/双鱼座激动跳海水瓶座拉住她.jpg',
+        caption: '「扑通！」——太激动了，跳下去，又被拉住',
+        frames: [
+          '/assets/episodes/双鱼座激动跳海水瓶座拉住她.jpg',
+          '/assets/episodes/水瓶座激动跳海双鱼座拉住她.jpg',
+        ],
+      },
+      {
+        src: '/assets/episodes/泳池安睡.jpg',
+        caption: '想家的时候，就跳到星空泳池里来',
+      },
+    ],
+    next: { title: '第二集 会漏水的水瓶', status: 'online', slug: '2-会漏水的水瓶' },
+  },
+  {
+    slug: '2-会漏水的水瓶',
+    number: 2,
+    title: '第二集 会漏水的水瓶',
+    subtitle: '汐涟座来了 · 大漏水名场面',
+    duration: '约 12 分 55 秒',
+    status: 'online',
+    cover: '/assets/covers/第二集.jpg',
+    audio: '/audio/2-会漏水的水瓶.mp3',
+    color: 'lavender',
+    excerpt: '星空泳池来了一位新朋友——会唤来海潮波纹的汐涟座。搞笑笑话日这天,水瓶座的水瓶忽然"咕嘟咕嘟"漏水了!',
+    intro: '双鱼座趴在泳池边,轻轻晃着尾巴,哼起了歌。',
+    charactersInScene: ['shuangyu', 'shuiping', 'xilianzuo'],
+    illustrations: [
+      {
+        src: '/assets/episodes/大漏水名场面.jpg',
+        caption: '双鱼座画的《大漏水名场面》',
+      },
+    ],
   },
 ];
 
