@@ -5,13 +5,13 @@ import { characters, type CharacterRole } from '~/data/characters';
 import { episodes } from '~/data/episodes';
 import { assetUrl, assetSrcset } from '~/data/asset-url';
 
-// pill 标签(带 N 计数)
+// pill 标签(带 N 计数);按 tags 计数——双鱼座/水瓶座同属「十二星座」和「大海星座」,两组都会计入
 const counts: Record<CharacterRole | 'all', number> = {
   all: characters.length,
-  十二星座: characters.filter(c => c.role === '十二星座').length,
-  特别星座: characters.filter(c => c.role === '特别星座').length,
-  大海星座: characters.filter(c => c.role === '大海星座').length,
-  小太空居民: characters.filter(c => c.role === '小太空居民').length,
+  十二星座: characters.filter(c => c.tags.includes('十二星座')).length,
+  特别星座: characters.filter(c => c.tags.includes('特别星座')).length,
+  大海星座: characters.filter(c => c.tags.includes('大海星座')).length,
+  小太空居民: characters.filter(c => c.tags.includes('小太空居民')).length,
 };
 
 const roles: { key: CharacterRole | 'all'; label: string }[] = [
@@ -94,7 +94,7 @@ const bannerStem = '/assets/banners/人物图鉴banner';
         >
           <div class="char-img">
             <CharacterPortrait portrait={c.portrait} name={c.name} />
-            <span class="char-tag" style={`background: var(--c-${c.color});${lightTagColors.has(c.color) ? ' color: oklch(30% 0.06 310);' : ''}`}>{c.role}</span>
+            <span class="char-tag" style={`background: var(--c-${c.color});${lightTagColors.has(c.color) ? ' color: oklch(30% 0.06 310);' : ''}`}>{c.roleLabel}</span>
           </div>
           <div class="char-body">
             <div class="char-name">{c.name}</div>
