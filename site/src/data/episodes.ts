@@ -83,6 +83,27 @@ export const episodes: Episode[] = [
         caption: '双鱼座画的《大漏水名场面》',
       },
     ],
+    next: { title: '第三集 晚霞浪花', status: 'online', slug: '3-晚霞浪花' },
+  },
+  {
+    slug: '3-晚霞浪花',
+    number: 3,
+    title: '第三集 晚霞浪花',
+    subtitle: '夕海座来了 · 哄小大海睡觉',
+    duration: '约 14 分 14 秒',
+    status: 'online',
+    cover: '/assets/covers/第三集.jpg',
+    audio: '/audio/3-晚霞浪花.mp3',
+    color: 'orange',
+    excerpt: '汐涟座在大海里的老朋友夕海座悄悄来了——她的浪花是晚霞色的，里面装着太阳最后的阳光。今晚，她要给星空泳池这方"小大海"盖上橘子色的被子。',
+    intro: '泳池的水，什么时候变成橘子色的了？',
+    charactersInScene: ['shuangyu', 'shuiping', 'xilianzuo', 'xihaizuo'],
+    illustrations: [
+      {
+        src: '/assets/episodes/浪花合体.jpg',
+        caption: '「哇，我们的浪花合体啦！」——蓝波纹遇上晚霞浪花',
+      },
+    ],
   },
 ];
 
