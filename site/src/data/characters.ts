@@ -145,9 +145,9 @@ export const characters: Character[] = [
     color: 'blond',
     colorVar: 'var(--c-blond)',
     power: '金色小弓箭',
-    bio: '卷卷羊毛的小羊女孩,背着一把金色小弓箭。最爱探险,听说哪里有好看的星星,第一个出发。',
+    bio: '卷卷羊毛的小羊女孩,背着一把金色小弓箭,家乡是远方的青青草原,现在住在小太空的同名草原上。她自封"草原第一神箭手",最爱探险和表演大射箭。第四集,她的大射箭满天乱飞,却歪打正着,把卡在云朵里的小星星碰回了家。',
     portrait: '/assets/characters/射手座.jpg',
-    debut: '',
+    debut: '4-大射箭名场面',
   },
   {
     id: 'mojie',
@@ -159,9 +159,9 @@ export const characters: Character[] = [
     color: 'orange',
     colorVar: 'var(--c-orange)',
     power: '小挎包 + 小鱼尾巴',
-    bio: '长着小牛角和小鱼尾巴的女孩,背一只小挎包,里面装着各种有用的小东西。做事情最踏实。',
+    bio: '长着小牛角和小鱼尾巴的女孩,背一只小挎包,做事情最踏实。她和射手座来自远方的青青草原,现在住在小太空的同名草原上,天天帮射手座背箭、捡箭,全小太空最会捡箭。第四集,她答应陪小美人鱼们去星座小人超市修瓶子——她最不会忘事了。',
     portrait: '/assets/characters/摩羯座.jpg',
-    debut: '',
+    debut: '4-大射箭名场面',
   },
   {
     id: 'shuiping',

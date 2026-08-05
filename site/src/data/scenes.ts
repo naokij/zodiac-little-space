@@ -45,6 +45,16 @@ export const scenes: Scene[] = [
     highlights: ['星星瓶货架', '月亮点心', '小铃铛门'],
     odId: 'scene-zodiac-market',
   },
+  {
+    id: 'green-meadow',
+    name: '青青草原',
+    zone: 'space',
+    zoneLabel: '小太空',
+    desc: '一片漂浮在星空里的草原岛,头顶是满天星星,萤火虫提着小灯在草尖上飞。摩羯座和射手座的家乡在很远很远的地方,她们在小太空里找到这片一模一样的草原,也管它叫青青草原。',
+    image: '/assets/locations/青青草原.jpg',
+    highlights: ['星空下的草原岛', '萤火虫小灯', '草原姐妹的家'],
+    odId: 'scene-green-meadow',
+  },
 ];
 
 export const zoneMap: Record<SceneZone, string> = {

@@ -104,6 +104,27 @@ export const episodes: Episode[] = [
         caption: '「哇，我们的浪花合体啦！」——蓝波纹遇上晚霞浪花',
       },
     ],
+    next: { title: '第四集 大射箭名场面', status: 'online', slug: '4-大射箭名场面' },
+  },
+  {
+    slug: '4-大射箭名场面',
+    number: 4,
+    title: '第四集 大射箭名场面',
+    subtitle: '摩羯座和射手座的青青草原',
+    duration: '约 12 分 21 秒',
+    status: 'online',
+    cover: '/assets/covers/第四集.jpg',
+    audio: '/audio/4-大射箭名场面.mp3',
+    color: 'green',
+    excerpt: '修瓶子小分队出发啦！路过青青草原，遇上了草原姐妹——自封"草原第一神箭手"的射手座，和天天帮她捡箭的摩羯座。射手座的大射箭一出手，箭飞得到处都是！',
+    intro: '"嗖！笃！"一支金色的小箭飞过来，稳稳地插在不远处的草靶子上。',
+    charactersInScene: ['shuangyu', 'shuiping', 'xilianzuo', 'xihaizuo', 'mojie', 'sheshou'],
+    illustrations: [
+      {
+        src: '/assets/episodes/大射箭名场面.jpg',
+        caption: '大射箭名场面——「嗖——啪！」箭飞得到处都是',
+      },
+    ],
   },
 ];
 
