@@ -2,7 +2,7 @@
 // 数据真值源: 仓库根 docs/系列设定.md
 // 视觉锚定:   仓库根 assets/characters/ 下 19 张立绘
 
-export type CharacterRole = '十二星座' | '特别星座' | '大海星座' | '小太空居民';
+export type CharacterRole = '十二星座' | '特别星座' | '大海星座' | '草原星座' | '小太空居民';
 
 export interface Character {
   id: string;            // 拼音 (e.g. 'shuangyu')
@@ -139,8 +139,8 @@ export const characters: Character[] = [
     id: 'sheshou',
     name: '射手座',
     role: '十二星座',
-    tags: ['十二星座'],
-    roleLabel: '十二星座',
+    tags: ['十二星座', '草原星座'],
+    roleLabel: '十二星座 · 草原星座',
     trait: '金色小弓箭 · 爱冒险',
     color: 'blond',
     colorVar: 'var(--c-blond)',
@@ -153,8 +153,8 @@ export const characters: Character[] = [
     id: 'mojie',
     name: '摩羯座',
     role: '十二星座',
-    tags: ['十二星座'],
-    roleLabel: '十二星座',
+    tags: ['十二星座', '草原星座'],
+    roleLabel: '十二星座 · 草原星座',
     trait: '小鱼尾巴 · 踏实认真',
     color: 'orange',
     colorVar: 'var(--c-orange)',
@@ -330,6 +330,7 @@ export const roleLabelMap: Record<CharacterRole, string> = {
   '十二星座': '十二星座',
   '特别星座': '特别星座',
   '大海星座': '大海星座',
+  '草原星座': '草原星座',
   '小太空居民': '小太空居民',
 };
 
