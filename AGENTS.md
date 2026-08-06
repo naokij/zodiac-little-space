@@ -19,6 +19,9 @@ zodiac-little-space/
 │                  · banners/    全员图鉴(文字无错,可用);十二星座小太空首页banner(右侧星座名有 AI 错别字,勿当主角展示)
 │                  · covers/     第N集.jpg(中文大写集数名)
 │                  · episodes/   情节插图(如"双鱼座激动跳海水瓶座拉住她.jpg"),喂给 episodes.ts 的 illustrations 在故事页「本集画面」画廊展示
+│                  · constellations/ 十二星座古典版画(1825《尤拉尼亚之镜》Sidney Hall,公有领域,来自 Wikimedia Commons)
+│                                图鉴弹窗「真实的星空」板块:版画做星图底图,发光星点+连线叠加在版画的真实星位上
+│                                (星点坐标在 constellations.ts,人工逐张比对版画星芒得出);文件名 = 角色中文名(双鱼座.jpg)
 │                  · decor/      装饰素材:云朵页脚带(全站页脚上方)/星月分隔串(.flourish 分节符)——透明底 PNG
 │                                (白底图用 site/scripts/knockout-white.py 抠白:边缘连通近白区域→腐蚀断缝防漏进白芯→alpha;换图后重跑)
 │                                页面引用 WebP 变体保 alpha,不派生 JPG 变体(丢 alpha 变黑底);不依赖 multiply 混合
@@ -30,8 +33,8 @@ zodiac-little-space/
 ├── site/          Astro 7 静态站(部署 Cloudflare Pages: zodiac-little-space.pages.dev)
 │   ├── src/
 │   │   ├── pages/      6 路由: / (= /home) /home /story-list /story/[slug] /characters /scenes
-│   │   ├── components/ ResponsiveImage, CharacterPortrait
-│   │   ├── data/       episodes.ts / characters.ts / scenes.ts / asset-url.ts / asset-hashes.json
+│   │   ├── components/ ResponsiveImage, CharacterPortrait, StarMap(真实星座迷你星图 SVG)
+│   │   ├── data/       episodes.ts / characters.ts / scenes.ts / constellations.ts(十二星座真实天文知识+星图坐标) / asset-url.ts / asset-hashes.json
 │   │   ├── layouts/    Base.astro (全站布局 + 顶部导航)
 │   │   └── styles/     shared.css (全站唯一,OKLch tokens,梦幻夜空主题)
 │   ├── scripts/   sync-assets.sh + generate-image-variants / generate-asset-hashes / build-durations

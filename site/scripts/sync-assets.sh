@@ -48,6 +48,11 @@ rm -rf "$SITE_PUBLIC/assets/decor"
 mkdir -p "$SITE_PUBLIC/assets/decor"
 node "$SCRIPTS_DIR/resize-asset-copies.mjs" "$ASSETS_SRC/decor" "$SITE_PUBLIC/assets/decor" 1920
 
+# constellations(古典星座版画,公有领域《尤拉尼亚之镜》1825): 长边 ≤ 1920px
+rm -rf "$SITE_PUBLIC/assets/constellations"
+mkdir -p "$SITE_PUBLIC/assets/constellations"
+node "$SCRIPTS_DIR/resize-asset-copies.mjs" "$ASSETS_SRC/constellations" "$SITE_PUBLIC/assets/constellations" 1920
+
 # 2) 同步 fonts
 mkdir -p "$SITE_PUBLIC/fonts"
 cp -f "$FONTS_SRC"/*.ttf "$SITE_PUBLIC/fonts/" 2>/dev/null || echo "  ⚠️  仓库根 public/fonts 为空,跳过"
@@ -68,6 +73,7 @@ node "$SCRIPTS_DIR/generate-image-variants.mjs" "$SITE_PUBLIC/assets/covers" --w
 node "$SCRIPTS_DIR/generate-image-variants.mjs" "$SITE_PUBLIC/assets/locations" --widths=400,800,1200 --quality=82 --ext=jpg
 node "$SCRIPTS_DIR/generate-image-variants.mjs" "$SITE_PUBLIC/assets/banners" --widths=800,1600 --quality=80 --ext=jpg
 node "$SCRIPTS_DIR/generate-image-variants.mjs" "$SITE_PUBLIC/assets/episodes" --widths=400,800,1200 --quality=82 --ext=jpg
+node "$SCRIPTS_DIR/generate-image-variants.mjs" "$SITE_PUBLIC/assets/constellations" --widths=400,800 --quality=82 --ext=jpg
 # decor 不派生 JPG:透明底 PNG 转 JPG 会丢 alpha 变黑底,decor 只用 WebP 变体
 
 # 5) 派生 WebP
@@ -76,6 +82,7 @@ node "$SCRIPTS_DIR/generate-image-variants.mjs" "$SITE_PUBLIC/assets/covers" --w
 node "$SCRIPTS_DIR/generate-image-variants.mjs" "$SITE_PUBLIC/assets/locations" --widths=400,800,1200 --quality=82 --ext=webp
 node "$SCRIPTS_DIR/generate-image-variants.mjs" "$SITE_PUBLIC/assets/banners" --widths=800,1600 --quality=80 --ext=webp
 node "$SCRIPTS_DIR/generate-image-variants.mjs" "$SITE_PUBLIC/assets/episodes" --widths=400,800,1200 --quality=82 --ext=webp
+node "$SCRIPTS_DIR/generate-image-variants.mjs" "$SITE_PUBLIC/assets/constellations" --widths=400,800 --quality=82 --ext=webp
 node "$SCRIPTS_DIR/generate-image-variants.mjs" "$SITE_PUBLIC/assets/decor" --widths=800,1600 --quality=82 --ext=webp
 
 # 6) 生成资源内容 hash 映射表

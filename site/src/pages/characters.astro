@@ -1,7 +1,9 @@
 ---
 import Base from '~/layouts/Base.astro';
 import CharacterPortrait from '~/components/CharacterPortrait.astro';
+import StarMap from '~/components/StarMap.astro';
 import { characters, type CharacterRole } from '~/data/characters';
+import { constellations } from '~/data/constellations';
 import { episodes } from '~/data/episodes';
 import { assetUrl, assetSrcset } from '~/data/asset-url';
 
@@ -37,6 +39,9 @@ for (const c of characters) {
 }
 
 const bannerStem = '/assets/banners/人物图鉴banner';
+
+// 星座版画文件名 = 角色中文名(assets/constellations/{name}.jpg)
+const nameById = Object.fromEntries(characters.map((c) => [c.id, c.name]));
 ---
 <Base title="人物图鉴 · 十二星座小太空" active="characters">
   <!-- 人物图鉴 Banner -->
@@ -92,6 +97,7 @@ const bannerStem = '/assets/banners/人物图鉴banner';
           data-portraits={JSON.stringify((c.portraits || [c.portrait]).map(assetUrl))}
           data-color={c.color}
           data-appearances={JSON.stringify(epsByCharId[c.id] || [])}
+          {...(constellations[c.id] ? { 'data-sky-id': c.id } : {})}
           style={`--card-color: var(--c-${c.color});`}
         >
           <div class="char-img">
@@ -130,10 +136,32 @@ const bannerStem = '/assets/banners/人物图鉴banner';
           </div>
           <p class="modal-bio" id="modal-bio"></p>
           <div class="modal-appearances" id="modal-appearances"></div>
+          <div class="modal-sky" id="modal-sky" hidden></div>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- 「真实的星空」板块模板:十二星座各一份,openModal 按 data-sky-id 克隆进弹窗 -->
+  {Object.entries(constellations).map(([id, c]) => {
+    const name = nameById[id];
+    const figStem = `/assets/constellations/${name}`;
+    return (
+    <template id={`sky-${id}`}>
+      <p class="eyebrow modal-sky-title">✨ 真实的星空</p>
+      <div class="modal-sky-map">
+        <StarMap c={c} imgSrc={assetUrl(`${figStem}-800.jpg`)} name={name} />
+      </div>
+      <p class="modal-sky-caption">星星就长在古人画的形象身上 · 1825《尤拉尼亚之镜》</p>
+      <dl class="modal-sky-facts">
+        <div class="modal-sky-item"><dt>它长什么样</dt><dd>{c.shape}</dd></div>
+        <div class="modal-sky-item"><dt>什么时候能看到</dt><dd>{c.season}</dd></div>
+        <div class="modal-sky-item"><dt>最亮的星</dt><dd>{c.brightest}</dd></div>
+        <div class="modal-sky-item"><dt>神话小故事</dt><dd>{c.myth}</dd></div>
+      </dl>
+    </template>
+    );
+  })}
 
   <script define:vars={{ characters: characters.map(c => ({ id: c.id, color: c.color })) }}>
     // 角色筛选
@@ -170,6 +198,7 @@ const bannerStem = '/assets/banners/人物图鉴banner';
     const modalPortrait = document.getElementById('modal-portrait');
     const modalThumbs = document.getElementById('modal-thumbs');
     const modalAppearances = document.getElementById('modal-appearances');
+    const modalSky = document.getElementById('modal-sky');
 
     function openModal(card) {
       const name = card.getAttribute('data-name') || '';
@@ -220,6 +249,19 @@ const bannerStem = '/assets/banners/人物图鉴banner';
             '<div class="row">' +
             appearances.map((a) => `<a class="chip" href="/story/${a.slug}">EP.${String(a.number).padStart(2, '0')} · ${a.title}</a>`).join('') +
             '</div>';
+        }
+      }
+      // 「真实的星空」:十二星座有星图知识,从对应 template 克隆;虚构星座隐藏
+      if (modalSky) {
+        const skyId = card.getAttribute('data-sky-id');
+        const tpl = skyId ? document.getElementById(`sky-${skyId}`) : null;
+        if (tpl instanceof HTMLTemplateElement) {
+          modalSky.innerHTML = '';
+          modalSky.appendChild(tpl.content.cloneNode(true));
+          modalSky.hidden = false;
+        } else {
+          modalSky.innerHTML = '';
+          modalSky.hidden = true;
         }
       }
       if (modal) {
