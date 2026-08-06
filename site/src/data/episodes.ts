@@ -125,6 +125,31 @@ export const episodes: Episode[] = [
         caption: '大射箭名场面——「嗖——啪！」箭飞得到处都是',
       },
     ],
+    next: { title: '第五集 星砾座的修理铺', status: 'online', slug: '5-星砾座的修理铺' },
+  },
+  {
+    slug: '5-星砾座的修理铺',
+    number: 5,
+    title: '第五集 星砾座的修理铺',
+    subtitle: '星砾座来了 · 瓶子和大海是同款',
+    duration: '约 12 分 23 秒',
+    status: 'online',
+    cover: '/assets/covers/第五集.jpg',
+    audio: '/audio/5-星砾座的修理铺.mp3',
+    color: 'gold',
+    excerpt: '修瓶子小分队终于到啦！超市修理师星砾座有全世界最好的修补材料——星砾。补好的瓶子上多了一条细细的金线；傍晚的晚霞海上,也有一条一模一样的金线……',
+    intro: '这天早上,天刚亮,星空泳池边的小木屋门上,响起了敲门声。',
+    charactersInScene: ['shuangyu', 'shuiping', 'xilianzuo', 'xihaizuo', 'mojie', 'sheshou', 'xinglizuo'],
+    illustrations: [
+      {
+        src: '/assets/episodes/金粉大战名场面.jpg',
+        caption: '金粉大战名场面——「噗——!!!」射手座抢拍猛吹,星砾炸成了满天金粉',
+      },
+      {
+        src: '/assets/episodes/晚霞海.jpg',
+        caption: '大海和天空相接的地方有一条金线——晚霞,就是大海的金线',
+      },
+    ],
   },
 ];
 

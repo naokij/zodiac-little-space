@@ -1,7 +1,7 @@
 // 十二星座小太空 · 场景图鉴
 // 数据真值源: 仓库根 docs/系列设定.md + assets/locations/
 
-export type SceneZone = 'space';
+export type SceneZone = 'space' | 'far';
 
 export interface Scene {
   id: string;
@@ -55,8 +55,19 @@ export const scenes: Scene[] = [
     highlights: ['星空下的草原岛', '萤火虫小灯', '草原姐妹的家'],
     odId: 'scene-green-meadow',
   },
+  {
+    id: 'sunset-sea',
+    name: '晚霞海',
+    zone: 'far',
+    zoneLabel: '远方',
+    desc: '真正的大海最边上的一个角,太阳回家的时候,最后一片晚霞总是先落在这里——这是夕海座以前每天傍晚"上班"的地方。大海和天空相接的地方有一条细细的金线,那是太阳用最后的阳光把大海缝好:晚霞,就是大海的金线。',
+    image: '/assets/locations/晚霞海.jpg',
+    highlights: ['海天相接的金线', '太阳回家的地方', '比泳池大一百倍'],
+    odId: 'scene-sunset-sea',
+  },
 ];
 
 export const zoneMap: Record<SceneZone, string> = {
   space: '小太空',
+  far: '远方',
 };

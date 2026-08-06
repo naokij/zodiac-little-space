@@ -4,7 +4,8 @@ import ResponsiveImage from '~/components/ResponsiveImage.astro';
 import { scenes } from '~/data/scenes';
 import { assetUrl, assetSrcset } from '~/data/asset-url';
 
-const spaceCount = scenes.length;
+const spaceCount = scenes.filter(s => s.zone === 'space').length;
+const farCount = scenes.filter(s => s.zone === 'far').length;
 ---
 <Base title="场景介绍 · 十二星座小太空" active="scenes">
   <section data-od-id="page-hero">
@@ -15,6 +16,7 @@ const spaceCount = scenes.length;
     </p>
     <div class="row" style="margin-top: 16px;">
       <span class="chip">小太空 · {spaceCount}</span>
+      <span class="chip">远方 · {farCount}</span>
     </div>
   </section>
 
