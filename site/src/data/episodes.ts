@@ -40,7 +40,7 @@ export const episodes: Episode[] = [
     number: 1,
     title: '第一集 想家的大海',
     subtitle: '双鱼座和水瓶座的星空泳池',
-    duration: '约 11 分 59 秒',
+    duration: '约 11 分 54 秒',
     status: 'online',
     cover: '/assets/covers/第一集.jpg',
     audio: '/audio/1-想家的大海.mp3',
