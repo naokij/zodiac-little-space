@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://zodiac-little-space.pages.dev',
+  site: 'https://zodiac-little-space.jiangle.name',
   vite: {
     server: {
       fs: {

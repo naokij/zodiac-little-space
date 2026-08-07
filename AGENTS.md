@@ -6,7 +6,7 @@
 ## 这是什么
 
 温柔、梦幻的睡前有声故事。十二星座姐妹和特别星座们住在星空里的小太空。
-内容真值源在仓库根,`site/` 是把这些内容工程化成的 Astro 静态站,部署到 Cloudflare Pages(`zodiac-little-space.pages.dev`)。
+内容真值源在仓库根,`site/` 是把这些内容工程化成的 Astro 静态站,部署到 Cloudflare Pages,正式网址 https://zodiac-little-space.jiangle.name/(`zodiac-little-space.pages.dev` 为默认域名)。
 License: **CC BY-NC-SA 4.0**(署名小爱口述 / Jiang Le 整理,非商业,相同协议共享)。
 
 ## 仓库布局
@@ -33,7 +33,7 @@ zodiac-little-space/
 ├── public/fonts/  猫啃网风雅宋真值源: display-song-bold.ttf (Bold, 400/700 共用)
 ├── stories/       故事正文 markdown 真值源:{slug}.md
 ├── docs/          系列设定.md(角色/世界观真值源)
-├── site/          Astro 7 静态站(部署 Cloudflare Pages: zodiac-little-space.pages.dev)
+├── site/          Astro 7 静态站(部署 Cloudflare Pages,正式网址 zodiac-little-space.jiangle.name)
 │   ├── src/
 │   │   ├── pages/      6 路由: / (= /home) /home /story-list /story/[slug] /characters /scenes
 │   │   ├── components/ ResponsiveImage, CharacterPortrait
