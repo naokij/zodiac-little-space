@@ -877,17 +877,17 @@ a.chip:hover, button.chip:hover { transform: translateY(-1px); background: oklch
 .modal-body .role { color: var(--muted); font-size: 14px; margin-bottom: 14px; }
 .modal-body p { font-size: 16px; line-height: 1.7; }
 
-/* 「真实的星空」:十二星座角色弹窗里的真实天文知识板块(虚构星座不显示)
-   星图以《尤拉尼亚之镜》古典版画为底,叠加发光星点+连线;浅纸色卡片 */
+/* 星空板块:角色弹窗里的星座卡(十二星座「真实的星空」/ 虚构星座「想象中的星空」)
+   卡面是 AI 生成的 Q 版星座插画(assets/constellations/),正方形铺满 */
 .modal-sky { margin-top: 22px; }
 .modal-sky-title { margin-bottom: 10px; }
 .modal-sky-map {
-  background: oklch(95% 0.03 90); /* 旧纸色,衬版画 */
+  background: oklch(94% 0.03 300); /* 淡紫,衬星座卡 */
   border-radius: var(--r-md);
   border: 1px solid oklch(82% 0.06 320 / 0.5);
   overflow: hidden;
 }
-.modal-sky-map .sky-map { display: block; width: 100%; height: auto; }
+.modal-sky-map img { display: block; width: 100%; height: auto; }
 .modal-sky-caption { margin: 6px 2px 0; font-size: 12px; line-height: 1.5; text-align: center; color: var(--muted); }
 .modal-sky-facts { margin: 12px 0 0; }
 .modal-sky-item { display: flex; gap: 10px; padding: 7px 0; border-top: 1px dashed oklch(88% 0.04 310 / 0.7); }

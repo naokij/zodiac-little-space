@@ -1,9 +1,11 @@
-// 十二星座小太空 · 真实的星空
-// 挂在 /characters 图鉴弹窗里的真实天文知识(不是占星),key 与 characters.ts 十二星座角色 id 一一对应。
-// 星图以 1825 年《尤拉尼亚之镜》古典版画为底图(公有领域),发光星点叠加在版画上印着的真实星位上:
-// stars/lines 坐标由人工逐张比对版画星芒符号得出,viewBox 宽 200、高 h(≈版画宽高比)。
-// r 是星点半径(≈亮度分级),lines 用星星下标连线。
-// 文字按 6 岁儿童口吻,只写公认天文常识(观测季/最亮星/神话出处),拿不准的不写。
+// 十二星座小太空 · 星空板块数据
+// 挂在 /characters 图鉴弹窗里,key 与 characters.ts 角色 id 一一对应。
+// · constellations:十二星座「真实的星空」——真实天文知识(不是占星)。
+//   展示图是 AI 生成的 Q 版星座卡(assets/constellations/{中文名}.jpg,见 AGENTS.md),星形用现代简化版(与 Stellarium 默认一致);
+//   stars/lines 是之前版画星图方案人工比对出的真实星位坐标,现已不渲染,保留作天文参考。
+//   文字按 6 岁儿童口吻,只写公认天文常识(观测季/最亮星/神话出处),拿不准的不写。
+// · imaginaryConstellations:虚构星座(爸比座/妈咪座/汐涟座/夕海座/星砾座)「想象中的星空」,
+//   形状按角色设定设计,文案明确"天上没有,是我们想象的"。
 
 export interface SkyStar {
   x: number;
@@ -62,7 +64,7 @@ export const constellations: Record<string, Constellation> = {
     lines: [[0, 1], [1, 2], [2, 3], [3, 4], [0, 5], [5, 6], [0, 7]],
     brightestIndex: 0,
     brightestName: '毕宿五',
-    shape: '星星排成一个大大的 V，像牛的脸；旁边一小堆挤在一起的星星，叫昴星团。',
+    shape: '星星排成一个大大的 V，像牛的脸；V 的两端伸出两只长长的角。',
     season: '冬天的晚上最容易看到。',
     brightest: '毕宿五，红红的，像牛的大眼睛。',
     myth: '希腊神话里，它是宙斯变成的一头白色大公牛。',
@@ -108,7 +110,7 @@ export const constellations: Record<string, Constellation> = {
     lines: [[7, 8], [8, 1], [1, 0], [0, 2], [2, 5], [1, 3], [3, 4], [4, 6]],
     brightestIndex: 0,
     brightestName: '蜂巢星团',
-    shape: '星星暗暗的，连起来像一个小写的 y；中间还有一小团雾蒙蒙的星星，叫蜂巢星团。',
+    shape: '星星暗暗的，连起来像一个小写的 y。',
     season: '春天的晚上最容易看到。',
     brightest: '巨蟹座的星星都很暗，要在很黑很黑的夜晚才找得到。',
     myth: '希腊神话里，它是一只悄悄去帮助大英雄的小螃蟹。',
@@ -180,7 +182,7 @@ export const constellations: Record<string, Constellation> = {
     lines: [[0, 1], [0, 2], [2, 3], [3, 4], [3, 5], [5, 6], [6, 7], [12, 8], [8, 11], [11, 10], [10, 12]],
     brightestIndex: 0,
     brightestName: '氐宿四',
-    shape: '四颗星连成一个菱形，像一架小小的天平。',
+    shape: '几颗星连成一只大风筝的形状，最上面两颗亮星，就是天平平平的横梁。',
     season: '夏天的晚上最容易看到。',
     brightest: '氐宿四——有意思的是，天秤座最亮的两颗星，名字的意思是"蝎子的钳子"。',
     myth: '希腊神话里，它是正义女神手里称公平的天平。',
@@ -285,7 +287,7 @@ export const constellations: Record<string, Constellation> = {
     lines: [[0, 1], [1, 2], [2, 3], [3, 4], [2, 5], [6, 7], [7, 8], [8, 9], [9, 6], [1, 6], [9, 10], [10, 11], [11, 12], [12, 13], [13, 14], [14, 15], [15, 16]],
     brightestIndex: 0,
     brightestName: '虚宿一',
-    shape: '几条波浪线，像从瓶子里倒出来的水；旁边四颗星围成一个小水瓶。',
+    shape: '几条波浪线连成长长的一串，像从瓶子里倒出来的水。',
     season: '秋天的晚上最容易看到。',
     brightest: '虚宿一——水瓶座的星星比较暗，要耐心慢慢找。',
     myth: '希腊神话里，它是一位为天上的神倒水的少年。',
@@ -328,5 +330,47 @@ export const constellations: Record<string, Constellation> = {
     season: '秋天和初冬的晚上最容易看到。',
     brightest: '双鱼座的星星都比较暗，像一群悄悄眨眼睛的小鱼。',
     myth: '希腊神话里，它们是美神维纳斯和小爱神变成的两条鱼。',
+  },
+};
+
+// ========== 想象中的星空(虚构星座) ==========
+// 形状按 docs/系列设定.md 的角色设定设计;文案要向孩子讲清:这些星座是我们编故事想象出来的。
+export interface ImaginaryConstellation {
+  shape: string; // 它长什么样
+  home: string;  // 它住在哪里
+  power: string; // 它的本领
+  story: string; // 小故事
+}
+
+export const imaginaryConstellations: Record<string, ImaginaryConstellation> = {
+  babizuo: {
+    shape: '星星连成一件飘起来的大斗篷，斗篷上方还有一圈星星光环。',
+    home: '住在小太空的故事云旁边，离每个小朋友的窗户都不远。',
+    power: '斗篷里藏着好多好多故事，每天晚上讲一个。',
+    story: '每天晚上，斗篷上亮起一颗星，那就是今晚要讲的故事。',
+  },
+  mamizuo: {
+    shape: '星星连成一颗大大的爱心，外面绕着一圈彩虹色的星星弧线。',
+    home: '住在小太空最暖和的角落。',
+    power: '她的拥抱能赶走所有噩梦。',
+    story: '爱心最中间的那颗星，是全小太空最暖和的一颗星。',
+  },
+  xilianzuo: {
+    shape: '星星连成一圈一圈散开的涟漪，正中间一颗小星星，像刚落进水面。',
+    home: '住在大海的浅水里，不喜欢很深很黑的深海。',
+    power: '双手一挥，就能唤来软软的海潮波纹，把散落的珍珠贝壳轻轻聚拢。',
+    story: '她和管晚霞的夕海座是交接班的老搭档：她管白天，夕海座管傍晚。',
+  },
+  xihaizuo: {
+    shape: '星星连成半轮落在海平线上的夕阳，周围是一层层晚霞浪花。',
+    home: '住在傍晚的大海上，太阳回家的那条路边。',
+    power: '晚霞浪花摸上去暖暖的，还能捏成小橘子、水蜜桃和棉花糖。',
+    story: '每天傍晚，她把最后一片晚霞披在海面上，唱晚安歌哄大海睡觉。',
+  },
+  xinglizuo: {
+    shape: '星星连成一只圆圆的小挎包，周围散落着一把小星砾，包口冒出一颗顶着小芽的星星。',
+    home: '住在小太空的青青草原，是摩羯座和射手座家的邻居。',
+    power: '星砾是全世界最好的修补材料：填进裂缝，大家"呼——"地一吹，就化成暖金色的光把裂缝焊住。',
+    story: '她把水瓶座破掉的小瓶子补好了——破过的地方，变成了最亮的地方。',
   },
 };

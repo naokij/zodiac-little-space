@@ -1,9 +1,9 @@
 ---
 import Base from '~/layouts/Base.astro';
 import CharacterPortrait from '~/components/CharacterPortrait.astro';
-import StarMap from '~/components/StarMap.astro';
+import ResponsiveImage from '~/components/ResponsiveImage.astro';
 import { characters, type CharacterRole } from '~/data/characters';
-import { constellations } from '~/data/constellations';
+import { constellations, imaginaryConstellations } from '~/data/constellations';
 import { episodes } from '~/data/episodes';
 import { assetUrl, assetSrcset } from '~/data/asset-url';
 
@@ -97,7 +97,7 @@ const nameById = Object.fromEntries(characters.map((c) => [c.id, c.name]));
           data-portraits={JSON.stringify((c.portraits || [c.portrait]).map(assetUrl))}
           data-color={c.color}
           data-appearances={JSON.stringify(epsByCharId[c.id] || [])}
-          {...(constellations[c.id] ? { 'data-sky-id': c.id } : {})}
+          {...((constellations[c.id] || imaginaryConstellations[c.id]) ? { 'data-sky-id': c.id } : {})}
           style={`--card-color: var(--c-${c.color});`}
         >
           <div class="char-img">
@@ -142,7 +142,7 @@ const nameById = Object.fromEntries(characters.map((c) => [c.id, c.name]));
     </div>
   </div>
 
-  <!-- 「真实的星空」板块模板:十二星座各一份,openModal 按 data-sky-id 克隆进弹窗 -->
+  <!-- 星空板块模板:十二星座「真实的星空」+ 虚构星座「想象中的星空」,openModal 按 data-sky-id 克隆进弹窗 -->
   {Object.entries(constellations).map(([id, c]) => {
     const name = nameById[id];
     const figStem = `/assets/constellations/${name}`;
@@ -150,14 +150,33 @@ const nameById = Object.fromEntries(characters.map((c) => [c.id, c.name]));
     <template id={`sky-${id}`}>
       <p class="eyebrow modal-sky-title">✨ 真实的星空</p>
       <div class="modal-sky-map">
-        <StarMap c={c} imgSrc={assetUrl(`${figStem}-800.jpg`)} name={name} />
+        <ResponsiveImage src={`${figStem}.jpg`} alt={`${name}的星座图`} sizes="(max-width: 720px) 90vw, 420px" widths={[400, 800]} />
       </div>
-      <p class="modal-sky-caption">星星就长在古人画的形象身上 · 1825《尤拉尼亚之镜》</p>
+      <p class="modal-sky-caption">这个星座天上真的有,可爱的样子是我们想象的哦</p>
       <dl class="modal-sky-facts">
         <div class="modal-sky-item"><dt>它长什么样</dt><dd>{c.shape}</dd></div>
         <div class="modal-sky-item"><dt>什么时候能看到</dt><dd>{c.season}</dd></div>
         <div class="modal-sky-item"><dt>最亮的星</dt><dd>{c.brightest}</dd></div>
         <div class="modal-sky-item"><dt>神话小故事</dt><dd>{c.myth}</dd></div>
+      </dl>
+    </template>
+    );
+  })}
+  {Object.entries(imaginaryConstellations).map(([id, c]) => {
+    const name = nameById[id];
+    const figStem = `/assets/constellations/${name}`;
+    return (
+    <template id={`sky-${id}`}>
+      <p class="eyebrow modal-sky-title">🌙 想象中的星空</p>
+      <div class="modal-sky-map">
+        <ResponsiveImage src={`${figStem}.jpg`} alt={`${name}的星座图`} sizes="(max-width: 720px) 90vw, 420px" widths={[400, 800]} />
+      </div>
+      <p class="modal-sky-caption">这个星座是我们编故事想象出来的,天上没有哦</p>
+      <dl class="modal-sky-facts">
+        <div class="modal-sky-item"><dt>它长什么样</dt><dd>{c.shape}</dd></div>
+        <div class="modal-sky-item"><dt>它住在哪里</dt><dd>{c.home}</dd></div>
+        <div class="modal-sky-item"><dt>它的本领</dt><dd>{c.power}</dd></div>
+        <div class="modal-sky-item"><dt>小故事</dt><dd>{c.story}</dd></div>
       </dl>
     </template>
     );
@@ -251,7 +270,7 @@ const nameById = Object.fromEntries(characters.map((c) => [c.id, c.name]));
             '</div>';
         }
       }
-      // 「真实的星空」:十二星座有星图知识,从对应 template 克隆;虚构星座隐藏
+      // 星空板块:十二星座克隆「真实的星空」,虚构星座克隆「想象中的星空」;其余角色隐藏
       if (modalSky) {
         const skyId = card.getAttribute('data-sky-id');
         const tpl = skyId ? document.getElementById(`sky-${skyId}`) : null;
