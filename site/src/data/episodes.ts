@@ -150,6 +150,31 @@ export const episodes: Episode[] = [
         caption: '大海和天空相接的地方有一条金线——晚霞,就是大海的金线',
       },
     ],
+    next: { title: '第六集 蒲公英带路的日子', status: 'online', slug: '6-蒲公英带路的日子' },
+  },
+  {
+    slug: '6-蒲公英带路的日子',
+    number: 6,
+    title: '第六集 蒲公英带路的日子',
+    subtitle: '青原座来了 · 真正的青青草原',
+    duration: '约 12 分 36 秒',
+    status: 'online',
+    cover: '/assets/covers/第六集.jpg',
+    audio: '/audio/6-蒲公英带路的日子.mp3',
+    color: 'mint',
+    excerpt: '摩羯座的"改天"真的到了！跟着蒲公英铺成的小路，大家来到真正的青青草原——比小太空的大一万倍！守着草原的青原座送给射手座一支蒲公英箭；练了好久好久的一支箭，在天上变成了一场种子雨……',
+    intro: '这天早上,天刚蒙蒙亮,星空泳池边的小木屋门上,贴了一张小纸条。',
+    charactersInScene: ['shuangyu', 'shuiping', 'xilianzuo', 'xihaizuo', 'mojie', 'sheshou', 'qingyuanzuo'],
+    illustrations: [
+      {
+        src: '/assets/episodes/花田送花.jpg',
+        caption: '青原座送双鱼座一朵蓝色小花——「这朵像大海的颜色」',
+      },
+      {
+        src: '/assets/episodes/蒲公英小路.jpg',
+        caption: '跟着蒲公英走!——软绵绵、弹墩墩,一步一弹',
+      },
+    ],
   },
 ];
 

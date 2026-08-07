@@ -17,7 +17,7 @@ export interface Character {
   bio: string;           // 人物小传
   portrait: string;      // 原图 URL '/assets/characters/...'
   defaultPortrait?: string;
-  portraits?: string[];  // 多张立绘(可选); 默认用 portrait, 填了就在弹窗里可切换
+  portraits?: string[];  // 多张图(可选):立绘 + 出现过的「本集画面」画廊图; 默认用 portrait, 填了就在弹窗里可切换
   debut: string;         // 首出场集 slug '1-想家的大海', 未登场为 ''
 }
 
@@ -145,8 +145,13 @@ export const characters: Character[] = [
     color: 'blond',
     colorVar: 'var(--c-blond)',
     power: '金色小弓箭',
-    bio: '卷卷羊毛的小羊女孩,背着一把金色小弓箭,家乡是远方的青青草原,现在住在小太空的同名草原上。她自封"草原第一神箭手",最爱探险和表演大射箭。第四集,她的大射箭满天乱飞,却歪打正着,把卡在云朵里的小星星碰回了家。',
+    bio: '卷卷羊毛的小羊女孩,背着一把金色小弓箭,家乡是远方的青青草原,现在住在小太空的同名草原上。她自封"草原第一神箭手",最爱探险和表演大射箭。第四集,她的大射箭满天乱飞,却歪打正着,把卡在云朵里的小星星碰回了家。第六集,在真正的青青草原,她用青原座送的蒲公英箭练成了"一支箭"——箭头在最高处散开,变成一场给草原播种的种子雨,这一回,摩羯座说她没吹牛。',
     portrait: '/assets/characters/射手座.jpg',
+    portraits: [
+      '/assets/characters/射手座.jpg',
+      '/assets/episodes/大射箭名场面.jpg',
+      '/assets/episodes/金粉大战名场面.jpg',
+    ],
     debut: '4-大射箭名场面',
   },
   {
@@ -159,8 +164,12 @@ export const characters: Character[] = [
     color: 'orange',
     colorVar: 'var(--c-orange)',
     power: '小挎包 + 小鱼尾巴',
-    bio: '长着小牛角和小鱼尾巴的女孩,背一只小挎包,做事情最踏实。她和射手座来自远方的青青草原,现在住在小太空的同名草原上,天天帮射手座背箭、捡箭,全小太空最会捡箭。她最不会忘事——第五集一大早,她贴满小纸条、挨个喊人,终于陪小美人鱼们把瓶子修好了。',
+    bio: '长着小牛角和小鱼尾巴的女孩,背一只小挎包,做事情最踏实。她和射手座来自远方的青青草原,现在住在小太空的同名草原上,天天帮射手座背箭、捡箭,全小太空最会捡箭。她最不会忘事——第五集一大早,她贴满小纸条、挨个喊人,终于陪小美人鱼们把瓶子修好了;第六集,她说的"改天"真的到了,她带大家回了真正的青青草原。',
     portrait: '/assets/characters/摩羯座.jpg',
+    portraits: [
+      '/assets/characters/摩羯座.jpg',
+      '/assets/episodes/大射箭名场面.jpg',
+    ],
     debut: '4-大射箭名场面',
   },
   {
@@ -175,6 +184,15 @@ export const characters: Character[] = [
     power: '小水瓶 + 小皇冠',
     bio: '抱着小瓶子的小美人鱼,长着小羊耳朵,戴着小皇冠。瓶子里装着亮晶晶的星星水,和双鱼座是最要好的姐妹。第一集,她陪着双鱼座一起想家。她的小瓶子曾经裂了道小缝,她给裂缝取名叫"小漏漏";第五集,星砾座用星砾把瓶子补好,裂缝变成了一条亮晶晶的金线——现在它是全小太空独一无二的瓶子,和晚霞海是"同款"。',
     portrait: '/assets/characters/水瓶座.jpg',
+    portraits: [
+      '/assets/characters/水瓶座.jpg',
+      '/assets/episodes/水瓶座激动跳海双鱼座拉住她.jpg',
+      '/assets/episodes/泳池安睡.jpg',
+      '/assets/episodes/大漏水名场面.jpg',
+      '/assets/episodes/金粉大战名场面.jpg',
+      '/assets/episodes/晚霞海.jpg',
+      '/assets/episodes/蒲公英小路.jpg',
+    ],
     debut: '1-想家的大海',
   },
   {
@@ -189,6 +207,14 @@ export const characters: Character[] = [
     power: '贝壳小衣 + 鱼尾',
     bio: '蓝头发的小美人鱼,温柔、爱做梦,做梦都是大海的味道。第一集的主角——她想家了,最后在星空泳池找到了家的感觉。她还喜欢画画,《大漏水名场面》和《晚霞泳池》都是她画的。',
     portrait: '/assets/characters/双鱼座.jpg',
+    portraits: [
+      '/assets/characters/双鱼座.jpg',
+      '/assets/episodes/双鱼座激动跳海水瓶座拉住她.jpg',
+      '/assets/episodes/泳池安睡.jpg',
+      '/assets/episodes/大漏水名场面.jpg',
+      '/assets/episodes/花田送花.jpg',
+      '/assets/episodes/蒲公英小路.jpg',
+    ],
     debut: '1-想家的大海',
   },
 
@@ -234,6 +260,10 @@ export const characters: Character[] = [
     power: '海潮波纹 + 聚拢珍珠贝壳',
     bio: '全新的大海星座小美人鱼——汐是涨潮落潮的潮水,涟是水面圈圈荡漾的涟漪。短短的浅蓝头发,大眼睛亮晶晶,鱼尾从蓝慢慢过渡成淡淡的紫,周围环绕着一圈圈弯弯的小浪花。双手一挥,就能唤来软软的海潮波纹,把散落的珍珠贝壳轻轻聚拢。她不喜欢很深很黑的深海,最喜欢星空泳池的浅水。在大海里,她管白天的潮水和涟漪,和管傍晚晚霞的夕海座是交接班的老搭档。第二集登场。',
     portrait: '/assets/characters/汐涟座.jpg',
+    portraits: [
+      '/assets/characters/汐涟座.jpg',
+      '/assets/episodes/浪花合体.jpg',
+    ],
     debut: '2-会漏水的水瓶',
   },
   {
@@ -248,6 +278,11 @@ export const characters: Character[] = [
     power: '晚霞浪花 + 晚安歌',
     bio: '大海星座的小美人鱼——夕是夕阳的夕,海是大海的海。粉紫色双麻花辫,鱼尾从粉慢慢变成暖暖的金色,身边环绕着橘子色的晚霞浪花。浪花里装着太阳最后的阳光,摸上去暖暖的,还能捏成小橘子、水蜜桃和棉花糖。在大海里,汐涟座管白天的潮水涟漪,她管傍晚的晚霞,每天太阳回家时交接班。有点害羞,玩起浪花就什么都忘了。每天傍晚,她把最后一片晚霞披在海面上,唱晚安歌哄大海睡觉。第三集登场。',
     portrait: '/assets/characters/夕海座.jpg',
+    portraits: [
+      '/assets/characters/夕海座.jpg',
+      '/assets/episodes/浪花合体.jpg',
+      '/assets/episodes/晚霞海.jpg',
+    ],
     debut: '3-晚霞浪花',
   },
 
@@ -264,7 +299,29 @@ export const characters: Character[] = [
     power: '星砾 + 圆圆小挎包',
     bio: '金色波波头的小姑娘,贝雷帽上顶着一颗小芽星,披着星星斗篷,身边总飘着一把金色的小星砾——那是星星眨眼睛时掉下来的小碎光,她一颗一颗捡起来,装在圆圆的小挎包里。她住在小太空的青青草原,是摩羯座和射手座家的邻居,每天走过长长的星星小路,去星座小人超市上班——她是那里的修理师,星砾是全世界最好的修补材料:填进裂缝,大家一起"呼——"地一吹,就化成暖金色的光把裂缝焊住。第五集,她把水瓶座的小瓶子补好了,裂缝变成一条亮晶晶的金线——破过的地方,变成了最亮的地方。她修了一天东西之后,最爱看晚霞。',
     portrait: '/assets/characters/星砾座.jpg',
+    portraits: [
+      '/assets/characters/星砾座.jpg',
+      '/assets/episodes/金粉大战名场面.jpg',
+    ],
     debut: '5-星砾座的修理铺',
+  },
+  {
+    id: 'qingyuanzuo',
+    name: '青原座',
+    role: '草原星座',
+    tags: ['草原星座'],
+    roleLabel: '草原星座',
+    trait: '花草帽 · 守着真正的青青草原',
+    color: 'mint',
+    colorVar: 'var(--c-mint)',
+    power: '小水壶 + 蒲公英箭',
+    bio: '浅草绿双马尾的小姑娘,戴着别满小雏菊和蒲公英的花草帽,披着叶子披风。她住在真正的青青草原——摩羯座和射手座的家乡,是姐妹俩的老朋友。她们去小太空的日子,青原座留下来照顾草原:她认得每一朵花,知道哪朵刚开、哪朵还在睡懒觉,屋顶铺着三叶草的小木屋就在花田边上。她还会做"草原做的箭"——花茎做箭杆、蒲公英做箭头,射到天上,一朵蒲公英就变成一百朵。第六集,她送给大家一包花种子:种在小太空的草原上,真正的青青草原,就也住在小太空里啦。',
+    portrait: '/assets/characters/青原座.jpg',
+    portraits: [
+      '/assets/characters/青原座.jpg',
+      '/assets/episodes/花田送花.jpg',
+    ],
+    debut: '6-蒲公英带路的日子',
   },
 
   // ========== 小太空居民 ==========
