@@ -19,11 +19,12 @@ zodiac-little-space/
 │                  · banners/    全员图鉴(文字无错,可用);十二星座小太空首页banner(右侧星座名有 AI 错别字,勿当主角展示)
 │                  · covers/     第N集.jpg(中文大写集数名)
 │                  · episodes/   情节插图(如"双鱼座激动跳海水瓶座拉住她.jpg"),喂给 episodes.ts 的 illustrations 在故事页「本集画面」画廊展示
-│                  · constellations/ Q 版星座卡 17 张(AI 生成,agnes text2img,prompt 记录见 git 历史/生成脚本在 /tmp 即弃)
+│                  · constellations/ Q 版星座卡 17 张(AI 生成,agnes;真实 12 张以现代简化星形素材做 img2img 参考,虚构 5 张 text2img)
 │                                十二星座 + 5 虚构星座(爸比/妈咪/汐涟/夕海/星砾),文件名 = 角色中文名(双鱼座.jpg)
 │                                图鉴弹窗星空板块:十二星座挂「✨ 真实的星空」(真实天文知识+观测季/最亮星/神话),
 │                                虚构星座挂「🌙 想象中的星空」(形状按角色设定设计,文案向孩子讲清"天上没有")
 │                                真实星位坐标保留在 constellations.ts 作天文参考(原版画星图方案产物,现不渲染)
+│                                新增虚构星座卡的完整流程见下方「新增虚构星座卡」
 │                  · decor/      装饰素材:云朵页脚带(全站页脚上方)/星月分隔串(.flourish 分节符)——透明底 PNG
 │                                (白底图用 site/scripts/knockout-white.py 抠白:边缘连通近白区域→腐蚀断缝防漏进白芯→alpha;换图后重跑)
 │                                页面引用 WebP 变体保 alpha,不派生 JPG 变体(丢 alpha 变黑底);不依赖 multiply 混合
@@ -88,6 +89,28 @@ npm run sync         # 只跑资源同步,不启 dev server
 7. `docs/系列设定.md` 版本 +1:新剧情要点 + 涉及角色行 + 沿革记录
 8. `npm run build` 验证:新路由生成、封面多档变体、音频同步、页数 +1
 9. commit → push(git 操作每次都要先问用户)
+
+## 新增虚构星座卡(「想象中的星空」)
+
+角色本身的新增(设定/立绘/`characters.ts` 条目)按既有流程;这里只记**星座卡**的加法。弹窗模板是数据驱动的——`characters.astro` 遍历 `imaginaryConstellations` 自动出卡,**不用改页面代码**。
+
+1. **定形状**:虚构星座没有"真实星位",形状和小爱一起定或按 `docs/系列设定.md` 的角色设定设计(如星砾座=小挎包+散落星砾)。
+2. **生成卡**(agnes text2img,1024×1024;也可换其他生图工具,提示词通用):
+
+   ```
+   儿童绘本风星座插画,正方形,画面铺满整个画布,不要任何边框、黑边、白边。梦幻粉彩夜空,淡紫到粉蓝柔和渐变,散布细碎小星光。画面主体:【形状描述】。整个形象由发光的淡金色圆点星星组成,星星之间用细细的金线连接,星星带柔和光晕,整体像发光的可爱贴纸。构图居中简洁,治愈梦幻。不要任何文字,不要写实,不要古典版画风格,不要纯黑背景。
+   ```
+
+   ```bash
+   python3 ~/.agents/skills/agnes-cli/scripts/agnes.py image text2img \
+     --prompt "上面的模板,替换【形状描述】" --size 1024x1024 --save /tmp/新星座.png
+   ```
+
+   (真实十二星座卡要重绘则不同:必须给星位参考图走 img2img,prompt 里写死"星点位置/数量/连线一个都不能变",否则 AI 会乱连。参考图可从 `constellations.ts` 存档坐标渲染,或用现代简化星形素材裁切。)
+3. **入库**:检查并裁掉黑边/白框,转 JPG 1024×1024 → `assets/constellations/{角色中文名}.jpg`。**文件名必须 = `characters.ts` 的 `name`**(模板按角色名拼路径)。
+4. **数据**:`site/src/data/constellations.ts` 的 `imaginaryConstellations` 加条目——key = 角色拼音 id(同 `characters.ts`),四字段 `shape`(它长什么样)/`home`(它住在哪里)/`power`(它的本领)/`story`(小故事),6 岁儿童口吻,内容向孩子讲清"这是我们想象的,天上没有"。
+5. **验证**:`npm run build`(自动 sync 出 400/800 变体+新 hash)→ `/characters` 点该角色,弹窗应出现「🌙 想象中的星空」板块。
+6. **提交前自查**:图无黑边、四字段齐全、弹窗标题是🌙不是✨(✨ 只属真实十二星座)。
 
 ## 不要手改 / 不要提交(gitignore)
 
