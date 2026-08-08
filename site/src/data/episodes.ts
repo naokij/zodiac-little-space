@@ -175,6 +175,35 @@ export const episodes: Episode[] = [
         caption: '跟着蒲公英走!——软绵绵、弹墩墩,一步一弹',
       },
     ],
+    next: { title: '第七集 小钳子想牵手', status: 'online', slug: '7-小钳子想牵手' },
+  },
+  {
+    slug: '7-小钳子想牵手',
+    number: 7,
+    title: '第七集 小钳子想牵手',
+    subtitle: '巨蟹座和天蝎座的星星小溪',
+    duration: '约 12 分 46 秒',
+    status: 'online',
+    cover: '/assets/covers/第七集.jpg',
+    audio: '/audio/7-小钳子想牵手.mp3',
+    color: 'rose',
+    excerpt: '射手座探险发现了星星小溪——巨蟹座和天蝎座就住在溪边。玩水玩得正开心,小螃蟹和小红蝎忽然"啪嗒"夹住了自己的主人!原来,没有小手的它们,是想用钳子牵手……',
+    intro: '小太空一个安安静静的角落里,有一条小溪,叫星星小溪。',
+    charactersInScene: ['juxie', 'tianxie', 'mojie', 'sheshou'],
+    illustrations: [
+      {
+        src: '/assets/episodes/星星小溪踩水花.jpg',
+        caption: '「哇——凉丝丝的!」——手拉手,在星星小溪里踩水花',
+      },
+      {
+        src: '/assets/episodes/星星小溪手拉手.jpg',
+        caption: '大手牵小手,小螃蟹和小红蝎也想加入',
+      },
+      {
+        src: '/assets/episodes/被小钳子夹住.jpg',
+        caption: '被夹名场面——「啪嗒!」原来它们是想用钳子牵手',
+      },
+    ],
   },
 ];
 

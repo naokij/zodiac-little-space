@@ -15,7 +15,7 @@ License: **CC BY-NC-SA 4.0**(署名小爱口述 / Jiang Le 整理,非商业,相�
 zodiac-little-space/
 ├── assets/        原图真值源:characters/ locations/ banners/ covers/ episodes/(中文文件名)
 │                  · characters/ 23 张立绘(十二星座 + 爸比座/妈咪座 + 星砾座 + 青原座 + 大海星座汐涟座/夕海座 + 月亮姐姐/月亮妹妹/星星姐妹;爱心座/闪亮座已下线,文件保留备用)
-│                  · locations/  星空泳池 / 星月楼梯 / 星座小人超市 / 青青草原(第四集起,摩羯射手家)
+│                  · locations/  星空泳池 / 星月楼梯 / 星座小人超市 / 青青草原(第四集起,摩羯射手家) / 晚霞海(第五集起,远方) / 星星小溪(第七集起,巨蟹天蝎家)
 │                  · banners/    全员图鉴(文字无错,可用);十二星座小太空首页banner(右侧星座名有 AI 错别字,勿当主角展示)
 │                  · covers/     第N集.jpg(中文大写集数名)
 │                  · episodes/   情节插图(如"双鱼座激动跳海水瓶座拉住她.jpg"),喂给 episodes.ts 的 illustrations 在故事页「本集画面」画廊展示

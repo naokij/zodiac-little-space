@@ -56,6 +56,16 @@ export const scenes: Scene[] = [
     odId: 'scene-green-meadow',
   },
   {
+    id: 'star-stream',
+    name: '星星小溪',
+    zone: 'space',
+    zoneLabel: '小太空',
+    desc: '小太空角落里一条浅浅的小溪,水底铺着圆圆的鹅卵石。一到晚上,满天的星星就掉进溪水里洗澡,洗得一颗一颗亮晶晶的。巨蟹座和天蝎座住在溪边的小房子里,第七集里,她们在这里教会了小螃蟹和小红蝎"轻轻夹"。',
+    image: '/assets/locations/星星小溪.jpg',
+    highlights: ['星星掉进溪里洗澡', '圆圆的鹅卵石', '溪边小房子'],
+    odId: 'scene-star-stream',
+  },
+  {
     id: 'sunset-sea',
     name: '晚霞海',
     zone: 'far',
