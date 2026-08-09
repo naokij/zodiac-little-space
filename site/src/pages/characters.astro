@@ -7,13 +7,14 @@ import { constellations, imaginaryConstellations } from '~/data/constellations';
 import { episodes } from '~/data/episodes';
 import { assetUrl, assetSrcset } from '~/data/asset-url';
 
-// pill 标签(带 N 计数);按 tags 计数——双鱼座/水瓶座同属「十二星座」和「大海星座」,摩羯座/射手座同属「十二星座」和「草原星座」,两组都会计入
+// pill 标签(带 N 计数);按 tags 计数——双鱼座/水瓶座同属「十二星座」和「大海星座」,摩羯座/射手座同属「十二星座」和「草原星座」,巨蟹座/天蝎座同属「十二星座」和「小溪星座」,两组都会计入
 const counts: Record<CharacterRole | 'all', number> = {
   all: characters.length,
   十二星座: characters.filter(c => c.tags.includes('十二星座')).length,
   特别星座: characters.filter(c => c.tags.includes('特别星座')).length,
   大海星座: characters.filter(c => c.tags.includes('大海星座')).length,
   草原星座: characters.filter(c => c.tags.includes('草原星座')).length,
+  小溪星座: characters.filter(c => c.tags.includes('小溪星座')).length,
   小太空居民: characters.filter(c => c.tags.includes('小太空居民')).length,
 };
 
@@ -23,6 +24,7 @@ const roles: { key: CharacterRole | 'all'; label: string }[] = [
   { key: '特别星座', label: `特别星座 · ${counts['特别星座']}` },
   { key: '大海星座', label: `大海星座 · ${counts['大海星座']}` },
   { key: '草原星座', label: `草原星座 · ${counts['草原星座']}` },
+  { key: '小溪星座', label: `小溪星座 · ${counts['小溪星座']}` },
   { key: '小太空居民', label: `小太空居民 · ${counts['小太空居民']}` },
 ];
 

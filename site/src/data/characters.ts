@@ -2,7 +2,7 @@
 // 数据真值源: 仓库根 docs/系列设定.md
 // 视觉锚定:   仓库根 assets/characters/ 下立绘 (爱心座/闪亮座已下线, 文件保留)
 
-export type CharacterRole = '十二星座' | '特别星座' | '大海星座' | '草原星座' | '小太空居民';
+export type CharacterRole = '十二星座' | '特别星座' | '大海星座' | '草原星座' | '小溪星座' | '小太空居民';
 
 export interface Character {
   id: string;            // 拼音 (e.g. 'shuangyu')
@@ -69,19 +69,21 @@ export const characters: Character[] = [
     id: 'juxie',
     name: '巨蟹座',
     role: '十二星座',
-    tags: ['十二星座'],
-    roleLabel: '十二星座',
+    tags: ['十二星座', '小溪星座'],
+    roleLabel: '十二星座 · 小溪星座',
     trait: '抱着小螃蟹 · 爱照顾人',
     color: 'orange',
     colorVar: 'var(--c-orange)',
     power: '小螃蟹伙伴 + 小皇冠',
-    bio: '戴小皇冠、抱着一只橘色小螃蟹的女孩,和天蝎座一起住在小太空角落的星星小溪边。心软又细心,谁难过了她第一个发现,会轻轻拍拍你。第七集,她教会小螃蟹"轻轻夹"——钳子轻轻夹一下,就是牵手。',
+    bio: '戴小皇冠、抱着一只橘色小螃蟹的女孩,和天蝎座一起住在小太空角落的星星小溪边,小溪另一头还住着邻居云螺座。心软又细心,谁难过了她第一个发现,会轻轻拍拍你。第七集,她教会小螃蟹"轻轻夹"——钳子轻轻夹一下,就是牵手。第八集,她收到云螺座送的星星形状鹅卵石,给它取名叫小星石。',
     portrait: '/assets/characters/巨蟹座.jpg',
     portraits: [
       '/assets/characters/巨蟹座.jpg',
       '/assets/episodes/星星小溪踩水花.jpg',
       '/assets/episodes/星星小溪手拉手.jpg',
       '/assets/episodes/被小钳子夹住.jpg',
+      '/assets/episodes/云螺银线.jpg',
+      '/assets/episodes/给小蜗牛加油.jpg',
     ],
     debut: '7-小钳子想牵手',
   },
@@ -131,19 +133,21 @@ export const characters: Character[] = [
     id: 'tianxie',
     name: '天蝎座',
     role: '十二星座',
-    tags: ['十二星座'],
-    roleLabel: '十二星座',
+    tags: ['十二星座', '小溪星座'],
+    roleLabel: '十二星座 · 小溪星座',
     trait: '抱着小蝎子 · 外冷内热',
     color: 'violet',
     colorVar: 'var(--c-violet)',
     power: '小蝎子伙伴 + 小皇冠',
-    bio: '粉头发的女孩,抱着一只笑眯眯的小红蝎,和巨蟹座一起住在星星小溪边。看起来酷酷的,其实心里热乎乎的,认准的朋友会保护到底——小红蝎从溪里捞上来的烂树叶,她也面不改色地收进口袋:"我很喜欢。"第七集,小红蝎学了两次,学会了"轻轻夹"。',
+    bio: '粉头发的女孩,抱着一只笑眯眯的小红蝎,和巨蟹座一起住在星星小溪边,小溪另一头还住着邻居云螺座。看起来酷酷的,其实心里热乎乎的,认准的朋友会保护到底——小红蝎从溪里捞上来的烂树叶,她也面不改色地收进口袋:"我很喜欢。"第七集,小红蝎学了两次,学会了"轻轻夹"。第八集,她嘴上说"才不喜欢吃酸的",转眼把云螺座送的红野果吃了个干净,还悄悄捡了一颗一模一样的当回礼。',
     portrait: '/assets/characters/天蝎座.jpg',
     portraits: [
       '/assets/characters/天蝎座.jpg',
       '/assets/episodes/星星小溪踩水花.jpg',
       '/assets/episodes/星星小溪手拉手.jpg',
       '/assets/episodes/被小钳子夹住.jpg',
+      '/assets/episodes/云螺银线.jpg',
+      '/assets/episodes/给小蜗牛加油.jpg',
     ],
     debut: '7-小钳子想牵手',
   },
@@ -336,6 +340,27 @@ export const characters: Character[] = [
     debut: '6-蒲公英带路的日子',
   },
 
+  // ========== 小溪星座 ==========
+  {
+    id: 'yunluo',
+    name: '云螺座',
+    role: '小溪星座',
+    tags: ['小溪星座'],
+    roleLabel: '小溪星座',
+    trait: '金发小公主 · 慢慢来',
+    color: 'cream',
+    colorVar: 'var(--c-cream)',
+    power: '云壳小背包 + 云螺银线',
+    bio: '金发的小公主,戴小皇冠,穿白云一样蓬蓬的裙子,披蓝色小披风,怀里抱着一只壳是小云朵的蜗牛。她住在星星小溪另一头的小房子里——屋顶圆圆的,像一朵睡着的云。她做什么都慢慢的,说话也慢慢的,因为路上好看的东西太多啦,她要一个一个捡起来,装进背上云做的蜗牛壳背包,送给朋友。她走过的地方会留下一条亮亮的银线,叫云螺银线,顺着银线就能找到她家。第八集登场:她把一路收集的礼物送给了巨蟹座和天蝎座;云壳里还有一朵最大最大的云,要等一个特别特别的日子才打开。',
+    portrait: '/assets/characters/云螺座.jpg',
+    portraits: [
+      '/assets/characters/云螺座.jpg',
+      '/assets/episodes/云螺银线.jpg',
+      '/assets/episodes/给小蜗牛加油.jpg',
+    ],
+    debut: '8-云壳里的小惊喜',
+  },
+
   // ========== 小太空居民 ==========
   {
     id: 'yueliangjiejie',
@@ -387,6 +412,7 @@ export const roleLabelMap: Record<CharacterRole, string> = {
   '特别星座': '特别星座',
   '大海星座': '大海星座',
   '草原星座': '草原星座',
+  '小溪星座': '小溪星座',
   '小太空居民': '小太空居民',
 };
 

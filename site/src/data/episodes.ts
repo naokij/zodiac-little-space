@@ -204,6 +204,31 @@ export const episodes: Episode[] = [
         caption: '被夹名场面——「啪嗒!」原来它们是想用钳子牵手',
       },
     ],
+    next: { title: '第八集 云壳里的小惊喜', status: 'online', slug: '8-云壳里的小惊喜' },
+  },
+  {
+    slug: '8-云壳里的小惊喜',
+    number: 8,
+    title: '第八集 云壳里的小惊喜',
+    subtitle: '云螺座来了 · 云螺银线',
+    duration: '约 14 分 20 秒',
+    status: 'online',
+    cover: '/assets/covers/第八集.jpg',
+    audio: '/audio/8-云壳里的小惊喜.mp3',
+    color: 'cream',
+    excerpt: '小溪另一头住着金发小公主云螺座,她做什么都慢慢的——原来她一路在收集好看的东西,要装进云壳送给朋友。看星星洗澡的夜晚,云壳盖子掀开了,一朵一朵小云飘了出来……',
+    intro: '小溪的另一头,还住着一位星座女孩,她叫云螺座。',
+    charactersInScene: ['juxie', 'tianxie', 'yunluo'],
+    illustrations: [
+      {
+        src: '/assets/episodes/云螺银线.jpg',
+        caption: '云螺银线——白天看不见的银线,晚上全都亮晶晶的',
+      },
+      {
+        src: '/assets/episodes/给小蜗牛加油.jpg',
+        caption: '「加——油——,小——蜗——牛——」三片草叶,也是很远很远的路哦',
+      },
+    ],
   },
 ];
 
