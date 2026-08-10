@@ -236,7 +236,7 @@ export const episodes: Episode[] = [
     number: 9,
     title: '第九集 最快的小妹妹',
     subtitle: '米虾座来了 · 云朵蹦蹦床',
-    duration: '约 14 分 37 秒',
+    duration: '约 14 分 43 秒',
     status: 'online',
     cover: '/assets/covers/第九集.jpg',
     audio: '/audio/9-最快的小妹妹.mp3',
