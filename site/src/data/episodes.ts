@@ -229,6 +229,31 @@ export const episodes: Episode[] = [
         caption: '「加——油——,小——蜗——牛——」三片草叶,也是很远很远的路哦',
       },
     ],
+    next: { title: '第九集 最快的小妹妹', status: 'online', slug: '9-最快的小妹妹' },
+  },
+  {
+    slug: '9-最快的小妹妹',
+    number: 9,
+    title: '第九集 最快的小妹妹',
+    subtitle: '米虾座来了 · 云朵蹦蹦床',
+    duration: '约 14 分 37 秒',
+    status: 'online',
+    cover: '/assets/covers/第九集.jpg',
+    audio: '/audio/9-最快的小妹妹.mp3',
+    color: 'pink',
+    excerpt: '云螺座的妹妹米虾座,是全小溪最快的星座女孩——"嗖"的一下,只剩一条亮亮的小水痕。生日这天,姐姐云壳里最大最大的那朵云,终于打开了……',
+    intro: '云螺座还有一个妹妹,叫米虾座。',
+    charactersInScene: ['juxie', 'tianxie', 'yunluo', 'mixia'],
+    illustrations: [
+      {
+        src: '/assets/episodes/米虾座倒着弹.jpg',
+        caption: '吓一大跳的米虾座,"嗖"的一下倒着弹了出去!',
+      },
+      {
+        src: '/assets/episodes/两条小围巾.jpg',
+        caption: '一条快快的亮线,一条慢慢的银线,像小溪的两条围巾',
+      },
+    ],
   },
 ];
 
