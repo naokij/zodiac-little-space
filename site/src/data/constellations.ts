@@ -333,6 +333,22 @@ export const constellations: Record<string, Constellation> = {
   },
 };
 
+// 生日日期(大家约定的占星说法,不是天文知识):弹窗「真实的星空」第一行展示
+export const constellationDates: Record<string, string> = {
+  baiyang: '3月21日—4月19日',
+  jinniu: '4月20日—5月20日',
+  shuangzi: '5月21日—6月21日',
+  juxie: '6月22日—7月22日',
+  shizi: '7月23日—8月22日',
+  chunv: '8月23日—9月22日',
+  tiancheng: '9月23日—10月23日',
+  tianxie: '10月24日—11月22日',
+  sheshou: '11月23日—12月21日',
+  mojie: '12月22日—1月19日',
+  shuiping: '1月20日—2月18日',
+  shuangyu: '2月19日—3月20日',
+};
+
 // ========== 想象中的星空(虚构星座) ==========
 // 形状按 docs/系列设定.md 的角色设定设计;文案要向孩子讲清:这些星座是我们编故事想象出来的。
 export interface ImaginaryConstellation {

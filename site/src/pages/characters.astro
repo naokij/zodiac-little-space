@@ -3,7 +3,7 @@ import Base from '~/layouts/Base.astro';
 import CharacterPortrait from '~/components/CharacterPortrait.astro';
 import ResponsiveImage from '~/components/ResponsiveImage.astro';
 import { characters, type CharacterRole } from '~/data/characters';
-import { constellations, imaginaryConstellations } from '~/data/constellations';
+import { constellations, constellationDates, imaginaryConstellations } from '~/data/constellations';
 import { episodes } from '~/data/episodes';
 import { assetUrl, assetSrcset } from '~/data/asset-url';
 
@@ -156,6 +156,7 @@ const nameById = Object.fromEntries(characters.map((c) => [c.id, c.name]));
       </div>
       <p class="modal-sky-caption">这个星座天上真的有,可爱的样子是我们想象的哦</p>
       <dl class="modal-sky-facts">
+        <div class="modal-sky-item"><dt>生日在这段日子</dt><dd>{constellationDates[id]}(这是大家约定的说法,不是天文知识哦)</dd></div>
         <div class="modal-sky-item"><dt>它长什么样</dt><dd>{c.shape}</dd></div>
         <div class="modal-sky-item"><dt>什么时候能看到</dt><dd>{c.season}</dd></div>
         <div class="modal-sky-item"><dt>最亮的星</dt><dd>{c.brightest}</dd></div>
