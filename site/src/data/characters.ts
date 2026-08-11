@@ -2,7 +2,7 @@
 // 数据真值源: 仓库根 docs/系列设定.md
 // 视觉锚定:   仓库根 assets/characters/ 下立绘 (爱心座/闪亮座已下线, 文件保留)
 
-export type CharacterRole = '十二星座' | '特别星座' | '大海星座' | '草原星座' | '小溪星座' | '小太空居民';
+export type CharacterRole = '十二星座' | '特别星座' | '大海星座' | '草原星座' | '小溪星座' | '农场星座' | '小太空居民';
 
 export interface Character {
   id: string;            // 拼音 (e.g. 'shuangyu')
@@ -41,15 +41,21 @@ export const characters: Character[] = [
     id: 'jinniu',
     name: '金牛座',
     role: '十二星座',
-    tags: ['十二星座'],
-    roleLabel: '十二星座',
+    tags: ['十二星座', '农场星座'],
+    roleLabel: '十二星座 · 农场星座',
     trait: '粉粉牛角 · 慢吞吞',
     color: 'pink',
     colorVar: 'var(--c-pink)',
     power: '小牛角 + 白花边裙',
-    bio: '粉色长发、长着两只小牛角的小女孩,穿白白的花边裙。做什么都慢慢的、稳稳的,最喜欢吃饱了再睡个午觉。',
+    bio: '粉色长发、长着两只小牛角的小女孩,穿白白的花边裙,住在月光农场。做什么都慢慢的、稳稳的,最喜欢吃饱了再睡个午觉。她跟蔬菜说话慢慢的,蔬菜们最喜欢听她说话——她说话的时候,南瓜就黄一点,胡萝卜就甜一点。第十集,她在收获夜请天秤座来分晚餐,还捧出了藏在篮子最底下、最大最亮的那颗星星。',
     portrait: '/assets/characters/金牛座.jpg',
-    debut: '',
+    portraits: [
+      '/assets/characters/金牛座.jpg',
+      '/assets/episodes/金牛座和天秤座在月光农场.jpg',
+      '/assets/episodes/金牛座拔发光的胡萝卜.jpg',
+      '/assets/episodes/萤火虫小泡泡.jpg',
+    ],
+    debut: '10-称一称,分一半',
   },
   {
     id: 'shuangzi',
@@ -119,15 +125,21 @@ export const characters: Character[] = [
     id: 'tiancheng',
     name: '天秤座',
     role: '十二星座',
-    tags: ['十二星座'],
-    roleLabel: '十二星座',
+    tags: ['十二星座', '农场星座'],
+    roleLabel: '十二星座 · 农场星座',
     trait: '金色小天平 · 最公平',
     color: 'mint',
     colorVar: 'var(--c-mint)',
     power: '金色小天平',
-    bio: '薄荷绿卷发、举着一架金色小天平的女孩。分星星糖的时候,她称一称,保证每个人都一样多。',
+    bio: '薄荷绿卷发、举着一架金色小天平的女孩,住在月光农场隔壁。分星星糖的时候,她称一称,保证每个人都一样多。第十集,她帮金牛座分收获晚餐,天平怎么也称不平,最后她明白了:公平不是两边一模一样,是每个人都拿到自己最喜欢的那一份。',
     portrait: '/assets/characters/天秤座.jpg',
-    debut: '',
+    portraits: [
+      '/assets/characters/天秤座.jpg',
+      '/assets/episodes/金牛座和天秤座在月光农场.jpg',
+      '/assets/episodes/金牛座拔发光的胡萝卜.jpg',
+      '/assets/episodes/萤火虫小泡泡.jpg',
+    ],
+    debut: '10-称一称,分一半',
   },
   {
     id: 'tianxie',
@@ -434,6 +446,7 @@ export const roleLabelMap: Record<CharacterRole, string> = {
   '大海星座': '大海星座',
   '草原星座': '草原星座',
   '小溪星座': '小溪星座',
+  '农场星座': '农场星座',
   '小太空居民': '小太空居民',
 };
 

@@ -254,6 +254,35 @@ export const episodes: Episode[] = [
         caption: '一条快快的亮线,一条慢慢的银线,像小溪的两条围巾',
       },
     ],
+    next: { title: '第十集 称一称,分一半', status: 'online', slug: '10-称一称,分一半' },
+  },
+  {
+    slug: '10-称一称,分一半',
+    number: 10,
+    title: '第十集 称一称,分一半',
+    subtitle: '农场星座来了 · 月光农场',
+    duration: '约 14 分 10 秒',
+    status: 'online',
+    cover: '/assets/covers/第十集.jpg',
+    audio: '/audio/10-称一称,分一半.mp3',
+    color: 'blue',
+    excerpt: '月光农场的蔬菜一夜全熟了,金牛座要办收获晚餐,请天秤座来公平地分。金色小天平称啊称,南瓜、胡萝卜、小星星都放上去了,怎么也称不平——直到金牛座捧出藏在篮子最底下的那颗星星……',
+    intro: '小太空里有一个香喷喷的地方,叫月光农场,那是金牛座和天秤座的家。',
+    charactersInScene: ['jinniu', 'tiancheng'],
+    illustrations: [
+      {
+        src: '/assets/episodes/金牛座和天秤座在月光农场.jpg',
+        caption: '月光农场的夜晚,蔬菜一个一个发出暖暖的光',
+      },
+      {
+        src: '/assets/episodes/金牛座拔发光的胡萝卜.jpg',
+        caption: '「啵!」胡萝卜跳出泥土,萤火虫把它当成了同伴',
+      },
+      {
+        src: '/assets/episodes/萤火虫小泡泡.jpg',
+        caption: '飞累的萤火虫落在手心里,像一颗发光的小泡泡',
+      },
+    ],
   },
 ];
 

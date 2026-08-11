@@ -66,6 +66,16 @@ export const scenes: Scene[] = [
     odId: 'scene-star-stream',
   },
   {
+    id: 'moon-farm',
+    name: '月光农场',
+    zone: 'space',
+    zoneLabel: '小太空',
+    desc: '金牛座和天秤座的家,围着矮矮的木栅栏,里面种着南瓜、胡萝卜和小蘑菇。这里的蔬菜白天睡觉,一到晚上就一个一个发出暖暖的光,把农场照得亮堂堂的。第十集里,蔬菜一夜全熟了,两个女孩在这里办了收获晚餐,还用金色小天平称出了"心意和心意一样重"。农场的角落里,种着青原座从远方草原寄来的花种子。',
+    image: '/assets/locations/月光农场.jpg',
+    highlights: ['夜里发光的蔬菜', '金色小天平', '等花开的小土包'],
+    odId: 'scene-moon-farm',
+  },
+  {
     id: 'sunset-sea',
     name: '晚霞海',
     zone: 'far',
