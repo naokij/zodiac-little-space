@@ -14,12 +14,12 @@ License: **CC BY-NC-SA 4.0**(署名小爱口述 / Jiang Le 整理,非商业,相�
 ```
 zodiac-little-space/
 ├── assets/        原图真值源:characters/ locations/ banners/ covers/ episodes/(中文文件名)
-│                  · characters/ 25 张立绘(十二星座 + 爸比座/妈咪座 + 星砾座 + 青原座 + 云螺座 + 米虾座 + 大海星座汐涟座/夕海座 + 月亮姐姐/月亮妹妹/星星姐妹;爱心座/闪亮座已下线,文件保留备用)
+│                  · characters/ 26 张立绘(十二星座 + 爸比座/妈咪座 + 星砾座 + 青原座 + 云螺座 + 米虾座 + 星灵座 + 大海星座汐涟座/夕海座 + 月亮姐姐/月亮妹妹/星星姐妹;爱心座/闪亮座已下线,文件保留备用)
 │                  · locations/  星空泳池 / 星月楼梯 / 星座小人超市 / 青青草原(第四集起,摩羯射手家) / 晚霞海(第五集起,远方) / 星星小溪(第七集起,巨蟹天蝎家) / 月光农场(第十集起,金牛天秤家)
 │                  · banners/    全员图鉴(文字无错,可用);十二星座小太空首页banner(右侧星座名有 AI 错别字,勿当主角展示)
 │                  · covers/     第N集.jpg(中文大写集数名)
 │                  · episodes/   情节插图(如"双鱼座激动跳海水瓶座拉住她.jpg"),喂给 episodes.ts 的 illustrations 在故事页「本集画面」画廊展示
-│                  · constellations/ Q 版星座卡 20 张(AI 生成,agnes/seedream;真实 12 张以现代简化星形素材做 img2img 参考,虚构 8 张 text2img)
+│                  · constellations/ Q 版星座卡 21 张(AI 生成,agnes/seedream/chatgpt image2;真实 12 张以现代简化星形素材做 img2img 参考,虚构 9 张 text2img)
 │                                十二星座 + 8 虚构星座(爸比/妈咪/汐涟/夕海/星砾/青原/云螺/米虾),文件名 = 角色中文名(双鱼座.jpg)
 │                                图鉴弹窗星空板块:十二星座挂「✨ 真实的星空」(真实天文知识+观测季/最亮星/神话+生日日期(constellationDates,约定的占星说法,非天文知识)),
 │                                虚构星座挂「🌙 想象中的星空」(形状按角色设定设计,文案向孩子讲清"天上没有")
@@ -41,7 +41,8 @@ zodiac-little-space/
 │   │   ├── layouts/    Base.astro (全站布局 + 顶部导航)
 │   │   └── styles/     shared.css (全站唯一,OKLch tokens,梦幻夜空主题)
 │   ├── scripts/   sync-assets.sh + generate-image-variants / generate-asset-hashes / build-durations
-│   │              / generate-zodiac-icons(站点图标) / knockout-white(装饰图抠白,见 decor 注) / asr+align-asr(字级时间戳)
+│   │              / generate-zodiac-icons(站点图标) / knockout-white(装饰图抠白,见 decor 注)
+│   │              / tts.py(配音+字级时间戳,推荐) / asr.sh+align-asr.py(whisper 备用流程)
 │   ├── data/asr/  {slug}.aligned.json(字级时间戳,whisper+拼音对齐产出)
 │   └── public/    sync 生成(见下"不要手改/不要提交"清单);logo/ 例外须入 git
 └── LICENSE        CC BY-NC-SA 4.0
@@ -81,8 +82,8 @@ npm run sync         # 只跑资源同步,不启 dev server
 **新增一集的完整发布清单(按序执行,每步完成再打勾):**
 
 1. `stories/N-标题.md` 正文(遵守下方 markdown 写作规范)
-2. 配音:`mmx speech synthesize` → `audio/N-标题.mp3`
-3. 字级高亮:`site/scripts/asr.sh` + `align-asr.py` → `site/data/asr/{slug}.aligned.json`(对齐覆盖率应 100%)
+2. 配音 + 字级时间戳:`site/scripts/tts.py`(MiniMax API subtitle_type=word,字级时间戳,一步到位,见下方「配音(TTS)」)
+3. ~~字级高亮:asr.sh + align-asr.py~~(v13 起由 tts.py 替代;whisper 旧流程留作备用/交叉验证)
 4. 封面:**只出提示词,不执行任何生图 skill**——用户拿提示词手动用 AI 工具生成、提供图片后,助手拷入 `assets/covers/第N集.jpg`(1920×1920 正方形 Q 版绘本风,画风锚定前集封面)。提示词经验:**不要写角色名**,改用外观描述 + 参考图编号(提醒用户按编号顺序上传);**场景必须给参考图**——`docs/系列设定.md` 场景速查表里的锚点图(`assets/locations/*.jpg`);构图主体控制在 1–2 个,核心动作用短动词写清;加一句"全画面只有这 N 个角色"防娃娃复制/路人乱入
 5. `episodes.ts`:新条目 `status:'online'` + 上一集 `next` 指向本集(`duration` 不手写,build 时脚本回写)
 6. **同步检查 `characters.ts`**(易漏!):本集登场角色的 `trait`/`bio` 是否落后于剧情
@@ -127,23 +128,37 @@ npm run sync         # 只跑资源同步,不启 dev server
 
 - **路径别名**:`~/*` → `site/src/*`(tsconfig paths)。Vite `fs.allow: ['..']` 让 site 能 `fs.readFileSync` 读仓库根的 `stories/` `assets/` `audio/`。
 - **故事详情页** `site/src/pages/story/[slug].astro`:build 时 `fs.readFileSync('../stories/{slug}.md')`,用 `pinyin-pro` 给每个汉字生成 `<ruby>` 注音。**不要把故事正文复制进 site**——真值源是根目录 markdown。
-- **字级卡拉OK高亮**:故事页读 `site/data/asr/{slug}.aligned.json`(字级时间戳),`requestAnimationFrame` 驱动逐字高亮。该 json 由 `site/scripts/asr.sh`(whisper tiny 中文)+ `align-asr.py`(拼音空间 difflib 对齐,消解同音字 ASR 错误)产出。新增集数要做高亮,需先跑这两个脚本生成 aligned.json,否则页面降级为无高亮纯文本。
+- **字级卡拉OK高亮**:故事页读 `site/data/asr/{slug}.aligned.json`(字级时间戳),`requestAnimationFrame` 驱动逐字高亮。该 json 由 `site/scripts/tts.py`(MiniMax API subtitle_type=word,配音+时间戳一步到位)产出;备用是 `asr.sh`(whisper tiny 中文)+ `align-asr.py`(拼音空间 difflib 对齐,消解同音字 ASR 错误)。新增集数要做高亮,需先生成 aligned.json,否则页面降级为无高亮纯文本。
 - **样式**:全站唯一 `site/src/styles/shared.css`,OKLch token(`--c-{name}` 颜色 / `--r-{name}` 圆角 / `--s-{n}` 间距),浅色棉花糖梦幻主题(奶油白底 + 白卡片 + 粉蓝紫 pastel `--accent`;素材是白底 Q 版贴纸,卡片/立绘底都用近白,不要深色块衬底)。深色只留两处例外:首页 hero banner(夜空窗)和场景 lightbox 查看罩。display 字体用猫啃网风雅宋(本地 TTF),body 用系统黑体。新颜色优先复用已有 `--c-*`,不要硬编码十六进制。
 - **缓存策略**:`site/public/_headers` 给 `/assets/ /audio/ /fonts/` 设 `immutable`。改了同名资源必须靠 `asset-hashes.json` 的 `?h=` query 换指纹——所以**改图后务必跑 sync 重生 hash**,否则 CDN 不刷新。
 
 ## 命名 / 用词约定
 
 - 故事文件:`stories/N-标题.md`(如 `1-想家的大海`)
-- 角色名用**简体规范字**;十二星座写全名(双鱼座、水瓶座……),特别星座:爸比座、妈咪座;大海星座:汐涟座、夕海座(双鱼座/水瓶座兼属大海星座,tags 多分组,见 characters.ts);草原星座:星砾座(纯成员,住小太空青青草原、超市上班)、青原座(纯成员,住真正的青青草原、照料草原),摩羯座/射手座兼属;小溪星座:云螺座(纯成员,住星星小溪另一头、云壳百宝袋+云螺银线)、米虾座(纯成员,云螺座的妹妹、全小溪最快+吓一跳倒着弹),巨蟹座/天蝎座兼属;农场星座:金牛座/天秤座兼属(住月光农场,蔬菜白天睡觉、晚上发光);小太空居民:月亮姐姐、月亮妹妹、星星姐妹
+- 角色名用**简体规范字**;十二星座写全名(双鱼座、水瓶座……),特别星座:爸比座、妈咪座;大海星座:汐涟座、夕海座(双鱼座/水瓶座兼属大海星座,tags 多分组,见 characters.ts);草原星座:星砾座(纯成员,住小太空青青草原、超市上班)、青原座(纯成员,住真正的青青草原、照料草原),摩羯座/射手座兼属;小溪星座:云螺座(纯成员,住星星小溪另一头、云壳百宝袋+云螺银线)、米虾座(纯成员,云螺座的妹妹、全小溪最快+吓一跳倒着弹),巨蟹座/天蝎座兼属;农场星座:星灵座(纯成员,月亮姐姐的小帮手、小洒水壶送月光,住月光农场栅栏外玻璃花房,白天睡觉夜里上班),金牛座/天秤座兼属(住月光农场,蔬菜白天睡觉、晚上发光);小太空居民:月亮姐姐、月亮妹妹、星星姐妹
 - CSS token:`--c-{name}`(颜色,如 `--c-sky`)、`--r-{name}`(圆角)、`--s-{n}`(间距)
 
 ## 配音(TTS)
 
-默认音色 **`qiaopi_mengmei`**(俏皮萌妹),全剧集统一。新增集数配音:
+默认音色 **`qiaopi_mengmei`**(俏皮萌妹),全剧集统一。新增集数配音 + 字级时间戳**一步到位**(v13 起,推荐):
 
 ```bash
-mmx speech synthesize --text-file ../stories/N-标题.md --voice qiaopi_mengmei --out ../audio/N-标题.mp3
+python3 site/scripts/tts.py stories/N-标题.md
+# 产出: audio/N-标题.mp3 + site/data/asr/N-标题.aligned.json
+# 原理: MiniMax t2a_v2 API 的 subtitle_type=word 返回字级时间戳(每个汉字一个时间窗),
+#       与音频天然一致,无需 ASR;脚本再做能量吸附修正(API 时间窗无缝,停顿会被算进后一字,
+#       吸附把每字起点对齐到真实发声点)。mmx CLI 未暴露 subtitle_type(只支持句级),所以脚本直调 API。
+# 已存在的输出需 --force 才覆盖;--save-subs/--load-subs 可存取 API 原始字幕供调试。
 ```
+
+**备用流程**(tts.py 不可用时):`mmx speech synthesize --text-file ... --voice qiaopi_mengmei --out ...` 配音,再 `./site/scripts/asr.sh` + `python3 site/scripts/align-asr.py`(拼音空间对齐,消解同音字 ASR 错误;重跑前先删 `site/data/asr/{slug}.json`)。
+
+**配音验收**(v12 教训,TTS 对"X——X——"长破折号链会随机触发拖尾低鸣、单字循环甚至整句漏念):
+
+1. tts.py 自动报警"单字时长 > 3s"(拖尾/卡壳的直接信号);whisper 流程则检查 aligned.json 相邻字空档 >4s + 扫 whisper json 循环段(同一词连续重复 ≥6 次——漏念的字会被对齐器插值铺进循环区,空档检查抓不到)
+2. 漏句修法:单独 `mmx speech synthesize --text '漏掉的句子'` 补录,用 ffmpeg `atrim`+`concat` 拼接(注意别和上下文重复);拖尾/循环段直接剪掉,前后各留 ~0.5s
+3. **剪过/拼过的 mp3 必须重编码为 CBR**(`-codec:a libmp3lame -b:a 96k`)——`build-durations.mjs` 按首帧码率估算时长,VBR 文件会算成两倍
+4. 手工修补过音频后必须重生成对齐数据(tts.py 生成的 aligned.json 与其音频严格对应,剪拼后应重跑 whisper 备用流程对齐修补版)
 
 ## 故事 markdown 写作规范(`stories/N-标题.md`)
 

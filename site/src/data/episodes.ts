@@ -283,6 +283,31 @@ export const episodes: Episode[] = [
         caption: '飞累的萤火虫落在手心里,像一颗发光的小泡泡',
       },
     ],
+    next: { title: '第十一集 等花开', status: 'online', slug: '11-等花开' },
+  },
+  {
+    slug: '11-等花开',
+    number: 11,
+    title: '第十一集 等花开',
+    subtitle: '星灵座来了 · 星星花开',
+    duration: '约 14 分 36 秒',
+    status: 'online',
+    cover: '/assets/covers/第十一集.jpg',
+    audio: '/audio/11-等花开.mp3',
+    color: 'moon',
+    excerpt: '农场角落的花种子一直没有发芽,金牛座和天秤座决定守夜等花开。深夜,天秤座的小天平忽然沉了一下——月光是有重量的!一个提着小洒水壶的发光小女孩,正悄悄地给种子浇月光……',
+    intro: '在农场最暖和的角落里,有一个小小的土包,土包里睡着一包从远方来的花种子。',
+    charactersInScene: ['jinniu', 'tiancheng', 'xinglingzuo'],
+    illustrations: [
+      {
+        src: '/assets/episodes/守夜发现星灵座.jpg',
+        caption: '守夜名场面——天平忽然沉了一下:月光,是有重量的',
+      },
+      {
+        src: '/assets/episodes/星星花开.jpg',
+        caption: '「啪。」花开了——像有人把天上的星星,种在了农场角落里',
+      },
+    ],
   },
 ];
 
