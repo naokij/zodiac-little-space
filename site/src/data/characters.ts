@@ -17,7 +17,7 @@ export interface Character {
   bio: string;           // 人物小传
   portrait: string;      // 原图 URL '/assets/characters/...'
   defaultPortrait?: string;
-  portraits?: string[];  // 多张图(可选):立绘 + 出现过的「本集画面」画廊图; 默认用 portrait, 填了就在弹窗里可切换
+  portraits?: string[];  // 多张图(可选):立绘 + 封面 + 出现过的「本集画面」画廊图; 默认用 portrait, 填了就在弹窗里可切换
   debut: string;         // 首出场集 slug '1-想家的大海', 未登场为 ''
 }
 
@@ -51,6 +51,7 @@ export const characters: Character[] = [
     portrait: '/assets/characters/金牛座.jpg',
     portraits: [
       '/assets/characters/金牛座.jpg',
+      '/assets/covers/第十集.jpg',
       '/assets/episodes/金牛座和天秤座在月光农场.jpg',
       '/assets/episodes/金牛座拔发光的胡萝卜.jpg',
       '/assets/episodes/萤火虫小泡泡.jpg',
@@ -87,6 +88,8 @@ export const characters: Character[] = [
     portrait: '/assets/characters/巨蟹座.jpg',
     portraits: [
       '/assets/characters/巨蟹座.jpg',
+      '/assets/covers/第七集.jpg',
+      '/assets/covers/第八集.jpg',
       '/assets/episodes/星星小溪踩水花.jpg',
       '/assets/episodes/星星小溪手拉手.jpg',
       '/assets/episodes/被小钳子夹住.jpg',
@@ -137,6 +140,7 @@ export const characters: Character[] = [
     portrait: '/assets/characters/天秤座.jpg',
     portraits: [
       '/assets/characters/天秤座.jpg',
+      '/assets/covers/第十集.jpg',
       '/assets/episodes/金牛座和天秤座在月光农场.jpg',
       '/assets/episodes/金牛座拔发光的胡萝卜.jpg',
       '/assets/episodes/萤火虫小泡泡.jpg',
@@ -159,6 +163,8 @@ export const characters: Character[] = [
     portrait: '/assets/characters/天蝎座.jpg',
     portraits: [
       '/assets/characters/天蝎座.jpg',
+      '/assets/covers/第七集.jpg',
+      '/assets/covers/第八集.jpg',
       '/assets/episodes/星星小溪踩水花.jpg',
       '/assets/episodes/星星小溪手拉手.jpg',
       '/assets/episodes/被小钳子夹住.jpg',
@@ -182,6 +188,8 @@ export const characters: Character[] = [
     portrait: '/assets/characters/射手座.jpg',
     portraits: [
       '/assets/characters/射手座.jpg',
+      '/assets/covers/第四集.jpg',
+      '/assets/covers/第六集.jpg',
       '/assets/episodes/大射箭名场面.jpg',
       '/assets/episodes/金粉大战名场面.jpg',
     ],
@@ -201,6 +209,7 @@ export const characters: Character[] = [
     portrait: '/assets/characters/摩羯座.jpg',
     portraits: [
       '/assets/characters/摩羯座.jpg',
+      '/assets/covers/第四集.jpg',
       '/assets/episodes/大射箭名场面.jpg',
     ],
     debut: '4-大射箭名场面',
@@ -219,6 +228,10 @@ export const characters: Character[] = [
     portrait: '/assets/characters/水瓶座.jpg',
     portraits: [
       '/assets/characters/水瓶座.jpg',
+      '/assets/covers/第一集.jpg',
+      '/assets/covers/第二集.jpg',
+      '/assets/covers/第三集.jpg',
+      '/assets/covers/第五集.jpg',
       '/assets/episodes/水瓶座激动跳海双鱼座拉住她.jpg',
       '/assets/episodes/泳池安睡.jpg',
       '/assets/episodes/大漏水名场面.jpg',
@@ -242,6 +255,9 @@ export const characters: Character[] = [
     portrait: '/assets/characters/双鱼座.jpg',
     portraits: [
       '/assets/characters/双鱼座.jpg',
+      '/assets/covers/第一集.jpg',
+      '/assets/covers/第二集.jpg',
+      '/assets/covers/第三集.jpg',
       '/assets/episodes/双鱼座激动跳海水瓶座拉住她.jpg',
       '/assets/episodes/泳池安睡.jpg',
       '/assets/episodes/大漏水名场面.jpg',
@@ -295,6 +311,8 @@ export const characters: Character[] = [
     portrait: '/assets/characters/汐涟座.jpg',
     portraits: [
       '/assets/characters/汐涟座.jpg',
+      '/assets/covers/第二集.jpg',
+      '/assets/covers/第三集.jpg',
       '/assets/episodes/浪花合体.jpg',
     ],
     debut: '2-会漏水的水瓶',
@@ -313,6 +331,7 @@ export const characters: Character[] = [
     portrait: '/assets/characters/夕海座.jpg',
     portraits: [
       '/assets/characters/夕海座.jpg',
+      '/assets/covers/第三集.jpg',
       '/assets/episodes/浪花合体.jpg',
       '/assets/episodes/晚霞海.jpg',
     ],
@@ -334,6 +353,7 @@ export const characters: Character[] = [
     portrait: '/assets/characters/星砾座.jpg',
     portraits: [
       '/assets/characters/星砾座.jpg',
+      '/assets/covers/第五集.jpg',
       '/assets/episodes/金粉大战名场面.jpg',
     ],
     debut: '5-星砾座的修理铺',
@@ -352,6 +372,7 @@ export const characters: Character[] = [
     portrait: '/assets/characters/青原座.jpg',
     portraits: [
       '/assets/characters/青原座.jpg',
+      '/assets/covers/第六集.jpg',
       '/assets/episodes/花田送花.jpg',
     ],
     debut: '6-蒲公英带路的日子',
@@ -372,6 +393,8 @@ export const characters: Character[] = [
     portrait: '/assets/characters/云螺座.jpg',
     portraits: [
       '/assets/characters/云螺座.jpg',
+      '/assets/covers/第八集.jpg',
+      '/assets/covers/第九集.jpg',
       '/assets/episodes/云螺银线.jpg',
       '/assets/episodes/给小蜗牛加油.jpg',
       '/assets/episodes/两条小围巾.jpg',
@@ -392,6 +415,7 @@ export const characters: Character[] = [
     portrait: '/assets/characters/米虾座.jpg',
     portraits: [
       '/assets/characters/米虾座.jpg',
+      '/assets/covers/第九集.jpg',
       '/assets/episodes/米虾座倒着弹.jpg',
       '/assets/episodes/两条小围巾.jpg',
     ],
@@ -411,6 +435,10 @@ export const characters: Character[] = [
     power: '月光洒水壶 + 小翅膀发饰',
     bio: '月亮姐姐的小帮手,一起管理月光:月亮姐姐管天上那盏大灯,她管送月光——每天晚上把月光装在小洒水壶里,送到小太空的各个角落,月光农场的蔬菜晚上发光,就是她的工作成果。淡淡的彩虹色头发,一边编着麻花辫别着小星星,发间别着一枚白色的小翅膀发饰,裙子上挂着月亮纽扣,说话轻轻的,喜欢俏皮地眨一只眼睛。她住在月光农场栅栏外的玻璃花房里,白天睡觉,月亮一出来就上班。第十一集登场:原来她每天送完月光,都会悄悄绕到农场角落,给青原座寄来的花种子多留一份月光——花儿是喝月光长大的。种子开花那晚,她被守夜的金牛座和天秤座发现了。',
     portrait: '/assets/characters/星灵座.jpg',
+    portraits: [
+      '/assets/characters/星灵座.jpg',
+      '/assets/covers/第十一集.jpg',
+    ],
     debut: '11-等花开',
   },
 
