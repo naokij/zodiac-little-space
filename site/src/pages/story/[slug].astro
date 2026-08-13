@@ -420,8 +420,11 @@ const coverViewer = [
         const nextBtn = document.getElementById('cover-next');
         if (prevBtn) prevBtn.addEventListener('click', (e) => { e.stopPropagation(); showCover(vi - 1); });
         if (nextBtn) nextBtn.addEventListener('click', (e) => { e.stopPropagation(); showCover(vi + 1); });
-        coverEl.addEventListener('click', () => openGalleryModal(viewer[vi].frames, viewer[vi].caption));
-        coverEl.style.cursor = 'zoom-in';
+        // 手机端封面本就接近全宽,lightbox 不会更大,不挂点开大图;桌面端 modal 远大于 360px 封面才有意义
+        coverEl.addEventListener('click', () => {
+          if (window.matchMedia('(max-width: 900px)').matches) return;
+          openGalleryModal(viewer[vi].frames, viewer[vi].caption);
+        });
       }
       if (gClose) gClose.addEventListener('click', closeGalleryModal);
       if (gModal) gModal.addEventListener('click', (e) => { if (e.target === gModal) closeGalleryModal(); });

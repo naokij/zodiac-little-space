@@ -464,6 +464,10 @@ a.chip:hover, button.chip:hover { transform: translateY(-1px); background: oklch
 }
 
 /* 封面翻页查看器:封面 + 本集画面一个图组,箭头就地切换( z-index 高于 ::after 描边(z2)和 sparkle(z3) ) */
+@media (min-width: 901px) {
+  /* 桌面端点开 lightbox 才有意义(modal 比 360px 封面大),给可点提示 */
+  .story-cover[data-viewer] { cursor: zoom-in; }
+}
 .cover-nav {
   position: absolute;
   top: 50%;
