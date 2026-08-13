@@ -77,7 +77,7 @@ npm run sync         # 只跑资源同步,不启 dev server
 - `duration` 字段**不要手写**——`build-durations.mjs` 会读 mp3 真实时长覆盖它
 - `status: 'online'` 才会在 `/story/{slug}` 生成路由(`getStaticPaths` 过滤);`'soon'` 是占位
 - 角色 id 用拼音(如 `shuangyu` `shuiping` `yueliangjiejie` `xilianzuo`),对应 `characters.ts`
-- `illustrations`(可选)= 本集画面:`{ src, caption, frames? }[]`,渲染在故事页正文之后、「第N集完」之前的画廊(在 `#story-text` 容器**外**,不参与逐字高亮/滚动跟随);`frames` 填 ≥2 张图时是翻页动画(600ms 来回切换,画廊内和 lightbox 里都动;小爱演示的"手翻书"玩法);图放 `assets/episodes/`,画廊缩略图用 `-400/-800.webp` 变体,lightbox 用原图;画廊图和**封面图**都挂到出场角色 `characters.ts` 的 `portraits` 数组(顺序:立绘 → 封面 → 画廊图),图鉴弹窗里可切换浏览
+- `illustrations`(可选)= 本集画面:`{ src, caption, frames? }[]`,渲染在故事页正文之后、「第N集完」之前的画廊(在 `#story-text` 容器**外**,不参与逐字高亮/滚动跟随);同时并入**封面翻页查看器**(封面+本集画面一个图组,sticky 封面区箭头就地切换,首次切换后 img 由 src 驱动、去掉 srcset/webp source,点图开 lightbox);`frames` 填 ≥2 张图时是翻页动画(600ms 来回切换,画廊内和 lightbox 里都动;小爱演示的"手翻书"玩法);图放 `assets/episodes/`,画廊缩略图用 `-400/-800.webp` 变体,lightbox 用原图;画廊图和**封面图**都挂到出场角色 `characters.ts` 的 `portraits` 数组(顺序:立绘 → 封面 → 画廊图),图鉴弹窗里可切换浏览
 
 **新增一集的完整发布清单(按序执行,每步完成再打勾):**
 

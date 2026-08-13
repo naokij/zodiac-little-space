@@ -463,6 +463,47 @@ a.chip:hover, button.chip:hover { transform: translateY(-1px); background: oklch
   display: block;
 }
 
+/* 封面翻页查看器:封面 + 本集画面一个图组,箭头就地切换( z-index 高于 ::after 描边(z2)和 sparkle(z3) ) */
+.cover-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 4;
+  width: 44px; height: 44px;
+  border: none;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: oklch(100% 0 0 / 0.85);
+  color: var(--fg);
+  cursor: pointer;
+  box-shadow: 0 2px 8px oklch(60% 0.06 310 / 0.25);
+}
+.cover-nav:hover { background: oklch(100% 0 0 / 0.95); }
+.cover-nav svg { width: 20px; height: 20px; }
+.cover-prev { left: 10px; }
+.cover-next { right: 10px; }
+.cover-caption {
+  position: absolute;
+  left: 10px; right: 10px; bottom: 10px;
+  z-index: 4;
+  display: flex; justify-content: space-between; align-items: center; gap: 8px;
+  pointer-events: none;
+}
+.cover-caption-text,
+.cover-caption-idx {
+  background: oklch(100% 0 0 / 0.8);
+  color: var(--fg);
+  font-size: 12px;
+  line-height: 1;
+  padding: 6px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.cover-caption-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* 故事页 · 本集画面(情节插图画廊,在 story-text 容器外,不参与高亮) */
 .story-gallery { margin-top: 40px; }
 .gallery-strip { display: flex; gap: 16px; margin-top: 14px; }

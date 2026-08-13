@@ -152,6 +152,14 @@ const illustrations = (ep.illustrations || []).map((ill) => {
     animated: frames.length > 1,
   };
 });
+
+// 封面翻页查看器:封面 + 本集画面合成一个图组,封面区箭头就地切换(不用滚到正文底部)
+// view = 查看器显示用 800webp;frames = 点开 lightbox 用的全尺寸帧(翻页动画同画廊)
+const coverStem = ep.cover.replace(/\.(jpg|jpeg|png)$/i, '');
+const coverViewer = [
+  { caption: '封面', view: assetUrl(`${coverStem}-800.webp`), frames: [assetUrl(ep.cover)] },
+  ...illustrations.map((ill) => ({ caption: ill.caption, view: ill.framesAnim[0], frames: ill.framesFull })),
+];
 ---
 <Base title={`${ep.title} · 十二星座小太空`} active="list" description={ep.excerpt} bodyClass="story-page">
   <div class="story-layout fade-in" data-od-id="story-body">
@@ -161,7 +169,7 @@ const illustrations = (ep.illustrations || []).map((ill) => {
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
         <span>故事列表</span>
       </a>
-      <div class="story-cover">
+      <div class="story-cover" data-viewer={illustrations.length > 0 ? JSON.stringify(coverViewer) : undefined}>
         <ResponsiveImage
           src={ep.cover}
           alt={ep.title + '封面'}
@@ -170,6 +178,20 @@ const illustrations = (ep.illustrations || []).map((ill) => {
           loading="eager"
           fetchpriority="high"
         />
+        {illustrations.length > 0 && (
+          <>
+            <button class="cover-nav cover-prev" id="cover-prev" aria-label="上一张画面">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <button class="cover-nav cover-next" id="cover-next" aria-label="下一张画面">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+            </button>
+            <div class="cover-caption" aria-hidden="true">
+              <span class="cover-caption-text" id="cover-caption-text">封面</span>
+              <span class="cover-caption-idx" id="cover-caption-idx">1 / {coverViewer.length}</span>
+            </div>
+          </>
+        )}
         <span class="sparkle" style="top: 14%; left: 12%; width: 14px; height: 14px; z-index: 3;">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1 L13.5 9 L22 10.5 L13.5 12 L12 22 L10.5 12 L1 10.5 L10.5 9 Z"/></svg>
         </span>
@@ -345,25 +367,62 @@ const illustrations = (ep.illustrations || []).map((ill) => {
         gModal.setAttribute('aria-hidden', 'true');
         document.body.style.overflow = '';
       }
+      function openGalleryModal(frames: string[], caption: string) {
+        if (!gModal || !gImg || frames.length === 0) return;
+        gImg.src = frames[0];
+        gImg.alt = caption;
+        if (gCap) gCap.textContent = caption;
+        stopGalleryAnim();
+        if (frames.length > 1) {
+          frames.forEach((f: string) => { const pre = new Image(); pre.src = f; });
+          let i = 0;
+          gTimer = setInterval(() => { i = (i + 1) % frames.length; gImg.src = frames[i]; }, 600);
+        }
+        gModal.classList.add('is-open');
+        gModal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      }
       document.querySelectorAll('.gallery-item').forEach((item) => {
         item.addEventListener('click', () => {
-          const frames = JSON.parse(item.getAttribute('data-frames') || '[]');
-          if (!gModal || !gImg || frames.length === 0) return;
-          const caption = item.getAttribute('data-caption') || '';
-          gImg.src = frames[0];
-          gImg.alt = caption;
-          if (gCap) gCap.textContent = caption;
-          stopGalleryAnim();
-          if (frames.length > 1) {
-            frames.forEach((f: string) => { const pre = new Image(); pre.src = f; });
-            let i = 0;
-            gTimer = setInterval(() => { i = (i + 1) % frames.length; gImg.src = frames[i]; }, 600);
-          }
-          gModal.classList.add('is-open');
-          gModal.setAttribute('aria-hidden', 'false');
-          document.body.style.overflow = 'hidden';
+          openGalleryModal(
+            JSON.parse(item.getAttribute('data-frames') || '[]'),
+            item.getAttribute('data-caption') || '',
+          );
         });
       });
+
+      // 封面翻页查看器:封面 + 本集画面一个图组,箭头就地切换,点图开 lightbox
+      interface CoverView { caption: string; view: string; frames: string[] }
+      const coverEl = document.querySelector('.story-cover') as HTMLElement | null;
+      const viewer: CoverView[] = JSON.parse(coverEl?.getAttribute('data-viewer') || '[]');
+      if (coverEl && viewer.length > 1) {
+        const cImg = coverEl.querySelector('img') as HTMLImageElement;
+        const cSource = coverEl.querySelector('source');
+        const cText = document.getElementById('cover-caption-text');
+        const cIdx = document.getElementById('cover-caption-idx');
+        let vi = 0;
+        let swapped = false;
+        function showCover(i: number) {
+          vi = (i + viewer.length) % viewer.length;
+          if (!swapped) {
+            // 首次切换后由 src 驱动:去掉 srcset / webp source(否则它们盖过 src 的手动切换)
+            swapped = true;
+            if (cSource) cSource.remove();
+            cImg.removeAttribute('srcset');
+            viewer.forEach((v) => { const pre = new Image(); pre.src = v.view; });
+          }
+          cImg.src = viewer[vi].view;
+          cImg.alt = viewer[vi].caption;
+          if (cText) cText.textContent = viewer[vi].caption;
+          if (cIdx) cIdx.textContent = `${vi + 1} / ${viewer.length}`;
+        }
+        const prevBtn = document.getElementById('cover-prev');
+        const nextBtn = document.getElementById('cover-next');
+        if (prevBtn) prevBtn.addEventListener('click', (e) => { e.stopPropagation(); showCover(vi - 1); });
+        if (nextBtn) nextBtn.addEventListener('click', (e) => { e.stopPropagation(); showCover(vi + 1); });
+        coverEl.addEventListener('click', () => openGalleryModal(viewer[vi].frames, viewer[vi].caption));
+        coverEl.style.cursor = 'zoom-in';
+      }
       if (gClose) gClose.addEventListener('click', closeGalleryModal);
       if (gModal) gModal.addEventListener('click', (e) => { if (e.target === gModal) closeGalleryModal(); });
       document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeGalleryModal(); });
