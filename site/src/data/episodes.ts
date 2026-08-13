@@ -308,6 +308,31 @@ export const episodes: Episode[] = [
         caption: '「啪。」花开了——像有人把天上的星星,种在了农场角落里',
       },
     ],
+    next: { title: '第十二集 偷吃月光的小云朵', status: 'online', slug: '12-偷吃月光的小云朵' },
+  },
+  {
+    slug: '12-偷吃月光的小云朵',
+    number: 12,
+    title: '第十二集 偷吃月光的小云朵',
+    subtitle: '云穗座来了 · 月光毛毛雨',
+    duration: '约 13 分 53 秒',
+    status: 'online',
+    cover: '/assets/covers/第十二集.jpg',
+    audio: '/audio/12-偷吃月光的小云朵.mp3',
+    color: 'sky',
+    excerpt: '星星果子还没熟,农场的蔬菜却一连三晚不发光了。星灵座的月光,送着送着路上就没了——原来是一朵贪吃的小云朵,趴在月亮前面偷吃月光,吃得圆滚滚,把月亮挡住了一大半……',
+    intro: '星星花谢了以后,枝头挂上了一颗一颗小小的星星果子,青青的,硬硬的,像还没睡醒的小星星。',
+    charactersInScene: ['jinniu', 'tiancheng', 'xinglingzuo', 'yunsuizuo'],
+    illustrations: [
+      {
+        src: '/assets/episodes/守夜发现云宝宝.jpg',
+        caption: '守夜名场面——月亮前面趴着一朵鼓鼓的小云朵:吧唧,吧唧,在偷吃月光!',
+      },
+      {
+        src: '/assets/episodes/月光雨星星果子熟.jpg',
+        caption: '云宝宝咯咯一笑,月光就下成了发光的毛毛雨——叮!第一颗星星果子熟了',
+      },
+    ],
   },
 ];
 
