@@ -76,6 +76,16 @@ export const scenes: Scene[] = [
     odId: 'scene-moon-farm',
   },
   {
+    id: 'starlight-forest',
+    name: '星光森林',
+    zone: 'space',
+    zoneLabel: '小太空',
+    desc: '小太空最深最深的地方。森林里不长大树,长的是蘑菇——它们是掉下来的小星星变的,白天合起伞睡觉,晚上一盏一盏亮起来。森林口两朵挨着的金色、白色蘑菇屋,就是狮子座和白羊座的家。森林最深处,那朵最大最大的蘑菇已经撑开伞,伞底下是全森林最暖和的小夜灯。第十三集里,两个女孩就是在这里等到了"啪"的一声。',
+    image: '/assets/locations/星光森林.jpg',
+    highlights: ['星星变的蘑菇', '晚上发光的森林', '最大的蘑菇小夜灯', '金色白色蘑菇屋'],
+    odId: 'scene-starlight-forest',
+  },
+  {
     id: 'sunset-sea',
     name: '晚霞海',
     zone: 'far',

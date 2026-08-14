@@ -333,6 +333,31 @@ export const episodes: Episode[] = [
         caption: '云宝宝咯咯一笑,月光就下成了发光的毛毛雨——叮!第一颗星星果子熟了',
       },
     ],
+    next: { title: '第十三集 红伞伞,白杆杆', status: 'online', slug: '13-红伞伞,白杆杆' },
+  },
+  {
+    slug: '13-红伞伞,白杆杆',
+    number: 13,
+    title: '第十三集 红伞伞,白杆杆',
+    subtitle: '狮子座白羊座来了 · 蘑菇小夜灯',
+    duration: '约 12 分 12 秒',
+    status: 'online',
+    cover: '/assets/covers/第十三集.jpg',
+    audio: '/audio/13-红伞伞,白杆杆.mp3',
+    color: 'gold',
+    excerpt: '星光森林的蘑菇晚上会发光,狮子座带白羊座去采蘑菇当夜宵——白羊座忽然站住,背起了那首童谣:"红伞伞,白杆杆,吃完一起躺板板……"背得对!地球上的蘑菇可不能乱吃;不过小太空的蘑菇,是掉下来的小星星变的。森林最深处,还有一朵最大最大的蘑菇,今天夜里要开伞……',
+    intro: '小太空最深最深的地方,有一片星光森林。森林里的蘑菇,白天合起伞睡觉,晚上一盏一盏亮起来。',
+    charactersInScene: ['shizi', 'baiyang'],
+    illustrations: [
+      {
+        src: '/assets/episodes/采星星蘑菇.jpg',
+        caption: '一起采星星蘑菇——"红伞伞,白杆杆,吃完一起数星星!"',
+      },
+      {
+        src: '/assets/episodes/最大的蘑菇开伞.jpg',
+        caption: '啪!最大最大的蘑菇撑开伞——全森林最暖和的小夜灯,亮了',
+      },
+    ],
   },
 ];
 

@@ -2,7 +2,7 @@
 // 数据真值源: 仓库根 docs/系列设定.md
 // 视觉锚定:   仓库根 assets/characters/ 下立绘 (爱心座/闪亮座已下线, 文件保留)
 
-export type CharacterRole = '十二星座' | '特别星座' | '大海星座' | '草原星座' | '小溪星座' | '农场星座' | '小太空居民';
+export type CharacterRole = '十二星座' | '特别星座' | '大海星座' | '草原星座' | '小溪星座' | '农场星座' | '森林星座' | '小太空居民';
 
 export interface Character {
   id: string;            // 拼音 (e.g. 'shuangyu')
@@ -27,15 +27,21 @@ export const characters: Character[] = [
     id: 'baiyang',
     name: '白羊座',
     role: '十二星座',
-    tags: ['十二星座'],
-    roleLabel: '十二星座',
+    tags: ['十二星座', '森林星座'],
+    roleLabel: '十二星座 · 森林星座',
     trait: '卷卷羊毛 · 元气满满',
     color: 'cream',
     colorVar: 'var(--c-cream)',
     power: '软乎乎羊毛 + 小铃铛',
-    bio: '披着云朵一样卷卷羊毛的小羊宝宝,脖子上挂着小铃铛,跑起来叮叮当当。最有精神的一个,天亮第一个醒。',
+    bio: '披着云朵一样卷卷羊毛的小羊宝宝,脖子上挂着小铃铛,跑起来叮叮当当,住在星光森林的白色蘑菇屋里,是全森林起得最早、精神最好的一个。第十三集,她采蘑菇时背起"红伞伞白杆杆"的安全童谣,又把童谣编成了小太空版;为了等最大的蘑菇开伞,她又摇铃铛又唱歌又吹气,最后安安静静地等到了"啪"的一声——狮子座把小花别在她的羊毛上,奖给最勇敢、最有耐心的小羊。',
     portrait: '/assets/characters/白羊座.jpg',
-    debut: '',
+    portraits: [
+      '/assets/characters/白羊座.jpg',
+      '/assets/covers/第十三集.jpg',
+      '/assets/episodes/采星星蘑菇.jpg',
+      '/assets/episodes/最大的蘑菇开伞.jpg',
+    ],
+    debut: '13-红伞伞,白杆杆',
   },
   {
     id: 'jinniu',
@@ -104,15 +110,21 @@ export const characters: Character[] = [
     id: 'shizi',
     name: '狮子座',
     role: '十二星座',
-    tags: ['十二星座'],
-    roleLabel: '十二星座',
+    tags: ['十二星座', '森林星座'],
+    roleLabel: '十二星座 · 森林星座',
     trait: '狮子鬃毛 · 小小太阳',
     color: 'gold',
     colorVar: 'var(--c-gold)',
     power: '蓬蓬鬃毛 + 捧花',
-    bio: '一头蓬蓬的金色鬃毛,像个小太阳。大方又爱笑,手里总捧着一朵小花,要送给今天最勇敢的人。',
+    bio: '一头蓬蓬的金色鬃毛,像个小太阳,住在小太空最深处星光森林的金色蘑菇屋里。大方又爱笑,手里总捧着一朵小花,要送给今天最勇敢的人。第十三集,她带白羊座去森林深处采蘑菇,先认真肯定"红伞伞白杆杆"背得对——地球上的蘑菇不能乱采乱吃,小太空的蘑菇是掉下来的小星星变的;两人一起等到最大最大的蘑菇撑开伞,伞底下变成了全森林最暖和的小夜灯。',
     portrait: '/assets/characters/狮子座.jpg',
-    debut: '',
+    portraits: [
+      '/assets/characters/狮子座.jpg',
+      '/assets/covers/第十三集.jpg',
+      '/assets/episodes/采星星蘑菇.jpg',
+      '/assets/episodes/最大的蘑菇开伞.jpg',
+    ],
+    debut: '13-红伞伞,白杆杆',
   },
   {
     id: 'chunv',
@@ -517,6 +529,7 @@ export const roleLabelMap: Record<CharacterRole, string> = {
   '草原星座': '草原星座',
   '小溪星座': '小溪星座',
   '农场星座': '农场星座',
+  '森林星座': '森林星座',
   '小太空居民': '小太空居民',
 };
 
