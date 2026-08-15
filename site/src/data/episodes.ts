@@ -358,6 +358,31 @@ export const episodes: Episode[] = [
         caption: '啪!最大最大的蘑菇撑开伞——全森林最暖和的小夜灯,亮了',
       },
     ],
+    next: { title: '第十四集 月兔座的邀请大接力', status: 'online', slug: '14-月兔座的邀请大接力' },
+  },
+  {
+    slug: '14-月兔座的邀请大接力',
+    number: 14,
+    title: '第十四集 月兔座的邀请大接力',
+    subtitle: '月兔座来了 · 蘑菇汤请客日',
+    duration: '约 11 分 23 秒',
+    status: 'online',
+    cover: '/assets/covers/第十四集.jpg',
+    audio: '/audio/14-月兔座的邀请大接力.mp3',
+    color: 'lavender',
+    excerpt: '狮子座说要请全小太空的朋友喝蘑菇汤,结果汤都煮好了,才发现自己是对着蘑菇宣布的——蘑菇又不会替她去说!月兔座在云上都听见了,等了三天呢。她抱起小月亮灯:"我去请!我记得每一个朋友,住在哪里!"蹦蹦跳跳,跑遍全小太空……',
+    intro: '大蘑菇开伞以后,狮子座和白羊座每天采蘑菇、煮蘑菇汤,煮得整个森林都是香香的味道。',
+    charactersInScene: ['yuetuzuo', 'shizi', 'baiyang', 'yunsuizuo'],
+    illustrations: [
+      {
+        src: '/assets/episodes/忘记请客名场面.jpg',
+        caption: '忘记请客名场面——"我以为蘑菇会替我去说……"汤都煮好了,客人一个都没请!',
+      },
+      {
+        src: '/assets/episodes/第一碗汤.jpg',
+        caption: '第一碗汤,端给记性最好、也把大家放在心上的小兔子',
+      },
+    ],
   },
 ];
 
