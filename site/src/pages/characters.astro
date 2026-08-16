@@ -17,6 +17,7 @@ const counts: Record<CharacterRole | 'all', number> = {
   小溪星座: characters.filter(c => c.tags.includes('小溪星座')).length,
   农场星座: characters.filter(c => c.tags.includes('农场星座')).length,
   森林星座: characters.filter(c => c.tags.includes('森林星座')).length,
+  家庭星座: characters.filter(c => c.tags.includes('家庭星座')).length,
   小太空居民: characters.filter(c => c.tags.includes('小太空居民')).length,
 };
 
@@ -29,6 +30,7 @@ const roles: { key: CharacterRole | 'all'; label: string }[] = [
   { key: '小溪星座', label: `小溪星座 · ${counts['小溪星座']}` },
   { key: '农场星座', label: `农场星座 · ${counts['农场星座']}` },
   { key: '森林星座', label: `森林星座 · ${counts['森林星座']}` },
+  { key: '家庭星座', label: `家庭星座 · ${counts['家庭星座']}` },
   { key: '小太空居民', label: `小太空居民 · ${counts['小太空居民']}` },
 ];
 
@@ -160,7 +162,7 @@ const nameById = Object.fromEntries(characters.map((c) => [c.id, c.name]));
       </div>
       <p class="modal-sky-caption">这个星座天上真的有,可爱的样子是我们想象的哦</p>
       <dl class="modal-sky-facts">
-        <div class="modal-sky-item"><dt>生日在这段日子</dt><dd>{constellationDates[id]}(这是大家约定的说法,不是天文知识哦)</dd></div>
+        {constellationDates[id] && <div class="modal-sky-item"><dt>生日在这段日子</dt><dd>{constellationDates[id]}(这是大家约定的说法,不是天文知识哦)</dd></div>}
         <div class="modal-sky-item"><dt>它长什么样</dt><dd>{c.shape}</dd></div>
         <div class="modal-sky-item"><dt>什么时候能看到</dt><dd>{c.season}</dd></div>
         <div class="modal-sky-item"><dt>最亮的星</dt><dd>{c.brightest}</dd></div>

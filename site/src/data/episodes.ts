@@ -383,6 +383,35 @@ export const episodes: Episode[] = [
         caption: '第一碗汤,端给记性最好、也把大家放在心上的小兔子',
       },
     ],
+    next: { title: '第十五集 小太空边上的灯', status: 'online', slug: '15-小太空边上的灯' },
+  },
+  {
+    slug: '15-小太空边上的灯',
+    number: 15,
+    title: '第十五集 小太空边上的灯',
+    subtitle: '天猫座来了 · 双子座处女座的家',
+    duration: '约 15 分 59 秒',
+    status: 'online',
+    cover: '/assets/covers/第十五集.jpg',
+    audio: '/audio/15-小太空边上的灯.mp3',
+    color: 'cream',
+    excerpt: '小太空的边上,有一座普普通通的小房子,窗户里总亮着一盏暖暖的灯——双子座、处女座和她们的爸爸妈妈(爸比座、妈咪座),还有家里的小猫天猫座,就住在这里。她们说自己家"什么特别的都没有",可是推开门的那个晚上,大家都说:这是最特别的地方……',
+    intro: '蘑菇汤聚会散场后的第二天晚上,月兔座的长耳朵又听见了——小太空的边上,有两个小小的声音在说悄悄话,还有一声轻轻的"喵"。',
+    charactersInScene: ['tianmaozuo', 'shuangzi', 'chunv', 'yuetuzuo', 'babizuo', 'mamizuo'],
+    illustrations: [
+      {
+        src: '/assets/episodes/推杯子攻防战.jpg',
+        caption: '推杯子攻防战——"喵。""不行!"第三次,处女座给每个杯子都垫上了厚厚的杯垫',
+      },
+      {
+        src: '/assets/episodes/全家晚餐.jpg',
+        caption: '普普通通的晚饭,特别特别香——最普通的家,就是最特别的地方',
+      },
+      {
+        src: '/assets/episodes/妈咪座的拥抱.jpg',
+        caption: '"想家的时候,抱一下,就好了一半"——全小太空最暖和的拥抱',
+      },
+    ],
   },
 ];
 
