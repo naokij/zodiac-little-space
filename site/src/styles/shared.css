@@ -774,6 +774,25 @@ a.chip:hover, button.chip:hover { transform: translateY(-1px); background: oklch
   font-family: var(--font-display);
 }
 
+/* 客户端分页(story-list):.episode-card 是 grid,会盖掉 UA 的 [hidden] 规则,需显式隐藏 */
+.episode-card[hidden] { display: none; }
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 28px;
+}
+.pagination .chip { cursor: pointer; font-family: inherit; font-size: 14px; }
+.pagination .chip.is-active {
+  background: var(--accent);
+  color: oklch(30% 0.06 310);
+  border-color: oklch(68% 0.10 320);
+}
+.pagination .chip:disabled { opacity: 0.45; cursor: default; }
+.pagination .chip:disabled:hover { transform: none; background: var(--surface); }
+
 
 /* ============================================================
    人物图鉴

@@ -7,6 +7,10 @@ import { assetUrl, assetSrcset } from '~/data/asset-url';
 const online = onlineEpisodes.length;
 const total = episodes.length;
 const upcoming = total - online;
+
+// 客户端分页:每页集数;无 JS 时降级为完整列表(分页条默认 hidden,由脚本启用)
+const PAGE_SIZE = 6;
+const pageCount = Math.ceil(episodes.length / PAGE_SIZE);
 ---
 <Base title="故事列表 · 十二星座小太空" active="list">
   <section data-od-id="page-hero">
@@ -26,9 +30,10 @@ const upcoming = total - online;
     <div class="stack" style="--stack-gap: 18px;">
       {episodes.map((ep, i) => {
         const isOnline = ep.status === 'online';
-        const delayClass = i > 0 ? ` fade-in-d${i}` : '';
+        const inPage = i % PAGE_SIZE; // 页内序号,用于入场动画延迟
+        const delayClass = inPage > 0 ? ` fade-in-d${Math.min(inPage, 3)}` : '';
         return (
-          <article class={`episode-card${isOnline ? '' : ' is-coming'} fade-in${delayClass}`} data-od-id={`episode-${ep.number}`} data-status={ep.status}>
+          <article class={`episode-card${isOnline ? '' : ' is-coming'} fade-in${delayClass}`} data-od-id={`episode-${ep.number}`} data-status={ep.status} data-page={Math.floor(i / PAGE_SIZE) + 1}>
             {isOnline ? (
               <>
                 <div class="ep-cover">
@@ -71,6 +76,16 @@ const upcoming = total - online;
         );
       })}
     </div>
+
+    {pageCount > 1 && (
+      <nav class="pagination" aria-label="剧集翻页" data-pages={pageCount} hidden>
+        <button class="chip" type="button" data-nav="prev" aria-label="上一页">← 上一页</button>
+        {Array.from({ length: pageCount }, (_, p) => (
+          <button class={`chip${p === 0 ? ' is-active' : ''}`} type="button" data-page={p + 1} aria-current={p === 0 ? 'page' : undefined}>{p + 1}</button>
+        ))}
+        <button class="chip" type="button" data-nav="next" aria-label="下一页">下一页 →</button>
+      </nav>
+    )}
   </section>
 
   <!-- 分节符:剧集列表 → CTA -->
@@ -93,4 +108,54 @@ const upcoming = total - online;
   <div class="flourish" style="max-width: none; width: 100%; padding: 0 24px; box-sizing: border-box;" aria-hidden="true">
     <img src={assetUrl('/assets/decor/星月分隔串-1600.webp')} srcset={assetSrcset('/assets/decor/星月分隔串-800.webp 800w, /assets/decor/星月分隔串-1600.webp 1600w')} sizes="(max-width: 720px) 70vw, 460px" alt="" loading="lazy" />
   </div>
+
+  <script>
+    // 剧集列表客户端分页:卡片在 Astro 端全部渲染并带 data-page,
+    // 脚本负责显隐 + 重放入场动画;无 JS 时分页条保持 hidden,显示完整列表
+    const nav = document.querySelector('.pagination');
+    const cards = Array.from(document.querySelectorAll('.episode-card'));
+    const pageCount = nav ? Number((nav as HTMLElement).dataset.pages) : 1;
+    if (nav && pageCount > 1) {
+      const navEl = nav as HTMLElement;
+      const listTop = document.querySelector('[data-od-id="episode-list"]') as HTMLElement;
+      const prev = navEl.querySelector('[data-nav="prev"]') as HTMLButtonElement;
+      const next = navEl.querySelector('[data-nav="next"]') as HTMLButtonElement;
+      const pageBtns = Array.from(navEl.querySelectorAll('button[data-page]')) as HTMLButtonElement[];
+      let current = 1;
+
+      function show(page: number, scroll = false) {
+        current = Math.min(Math.max(page, 1), pageCount);
+        let visible = 0;
+        for (const card of cards) {
+          const el = card as HTMLElement;
+          const on = Number(el.dataset.page) === current;
+          el.hidden = !on;
+          if (on) {
+            // 重放 fade-in 入场动画,按页内顺序错开延迟
+            el.classList.remove('fade-in');
+            void el.offsetWidth;
+            el.style.animationDelay = `${Math.min(visible, 3) * 0.08}s`;
+            el.classList.add('fade-in');
+            visible++;
+          }
+        }
+        for (const b of pageBtns) {
+          const active = Number(b.dataset.page) === current;
+          b.classList.toggle('is-active', active);
+          if (active) b.setAttribute('aria-current', 'page');
+          else b.removeAttribute('aria-current');
+        }
+        prev.disabled = current === 1;
+        next.disabled = current === pageCount;
+        if (scroll) listTop.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+
+      prev.addEventListener('click', () => show(current - 1, true));
+      next.addEventListener('click', () => show(current + 1, true));
+      for (const b of pageBtns) b.addEventListener('click', () => show(Number(b.dataset.page), true));
+
+      navEl.hidden = false;
+      show(1);
+    }
+  </script>
 </Base>
