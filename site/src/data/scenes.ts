@@ -86,6 +86,16 @@ export const scenes: Scene[] = [
     odId: 'scene-starlight-forest',
   },
   {
+    id: 'little-house',
+    name: '小太空边上的小房子',
+    zone: 'space',
+    zoneLabel: '小太空',
+    desc: '小太空最边最边的地方,有一座普普通通的小房子——双子座、处女座和爸爸妈妈(爸比座、妈咪座)、小猫天猫座的家。房子普普通通,窗户里的灯却总是最后才熄:爸比座要洗好今天的碗,妈咪座要等天猫座送完朋友回家。阁楼上有两张叠得方方正正的小床,窗台是天猫座的专座,墙上的全家福里,猫非要蹲正中间。大太空里的新朋友要是想来小太空,循着这盏灯就能找到。第十五集里,朋友们第一次推开这扇门,发现最普通的家,就是最特别的地方。',
+    image: '/assets/locations/小太空边上的小房子.jpg',
+    highlights: ['总亮着的暖暖灯', '烟囱上的小猫', '阁楼两张小床', '全家福猫蹲中间'],
+    odId: 'scene-little-house',
+  },
+  {
     id: 'sunset-sea',
     name: '晚霞海',
     zone: 'far',
