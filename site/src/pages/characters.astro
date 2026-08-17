@@ -18,6 +18,7 @@ const counts: Record<CharacterRole | 'all', number> = {
   农场星座: characters.filter(c => c.tags.includes('农场星座')).length,
   森林星座: characters.filter(c => c.tags.includes('森林星座')).length,
   家庭星座: characters.filter(c => c.tags.includes('家庭星座')).length,
+  大太空星座: characters.filter(c => c.tags.includes('大太空星座')).length,
   小太空居民: characters.filter(c => c.tags.includes('小太空居民')).length,
 };
 
@@ -31,6 +32,7 @@ const roles: { key: CharacterRole | 'all'; label: string }[] = [
   { key: '农场星座', label: `农场星座 · ${counts['农场星座']}` },
   { key: '森林星座', label: `森林星座 · ${counts['森林星座']}` },
   { key: '家庭星座', label: `家庭星座 · ${counts['家庭星座']}` },
+  { key: '大太空星座', label: `大太空星座 · ${counts['大太空星座']}` },
   { key: '小太空居民', label: `小太空居民 · ${counts['小太空居民']}` },
 ];
 

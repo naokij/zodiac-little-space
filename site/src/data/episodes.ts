@@ -412,6 +412,35 @@ export const episodes: Episode[] = [
         caption: '"想家的时候,抱一下,就好了一半"——全小太空最暖和的拥抱',
       },
     ],
+    next: { title: '第十六集 河尾巴还在外面', status: 'online', slug: '16-河尾巴还在外面' },
+  },
+  {
+    slug: '16-河尾巴还在外面',
+    number: 16,
+    title: '第十六集 河尾巴还在外面',
+    subtitle: '鲸鱼座和波江座来了 · 大太空的邻居',
+    duration: '约 13 分 44 秒',
+    status: 'online',
+    cover: '/assets/covers/第十六集.jpg',
+    audio: '/audio/16-河尾巴还在外面.mp3',
+    color: 'mint',
+    excerpt: '星星小溪涨水了,水泛着薄荷绿色的光,还会哼拐弯的小调——原来是大太空的波江座来做客,人到了,河尾巴还没收回来!紧接着,鲸鱼座顺着河"滑滑梯"从天而降……小溪装不下这么多水啦,怎么办?',
+    intro: '第十五集,天猫座告诉我们:小太空就在好大好大的大太空里面,大太空一共住着八十八个星座。这天晚上,第一批从大太空来做客的邻居,到了。',
+    charactersInScene: ['jingyuzuo', 'bojiangzuo', 'yunluo', 'mixia', 'juxie', 'tianxie', 'shuangyu', 'shuiping', 'xilianzuo', 'xihaizuo'],
+    illustrations: [
+      {
+        src: '/assets/episodes/云螺座银线量河.jpg',
+        caption: '云螺银线放到最后一寸也不够——"不是线短,是河太长啦"',
+      },
+      {
+        src: '/assets/episodes/小鲸鱼顶飞瓶子.jpg',
+        caption: '小鲸鱼的小水柱还没蒲公英高,却把修过的瓶子顶飞了——"接住啦!全小溪最快!"',
+      },
+      {
+        src: '/assets/episodes/听呼呼星打呼噜.jpg',
+        caption: '蒭藁增二亮一下、暗一下——它是在打呼噜呢。小名叫,呼呼星',
+      },
+    ],
   },
 ];
 

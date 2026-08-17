@@ -32,6 +32,12 @@ VOICE = 'qiaopi_mengmei'
 MAX_CHAR_SEC = 3.0   # 单字时长超过此值报警(正常 <1s,拖长音 ~0.8s)
 MIN_SPAN = 0.1       # 汉字最小可高亮窗口(秒),与 align-asr.py 一致
 
+# 生僻字/易错字读音修正表,经 pronunciation_dict 传给 API(只影响合成,不影响对齐文本)。
+# 格式: 词语: 带声调数字的拼音,逐字包小括号。验收时发现念错的词就加在这里。
+PRONUNCIATION_FIXES = {
+    '蒭藁增二': '(chu2)(gao3)(zeng1)(er4)',  # 鲸鱼座 Mira,实测 speech-2.8-hd 念错前两字
+}
+
 # 与 align-asr.py 完全一致的标点表(注意:不含破折号 ——,破折号保留真实时间窗)
 IS_PUNCT = set('，。！？、；：""''（）《》…-\n\r \t')
 
@@ -71,6 +77,9 @@ def call_tts(text):
         'subtitle_enable': True,
         'subtitle_type': 'word',
     }
+    if PRONUNCIATION_FIXES:
+        body['pronunciation_dict'] = {
+            'tone': [f'{w}/{p}' for w, p in PRONUNCIATION_FIXES.items()]}
     data = json.dumps(body).encode()
     last_err = None
     for attempt in (1, 2):

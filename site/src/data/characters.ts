@@ -2,7 +2,7 @@
 // 数据真值源: 仓库根 docs/系列设定.md
 // 视觉锚定:   仓库根 assets/characters/ 下立绘 (爱心座/闪亮座已下线, 文件保留)
 
-export type CharacterRole = '十二星座' | '特别星座' | '大海星座' | '草原星座' | '小溪星座' | '农场星座' | '森林星座' | '家庭星座' | '小太空居民';
+export type CharacterRole = '十二星座' | '特别星座' | '大海星座' | '草原星座' | '小溪星座' | '农场星座' | '森林星座' | '家庭星座' | '大太空星座' | '小太空居民';
 
 export interface Character {
   id: string;            // 拼音 (e.g. 'shuangyu')
@@ -266,6 +266,7 @@ export const characters: Character[] = [
       '/assets/episodes/金粉大战名场面.jpg',
       '/assets/episodes/晚霞海.jpg',
       '/assets/episodes/蒲公英小路.jpg',
+      '/assets/episodes/小鲸鱼顶飞瓶子.jpg',
     ],
     debut: '1-想家的大海',
   },
@@ -292,6 +293,7 @@ export const characters: Character[] = [
       '/assets/episodes/花田送花.jpg',
       '/assets/episodes/蒲公英小路.jpg',
       '/assets/episodes/妈咪座的拥抱.jpg',
+      '/assets/episodes/听呼呼星打呼噜.jpg',
     ],
     debut: '1-想家的大海',
   },
@@ -436,6 +438,7 @@ export const characters: Character[] = [
       '/assets/episodes/云螺银线.jpg',
       '/assets/episodes/给小蜗牛加油.jpg',
       '/assets/episodes/两条小围巾.jpg',
+      '/assets/episodes/云螺座银线量河.jpg',
     ],
     debut: '8-云壳里的小惊喜',
   },
@@ -456,6 +459,9 @@ export const characters: Character[] = [
       '/assets/covers/第九集.jpg',
       '/assets/episodes/米虾座倒着弹.jpg',
       '/assets/episodes/两条小围巾.jpg',
+      '/assets/episodes/云螺座银线量河.jpg',
+      '/assets/episodes/小鲸鱼顶飞瓶子.jpg',
+      '/assets/episodes/听呼呼星打呼噜.jpg',
     ],
     debut: '9-最快的小妹妹',
   },
@@ -543,6 +549,47 @@ export const characters: Character[] = [
     debut: '15-小太空边上的灯',
   },
 
+  // ========== 大太空星座 ==========
+  {
+    id: 'jingyuzuo',
+    name: '鲸鱼座',
+    role: '大太空星座',
+    tags: ['大太空星座'],
+    roleLabel: '大太空星座',
+    trait: '金色大鱼尾 · 头顶喷水柱',
+    color: 'gold',
+    colorVar: 'var(--c-gold)',
+    power: '大水柱 + 小鲸鱼伙伴',
+    bio: '金黄长卷发、发梢是海水一样蓝的大个子美人鱼,金色的大鱼尾,肩膀上趴着一只圆滚滚的小鲸鱼。她是大太空来的客人,家就在真正的大海边上,波江座的河正好从她门口流过。她最有鲸鱼的样:用嘴把水吸进肚子,再从头顶的喷水孔"噗——"地喷出一根冲天大水柱(小鲸鱼也会,只是水柱还没蒲公英高)。嗓门亮,性子大方,笑起来尾巴一拍一个大水花。她的肚子里住着著名的蒭藁增二,一颗会慢慢变亮变暗、像在打呼噜的星星,小名叫呼呼星。第十六集登场:她顺着波江座的河"滑滑梯"进了小太空,把漫出小溪的河水吸进肚子、喷回大太空,救了云螺座的小房子;听双鱼座说想看真正的大海,她拍拍胸脯:下次顺着河,带你们去!',
+    portrait: '/assets/characters/鲸鱼座.jpg',
+    portraits: [
+      '/assets/characters/鲸鱼座.jpg',
+      '/assets/covers/第十六集.jpg',
+      '/assets/episodes/小鲸鱼顶飞瓶子.jpg',
+      '/assets/episodes/听呼呼星打呼噜.jpg',
+    ],
+    debut: '16-河尾巴还在外面',
+  },
+  {
+    id: 'bojiangzuo',
+    name: '波江座',
+    role: '大太空星座',
+    tags: ['大太空星座'],
+    roleLabel: '大太空星座',
+    trait: '薄荷绿卷发 · 裙摆是河',
+    color: 'mint',
+    colorVar: 'var(--c-mint)',
+    power: '长长的河 + 说话绕弯',
+    bio: '薄荷绿短卷发的女孩,脸颊两边各垂着一条细细的长卷发,浪花形状的小发夹挂着小水滴,穿一条淡淡的绿长裙。她的裙摆就是流动的河水——走到哪儿,河就流到哪儿。她说话像她的河一样,一句话要绕好几个弯才说到重点,性子慢慢的、柔柔的,从不着急:"河嘛,总是弯弯曲曲的,走得慢一点,也是河呀。"她是大太空来的客人,天上的波江座是全天最长最曲折的星座之一,河尾巴上挂着最亮的水委一。第十六集登场:她来小太空做客,人到了,河尾巴还留在大太空,河水把星星小溪涨得满满的;最后河尾巴慢慢慢慢流进了小太空,尾巴尖上挂着一颗从大太空带来的小星星,挂在溪边的小树枝上,成了星星小溪的新路灯。',
+    portrait: '/assets/characters/波江座.jpg',
+    portraits: [
+      '/assets/characters/波江座.jpg',
+      '/assets/covers/第十六集.jpg',
+      '/assets/episodes/云螺座银线量河.jpg',
+    ],
+    debut: '16-河尾巴还在外面',
+  },
+
   // ========== 小太空居民 ==========
   {
     id: 'yueliangjiejie',
@@ -598,6 +645,7 @@ export const roleLabelMap: Record<CharacterRole, string> = {
   '农场星座': '农场星座',
   '森林星座': '森林星座',
   '家庭星座': '家庭星座',
+  '大太空星座': '大太空星座',
   '小太空居民': '小太空居民',
 };
 
