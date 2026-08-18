@@ -441,6 +441,31 @@ export const episodes: Episode[] = [
         caption: '蒭藁增二亮一下、暗一下——它是在打呼噜呢。小名叫,呼呼星',
       },
     ],
+    next: { title: '第十七集 雕像眨眨眼', status: 'online', slug: '17-雕像眨眨眼' },
+  },
+  {
+    slug: '17-雕像眨眨眼',
+    number: 17,
+    title: '第十七集 雕像眨眨眼',
+    subtitle: '天鸽座送信来了 · 雕具座的小天使',
+    duration: '约 12 分 45 秒',
+    status: 'online',
+    cover: '/assets/covers/第十七集.jpg',
+    audio: '/audio/17-雕像眨眨眼.mp3',
+    color: 'orange',
+    excerpt: '薄荷绿的河面上漂来一圈圈涟漪花——大太空最快的信使天鸽座来送信啦!她还带来一位不太说话的小男孩雕具座:他的手会说话,叮叮叮,给每个人雕一颗专属小星星。到了夜里,月光一照,那座小天使雕像,翅膀轻轻动了一下……',
+    intro: '第十六集,波江座的河尾巴流进了小太空,尾巴尖上的小星星成了星星小溪的新路灯。这天晚上,路灯闪了两下——顺着这条河,又有两位大太空的邻居来做客了。',
+    charactersInScene: ['tiangezuo', 'diaojuzuo', 'mixia', 'yunluo', 'shuangyu', 'shuiping', 'juxie', 'jingyuzuo', 'bojiangzuo'],
+    illustrations: [
+      {
+        src: '/assets/episodes/天鸽座和米虾座赛跑.jpg',
+        caption: '"全小溪最快"对"全大太空最快"——一粉一蓝两道光,绕着小溪飞了三圈',
+      },
+      {
+        src: '/assets/episodes/雕具座雕星星.jpg',
+        caption: '叮叮叮,笃笃笃,石屑像下了一场小小的雪——每个人都有一颗自己的星星',
+      },
+    ],
   },
 ];
 
