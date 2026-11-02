@@ -466,6 +466,31 @@ export const episodes: Episode[] = [
         caption: '叮叮叮,笃笃笃,石屑像下了一场小小的雪——每个人都有一颗自己的星星',
       },
     ],
+    next: { title: '第十八集 猎户座的三颗星星跑了', status: 'online', slug: '18-猎户座的三颗星星跑了' },
+  },
+  {
+    slug: '18-猎户座的三颗星星跑了',
+    number: 18,
+    title: '第十八集 猎户座的三颗星星跑了',
+    subtitle: '天兔座和猎户座来了 · 三颗逃跑的星星',
+    duration: '约 14 分 06 秒',
+    status: 'online',
+    cover: '/assets/covers/第十八集.jpg',
+    audio: '/audio/18-猎户座的三颗星星跑了.mp3',
+    color: 'lavender',
+    excerpt: '小太空边上落下三颗流星,可流星坑里空空的,只剩三串亮晶晶的小脚印——猎户座腰带上的三颗星星,跟着一只小兔子跑啦!月兔座的耳朵中间多了一颗"圆耳朵",米虾座的小水痕绕成蝴蝶结,雕具座的石头雕像里,还有一颗星星在偷偷眨眼睛……',
+    intro: '第十七集以后,雕具座留在小太空,要雕一个"整个小太空"。这天夜里,小太空边上忽然"咚、咚、咚"响了三声——又有两位天上挨得最近的邻居,一起来做客了。',
+    charactersInScene: ['tiantuzuo', 'liehuzuo', 'yuetuzuo', 'mixia', 'diaojuzuo'],
+    illustrations: [
+      {
+        src: '/assets/episodes/月兔座的第三只耳朵.jpg',
+        caption: '两只长耳朵中间,怎么多了一只圆圆的耳朵?——第一颗逃跑的星星,找到啦',
+      },
+      {
+        src: '/assets/episodes/星星雕像露馅.jpg',
+        caption: '一排石头小星星都安安静静,只有它忍不住眨了一下——露馅啦!',
+      },
+    ],
   },
 ];
 
