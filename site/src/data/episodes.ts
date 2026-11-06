@@ -491,6 +491,31 @@ export const episodes: Episode[] = [
         caption: '一排石头小星星都安安静静,只有它忍不住眨了一下——露馅啦!',
       },
     ],
+    next: { title: '第十九集 最亮的晚安灯', status: 'online', slug: '19-最亮的晚安灯' },
+  },
+  {
+    slug: '19-最亮的晚安灯',
+    number: 19,
+    title: '第十九集 最亮的晚安灯',
+    subtitle: '大犬座和小犬座来了 · 一大一小两盏灯',
+    duration: '约 9 分 01 秒',
+    status: 'online',
+    cover: '/assets/covers/第十九集.jpg',
+    audio: '/audio/19-最亮的晚安灯.mp3',
+    color: 'gold',
+    excerpt: '大犬座把夜晚最亮的恒星天狼星做成了晚安灯,可灯一挂起来,农场蔬菜睡了、森林蘑菇也合伞了!小犬座捧着自己小小的南河三灯,想到了一个好办法:不是星星太亮,是灯挂得太近。',
+    intro: '猎户座和天兔座第一次一起守夜,远处忽然传来一大一小两串脚步声,还有一声响亮的“汪”——又有两位住在猎户座附近的大太空邻居来了。',
+    charactersInScene: ['daquanzuo', 'xiaoquanzuo', 'liehuzuo', 'tiantuzuo', 'xinglingzuo', 'shizi'],
+    illustrations: [
+      {
+        src: '/assets/episodes/晚安灯太亮了.jpg',
+        caption: '大灯把农场照得像白天,南瓜和胡萝卜都闭上眼睛睡觉啦',
+      },
+      {
+        src: '/assets/episodes/云朵灯罩.jpg',
+        caption: '给大灯盖一朵云,结果大灯和云一起发光了',
+      },
+    ],
   },
 ];
 
