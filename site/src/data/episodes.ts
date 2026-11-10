@@ -516,6 +516,31 @@ export const episodes: Episode[] = [
         caption: '给大灯盖一朵云,结果大灯和云一起发光了',
       },
     ],
+    next: { title: '第二十集 一箭射到晚安', status: 'online', slug: '20-一箭射到晚安' },
+  },
+  {
+    slug: '20-一箭射到晚安',
+    number: 20,
+    title: '第二十集 一箭射到晚安',
+    subtitle: '射手座和猎户座的射箭比赛',
+    duration: '约 10 分 44 秒',
+    status: 'online',
+    cover: '/assets/covers/第二十集.jpg',
+    audio: '/audio/20-一箭射到晚安.mp3',
+    color: 'gold',
+    excerpt: '射手座要和猎户座比赛射箭,可猎户座的星光弓没有箭!靶心亮了,摩羯座却问:“中了是中了,可是箭呢?”最后一箭,他们要把一颗迷路的小星星送回晚安里。',
+    intro: '青青草原上,射手座正在练一支箭。猎户座背着他的无箭星光弓路过——一场比赛,就这样开始了。',
+    charactersInScene: ['sheshou', 'liehuzuo', 'mojie'],
+    illustrations: [
+      {
+        src: '/assets/episodes/中了可是箭呢.jpg',
+        caption: '靶心明明亮了,可箭在哪里呢?摩羯座拿着记分牌犯难啦',
+      },
+      {
+        src: '/assets/episodes/最后一箭一起回家.jpg',
+        caption: '蒲公英在前面指路,星光小桥在脚下接着——最后一箭,一起送小星星回家',
+      },
+    ],
   },
 ];
 
